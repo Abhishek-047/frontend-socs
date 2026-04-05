@@ -1,26 +1,439 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@theme {
+  --color-primary: #C8FF00;
+  --color-secondary: #6200EA;
+  --color-tertiary: #2979FF;
+  --color-neutral: #050508;
+  --color-background: #050508;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* Font mappings */
+  --font-body: var(--font-turret-road);
+  --font-secondary: var(--font-turret-road);
+  --font-headline: var(--font-space-grotesk);
+  --font-label: var(--font-inter);
+  --font-glitch: var(--font-rubik-glitch);
+  --font-silk: var(--font-silkscreen);
+  --font-wallpoet: var(--font-wallpoet);
+  --font-turret: var(--font-turret-road);
+  /* Legacy mappings to prevent breaks */
+  --font-jetbrains: var(--font-manrope);
+  --font-grotesk: var(--font-space-grotesk);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  /* Subtle Shadows to keep look sharp */
+  --shadow-glow: 0 0 5px rgba(200, 255, 0, 0.4);
+  --shadow-glow-lg: 0 0 10px rgba(200, 255, 0, 0.4), 0 0 20px rgba(200, 255, 0, 0.2);
+
+  --animate-blink-cursor: blink-cursor 1.2s ease-in-out infinite;
+
+  @keyframes glitch {
+    0%, 100% { transform: translate(0, 0) skew(0deg); }
+    2% { transform: translate(2px, -1px) skew(0deg); }
+    4% { transform: translate(-2px, 0) skew(0deg); }
+    6% { transform: translate(0, 1px) skew(2deg); }
+    8% { transform: translate(-1px, 0) skew(-1deg); }
+    10%, 60% { transform: translate(0, 0) skew(0deg); }
+    62% { transform: translate(3px, 0) skew(3deg); }
+    64% { transform: translate(-1px, 0) skew(0deg); }
+    66% { transform: translate(0, 0) skew(0deg); }
+  }
+
+  @keyframes glitch-clip {
+    0% { clip-path: polygon(0 2%, 100% 2%, 100% 5%, 0 5%); }
+    10% { clip-path: polygon(0 15%, 100% 15%, 100% 20%, 0 20%); }
+    20% { clip-path: polygon(0 10%, 100% 10%, 100% 12%, 0 12%); }
+    30% { clip-path: polygon(0 1%, 100% 1%, 100% 2%, 0 2%); }
+    40% { clip-path: polygon(0 33%, 100% 33%, 100% 38%, 0 38%); }
+    50% { clip-path: polygon(0 50%, 100% 50%, 100% 55%, 0 55%); }
+    60% { clip-path: polygon(0 44%, 100% 44%, 100% 48%, 0 48%); }
+    70% { clip-path: polygon(0 70%, 100% 70%, 100% 74%, 0 74%); }
+    80% { clip-path: polygon(0 80%, 100% 80%, 100% 85%, 0 85%); }
+    90% { clip-path: polygon(0 90%, 100% 90%, 100% 95%, 0 95%); }
+    100% { clip-path: polygon(0 60%, 100% 60%, 100% 65%, 0 65%); }
+  }
+
+  @keyframes noise-flicker {
+    0%, 100% { opacity: 0; }
+    7% { opacity: 0.4; }
+    8% { opacity: 0; }
+    42% { opacity: 0; }
+    43% { opacity: 0.3; }
+    44% { opacity: 0; }
+    78% { opacity: 0.2; }
+    79% { opacity: 0; }
+  }
+  
+  @keyframes blink-cursor {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes scan-move {
+    0% { top: -10%; }
+    100% { top: 110%; }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+
+
+:root {
+  --background: #050508;
+  --foreground: #ffffff;
 }
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), var(--font-manrope), sans-serif;
+  overflow-x: hidden;
+  position: relative;
+  cursor: none;
+}
+
+html {
+  cursor: none;
+}
+
+/* Ensure links and interactive elements also don't show the default cursor */
+a, button, [role="button"], input, select, textarea {
+  cursor: none !important;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background-image: url('https://grainy-gradients.vercel.app/noise.svg');
+  opacity: 0.05;
+  z-index: 9999;
+  filter: contrast(120%) brightness(100%);
+}
+
+p {
+  font-family: var(--font-turret-road), sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6, 
+p.font-bold, p strong, p b {
+  font-family: var(--font-wallpoet), sans-serif !important;
+}
+
+/* Lenis smooth scroll overrides */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: theme('color.primary');
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: theme('color.secondary');
+}
+
+/* Selection */
+::selection {
+  background-color: theme('color.primary');
+  color: var(--background);
+}
+
+/* Utilities */
+@utility active-pixel-bg {
+  position: absolute;
+  inset: -1px -4px;
+  z-index: 0;
+  background-image: 
+    linear-gradient(0deg, rgba(200, 255, 0, 0.2) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200, 255, 0, 0.2) 1px, transparent 1px);
+  background-size: 3px 3px;
+  animation: bg-flicker 0.1s steps(2) infinite;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+@keyframes bg-flicker {
+  0% { transform: translate(0, 0); opacity: 0.7; }
+  50% { transform: translate(1px, -1px); opacity: 1; }
+  100% { transform: translate(-1px, 1px); opacity: 0.8; }
+}
+
+.cursor-corrupted:not([data-terminal]),
+.cursor-corrupted-removing:not([data-terminal]) {
+  position: relative !important;
+  color: #fff !important;
+  text-shadow: 0 0 8px rgba(255, 0, 64, 0.8) !important;
+  transition: color 0.3s ease, text-shadow 0.3s ease !important;
+  
+  /* Critical for forcing the pseudo-element behind bare text cleanly */
+  isolation: isolate;
+  /* Prevent the background from spilling outside button bounds across the site */
+  overflow: hidden !important;
+}
+
+/* Terminal gets normal cursor back */
+[data-terminal],
+[data-terminal] * {
+  cursor: auto !important;
+}
+
+[data-terminal] input {
+  cursor: text !important;
+}
+
+.cursor-corrupted::after,
+.cursor-corrupted-removing::after {
+  content: "";
+  position: absolute;
+  /* Extended bounds so we can hardware-translate it downwards */
+  top: -80px; left: 0; right: 0; bottom: -80px;
+  background-color: rgba(15, 0, 5, 0.9);
+  
+  /* Dense packed matrix SVG data */
+  background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' xmlns='http://www.w3.org/2000/svg'%3E%3Cstyle%3Etext { font-family: monospace; font-size: 14px; font-weight: bold; fill: rgba(255, 0, 64, 0.8); }%3C/style%3E%3Ctext x='5' y='20'%3E01%3C/text%3E%3Ctext x='35' y='10'%3EF8%3C/text%3E%3Ctext x='60' y='30'%3E1A%3C/text%3E%3Ctext x='15' y='50'%3EB9%3C/text%3E%3Ctext x='45' y='45'%3E!%23%3C/text%3E%3Ctext x='70' y='60'%3EX0%3C/text%3E%3Ctext x='10' y='75'%3EE4%3C/text%3E%3Ctext x='40' y='70'%3EC2%3C/text%3E%3Ctext x='65' y='15'%3E3D%3C/text%3E%3Ctext x='25' y='35'%3E9F%3C/text%3E%3C/svg%3E");
+  background-size: 80px 80px;
+  background-repeat: repeat;
+  
+  /* GPU-Accelerated transform translation */
+  /* Fall speed scaled with dense tile size */
+  animation: bg-matrix-fall 2s linear infinite;
+  will-change: transform, opacity;
+  
+  /* Because parent has isolation: isolate, -1 goes directly below ALL text unconditionally */
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+  border-radius: inherit;
+}
+
+.cursor-corrupted::after {
+  opacity: 1;
+}
+
+/* STRICT RULE: Only allow the falling matrix background on NeonButton-style elements */
+*:not(.border).cursor-corrupted::after,
+*:not(.border).cursor-corrupted-removing::after,
+[data-terminal].cursor-corrupted::after,
+[data-terminal].cursor-corrupted-removing::after {
+  display: none !important;
+}
+
+@keyframes bg-matrix-fall {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(80px); }
+}
+
+@utility scan-line {
+  position: relative;
+  &::before {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(rgba(5, 5, 8, 0) 50%, rgba(5, 5, 8, 0.25) 50%), linear-gradient(90deg, rgba(200, 255, 0, 0.05), rgba(98, 0, 234, 0.05), rgba(41, 121, 255, 0.05));
+    z-index: 50;
+    background-size: 100% 2px, 3px 100%;
+    pointer-events: none;
+  }
+}
+
+@utility text-glow {
+  text-shadow: 0 0 8px rgba(200, 255, 0, 0.4);
+}
+
+@utility border-glow {
+  box-shadow: 0 0 5px rgba(200, 255, 0, 0.4);
+  border-color: theme('color.primary');
+}
+
+@utility grid-background {
+  background-image: 
+    linear-gradient(to right, rgba(200, 255, 0, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(200, 255, 0, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+@utility dot-grid {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+
+@utility motherboard-lines {
+  background-image: 
+    linear-gradient(90deg, rgba(200, 255, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(rgba(200, 255, 0, 0.03) 1px, transparent 1px);
+  background-size: 100px 100px;
+}
+
+@utility dashboard-card {
+  background: rgba(10, 10, 15, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+}
+
+@utility dashboard-card-hover {
+  border-color: theme('color.primary');
+  box-shadow: 0 0 15px rgba(200, 255, 0, 0.1);
+}
+
+/* ============================================================
+   GLITCH TEXT — Horizontal Slice Displacement
+   Letters themselves appear to tear and slide sideways
+   ============================================================ */
+
+.glitch-text {
+  position: relative;
+  display: inline-block;
+  font-family: var(--font-wallpoet), var(--font-space-grotesk), sans-serif;
+  letter-spacing: 0.1em;
+}
+
+.glitch-text::before,
+.glitch-text::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  /* Inherit color so it looks like the text itself is moving */
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  white-space: nowrap;
+}
+
+/* Layer A — shows thin top/mid bands, slides RIGHT then left */
+.glitch-text::before {
+  text-shadow: -3px 0 #ff0040;
+  animation: glitch-slice-a 4s steps(1) infinite;
+}
+
+/* Layer B — shows different bands, slides LEFT with cyan tint */
+.glitch-text::after {
+  text-shadow: 3px 0 #00e5ff;
+  animation: glitch-slice-b 4s steps(1) infinite;
+  animation-delay: -1.5s;
+}
+
+/* Intensity overrides */
+.glitch-text--low::before  { animation-duration: 4s; }
+.glitch-text--low::after   { animation-duration: 4s; animation-delay: -2s; }
+.glitch-text--medium::before { animation-duration: 2.5s; }
+.glitch-text--medium::after  { animation-duration: 2.5s; animation-delay: -1s; }
+.glitch-text--high::before { animation-duration: 1.2s; }
+.glitch-text--high::after  { animation-duration: 1.4s; animation-delay: -0.5s; }
+
+/* ── Layer A ──────────────────────────────────────────────── */
+@keyframes glitch-slice-a {
+  0%,  3%  { clip-path: inset(0 0 100% 0); transform: none; }
+  
+  4%       { clip-path: inset(10% 0 85% 0);  transform: translateX(18px) skewX(5deg); }
+  5%       { clip-path: inset(10% 0 85% 0);  transform: translateX(-15px); }
+  6%       { clip-path: inset(0 0 100% 0);   transform: none; }
+
+  7%, 14%  { clip-path: inset(0 0 100% 0); transform: none; }
+
+  15%      { clip-path: inset(40% 0 45% 0);  transform: translateX(-25px) skewX(-10deg); }
+  16%      { clip-path: inset(40% 0 45% 0);  transform: translateX(12px); }
+  17%      { clip-path: inset(0 0 100% 0);   transform: none; }
+
+  18%, 32% { clip-path: inset(0 0 100% 0); transform: none; }
+
+  33%      { clip-path: inset(65% 0 18% 0);  transform: translateX(30px) scaleY(1.1); }
+  34%      { clip-path: inset(65% 0 18% 0);  transform: translateX(-10px); }
+  35%      { clip-path: inset(0 0 100% 0);   transform: none; }
+
+  36%, 48% { clip-path: inset(0 0 100% 0); transform: none; }
+
+  49%      { clip-path: inset(25% 0 65% 0);  transform: translateX(-20px); }
+  50%      { clip-path: inset(0 0 100% 0);   transform: none; }
+
+  51%, 69% { clip-path: inset(0 0 100% 0); transform: none; }
+
+  70%      { clip-path: inset(80% 0 5% 0);   transform: translateX(25px) skewX(8deg); }
+  71%      { clip-path: inset(80% 0 5% 0);   transform: translateX(-18px); }
+  72%      { clip-path: inset(0 0 100% 0);   transform: none; }
+  
+  73%, 88% { clip-path: inset(0 0 100% 0); transform: none; }
+
+  89%      { clip-path: inset(5% 0 80% 0);   transform: translateX(-35px) scaleX(1.05); }
+  90%      { clip-path: inset(5% 0 80% 0);   transform: translateX(18px); }
+  91%      { clip-path: inset(0 0 100% 0);   transform: none; }
+
+  100%     { clip-path: inset(0 0 100% 0); transform: none; }
+}
+
+/* ── Layer B ──────────────────────────────────────────────── */
+@keyframes glitch-slice-b {
+  0%,  9%  { clip-path: inset(0 0 100% 0); transform: none; }
+
+  10%      { clip-path: inset(20% 0 60% 0);  transform: translateX(-22px) skewX(-5deg); }
+  11%      { clip-path: inset(20% 0 60% 0);  transform: translateX(15px); }
+  12%      { clip-path: inset(0 0 100% 0);   transform: none; }
+
+  13%, 26% { clip-path: inset(0 0 100% 0); transform: none; }
+
+  27%      { clip-path: inset(75% 0 10% 0);  transform: translateX(35px); }
+  28%      { clip-path: inset(0 0 100% 0);   transform: none; }
+
+  29%, 45% { clip-path: inset(0 0 100% 0); transform: none; }
+
+  46%      { clip-path: inset(45% 0 35% 0);  transform: translateX(-30px) scaleY(1.15); }
+  47%      { clip-path: inset(45% 0 35% 0);  transform: translateX(20px); }
+  48%      { clip-path: inset(0 0 100% 0);   transform: none; }
+
+  49%, 66% { clip-path: inset(0 0 100% 0); transform: none; }
+
+  67%      { clip-path: inset(5% 0 80% 0);   transform: translateX(28px) skewX(10deg); }
+  68%      { clip-path: inset(0 0 100% 0);   transform: none; }
+
+  69%, 83% { clip-path: inset(0 0 100% 0); transform: none; }
+
+  84%      { clip-path: inset(60% 0 25% 0);  transform: translateX(-40px); }
+  85%      { clip-path: inset(60% 0 25% 0);  transform: translateX(15px); }
+  86%      { clip-path: inset(0 0 100% 0);   transform: none; }
+
+  100%     { clip-path: inset(0 0 100% 0); transform: none; }
+}
+
