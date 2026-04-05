@@ -87,7 +87,7 @@ export function Navbar() {
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-[1fr_auto_1fr] items-center h-24">
+          <div className="grid grid-cols-2 md:grid-cols-[1fr_auto_1fr] items-center gap-6 lg:gap-10 h-24">
             {/* Logo */}
             <div className="flex justify-start">
               <Link href="/" className="flex items-center font-jetbrains text-3xl font-extrabold text-white group tracking-wider">
