@@ -1,36 +1,98 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SOCS — Society of Cyber Security
+
+> A high-performance, cyberpunk-themed event website for the **Society of Cyber Security (SOCS)** — built with Next.js 16, GSAP, and a hacker aesthetic.
+
+![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=flat-square&logo=typescript)
+![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-4-06B6D4?style=flat-square&logo=tailwindcss)
+
+---
+
+## Features
+
+- **Cyberpunk UI** — Chamfered clip-path cards, neon glow effects, scanline overlays
+- **Live Threat Map** — Real-time animated global cyber-attack visualization (checkpoint.com style) using `react-simple-maps` + Canvas arcs
+- **Floating Navbar** — Glassmorphic pill with live clock, threat level badge, and terminal toggle
+- **Interactive Terminal** — Fully functional in-browser hacker terminal with commands, theme customization, and navigation
+- **Matrix Data Stream** — GSAP-powered background animation
+- **Scramble Text** — Matrix-style text decode animation on headings
+- **Custom Cursor** — GSAP-tracked crosshair cursor
+- **Smooth Scroll** — Lenis-powered scroll with page transitions
+- **Dynamic Theming** — Live color customization via terminal commands (`theme primary #ff0040`)
+
+---
+
+## Tech Stack
+
+| Layer | Tech |
+|---|---|
+| Framework | Next.js 16 (App Router) |
+| Language | TypeScript |
+| Styling | Tailwind CSS v4 |
+| Animations | GSAP, Framer Motion |
+| Maps | react-simple-maps, topojson-client, world-atlas |
+| Scroll | Lenis |
+| Icons | Lucide React |
+| Fonts | Space Grotesk, Turret Road, Wallpoet, Silkscreen |
+
+---
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+# Install dependencies
+npm install
+
+# Run dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Terminal Commands
 
-## Learn More
+The `>_ TERM` button in the navbar (or `Ctrl + \``) opens the hacker terminal. Available commands:
 
-To learn more about Next.js, take a look at the following resources:
+```
+help            — list all commands
+cd <page>       — navigate to a page (home, team, projects, events, resources)
+ls              — list available pages
+whoami          — display current user
+clear           — clear terminal
+theme primary <color>     — change accent color
+theme bg <color>          — change background color
+theme font <name>         — change font preset
+theme reset               — reset to defaults
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Project Structure
 
-## Deploy on Vercel
+```
+src/
+├── app/                  — Next.js routes + global CSS
+├── components/
+│   ├── cards/            — ProjectCard, EventCard, etc.
+│   ├── layout/           — Navbar, Footer, PageWrapper, MobileMenu
+│   ├── sections/         — HeroSection, AboutSection, StatsSection, etc.
+│   └── ui/               — ThreatMap, Terminal, CustomCursor, GlowBorder, NeonButton, ...
+├── constants/            — Static data (projects, events, team)
+├── context/              — ThemeContext
+├── lib/                  — GSAP animation helpers
+└── types/                — Module declarations
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Contributing
+
+PRs welcome. Open an issue first for major changes.
+
+---
+
+## License
+
+MIT © Society of Cyber Security

@@ -72,6 +72,14 @@ export function Terminal() {
     }
   }, [isOpen, isMinimized]);
 
+  // Listen for navbar TERM button
+  useEffect(() => {
+    const handle = () => setIsOpen(prev => !prev);
+    window.addEventListener("toggle-terminal", handle);
+    return () => window.removeEventListener("toggle-terminal", handle);
+  }, []);
+
+
   // Current directory label from pathname
   const currentDir = useCallback(() => {
     const entry = Object.entries(ROUTES).find(([, v]) => v === pathname);

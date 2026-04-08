@@ -7,7 +7,7 @@ import { GithubIcon } from "../ui/Icons";
 export function ProjectCard({ project }: { project: Project }) {
   return (
     <GlowBorder intensity={project.featured ? "medium" : "low"} className="h-full group">
-      <div className="p-6 flex flex-col h-full bg-background/60 rounded-md transition-transform duration-300 group-hover:-translate-y-1">
+      <div className="p-6 flex flex-col h-full bg-background/60 transition-transform duration-300 group-hover:-translate-y-1">
         <div className="flex justify-between items-start mb-4">
           <h3 className="text-xl font-bold font-grotesk text-white group-hover:text-primary transition-colors">
             {project.title}

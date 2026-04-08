@@ -7,6 +7,7 @@ interface SectionHeaderProps {
 }
 
 import { GlitchText } from "./GlitchText";
+import { ScrambleText } from "./ScrambleText";
 
 export function SectionHeader({ title, subtitle, className = "" }: SectionHeaderProps) {
   return (
@@ -21,7 +22,7 @@ export function SectionHeader({ title, subtitle, className = "" }: SectionHeader
       </h2>
       {subtitle && (
         <p className="mt-4 text-gray-400 font-jetbrains text-sm md:text-base max-w-2xl border-l-2 border-primary/30 pl-4">
-          {subtitle}
+          <ScrambleText text={subtitle} delay={200} />
         </p>
       )}
     </div>
