@@ -62,7 +62,7 @@ export function HeroSection() {
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-8 xl:gap-12 items-start z-10 w-full">
 
         {/* ── LEFT: Text content ── */}
-        <div className="text-left w-full min-w-0 pt-12">
+        <div className="text-left w-full min-w-0 pt-4">
           {/* eyebrow */}
           <div className="mb-5 inline-flex items-center gap-2 text-[10px] text-primary/40 tracking-[0.5em] font-jetbrains uppercase">
             <span className="w-2 h-2 bg-primary/40 animate-pulse" />
