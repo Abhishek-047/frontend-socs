@@ -5,13 +5,15 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NeonButton } from "../ui/NeonButton";
 import { MobileMenu } from "./MobileMenu";
-import { Menu, X, Shield, Wifi, Terminal, Volume2, VolumeX } from "lucide-react";
+import { Menu, X, Shield, Wifi, Terminal, Volume2, VolumeX, Eye, EyeOff } from "lucide-react";
 import { useAudio } from "@/context/AudioContext";
+import { useDeepWeb } from "@/context/DeepWebContext";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
   const { isMuted, toggleMute } = useAudio();
+  const { isDeepWeb, triggerDeepWeb, disableDeepWeb } = useDeepWeb();
   const [isVisible, setIsVisible] = useState(true);
   const [scrolled, setScrolled] = useState(false);
   const [time, setTime] = useState("");
@@ -169,6 +171,20 @@ export function Navbar() {
 
           {/* ── Right: CTA + Mobile toggle ── */}
           <div className="flex items-center gap-2 shrink-0">
+            {/* Deep Web toggle */}
+            <button 
+              onClick={isDeepWeb ? disableDeepWeb : triggerDeepWeb}
+              title={isDeepWeb ? "Disable Deep Web" : "Enable Deep Web"}
+              className={`hidden md:flex items-center justify-center p-1.5 border transition-colors uppercase ${
+                isDeepWeb 
+                ? "bg-red-900/40 border-red-500/40 text-red-500 hover:text-white" 
+                : "bg-white/5 border-white/10 text-gray-500 hover:text-white"
+              }`}
+              style={{ clipPath: "polygon(0 3px,3px 0,100% 0,100% calc(100% - 3px),calc(100% - 3px) 100%,0 100%)" }}
+            >
+              {isDeepWeb ? <EyeOff className="w-3 h-3 animate-pulse" /> : <Eye className="w-3 h-3" />}
+            </button>
+            
             {/* Audio toggle */}
             <button 
               onClick={toggleMute}
