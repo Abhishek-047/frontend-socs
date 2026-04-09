@@ -97,15 +97,7 @@ export default function TeamPage() {
         onClose={() => setIsModalOpen(false)} 
         entityType="NODE" 
       />
-      <div className="absolute inset-0 dot-grid opacity-20 -z-20"></div>
-      
-      {/* Top Status Bar ( Cockpit element ) */}
-      <div className="relative md:absolute md:top-24 left-1/2 -translate-x-1/2 w-full max-w-7xl px-4 md:px-6 flex flex-col md:flex-row items-center justify-end z-30 gap-3 md:gap-0 mt-8 md:mt-0 mb-12 md:mb-0">
-        <div className="flex items-center gap-3 px-3 py-1 bg-primary/5 border border-primary/20 rounded-sm">
-          <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></div>
-          <span className="text-[10px] text-primary tracking-widest uppercase font-bold">System Status: Secure</span>
-        </div>
-      </div>
+
 
       <div className="max-w-7xl mx-auto px-4 z-10 relative">
         {/* Header Section */}
