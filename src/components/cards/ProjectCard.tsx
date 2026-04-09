@@ -44,16 +44,26 @@ export function ProjectCard({ project }: { project: Project }) {
           </div>
         </Link>
 
-        {/* Action Button at the bottom */}
-        <div className="px-6 pb-6 mt-auto">
+        {/* Action Buttons at the bottom */}
+        <div className="px-6 pb-6 mt-auto grid grid-cols-2 gap-3">
           <Link 
             href={`/projects/${project.slug}`}
-            className="w-full flex items-center justify-center gap-2 bg-primary/5 border border-primary/20 py-2 text-[10px] font-bold font-mono tracking-widest text-primary uppercase hover:bg-primary/20 hover:border-primary transition-all duration-300"
+            className="flex items-center justify-center gap-2 bg-primary/5 border border-primary/20 py-2.5 text-[9px] font-bold font-mono tracking-widest text-primary uppercase hover:bg-primary/20 hover:border-primary transition-all duration-300"
             style={{ clipPath: "polygon(0 4px, 4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%)" }}
           >
             <ExternalLink className="w-3 h-3" />
-            <span>PREVIEW_LOGS</span>
+            <span>DETAILS</span>
           </Link>
+          <a 
+            href={project.githubUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-2 bg-white/5 border border-white/10 py-2.5 text-[9px] font-bold font-mono tracking-widest text-white uppercase hover:bg-white/10 hover:border-white/30 transition-all duration-300"
+            style={{ clipPath: "polygon(0 4px, 4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%)" }}
+          >
+            <GithubIcon className="w-3 h-3" />
+            <span>SOURCE</span>
+          </a>
         </div>
       </div>
     </GlowBorder>
