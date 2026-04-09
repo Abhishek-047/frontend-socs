@@ -85,7 +85,7 @@ export default function TeamPage() {
       <div className="absolute inset-0 dot-grid opacity-20 -z-20"></div>
       
       {/* Top Status Bar ( Cockpit element ) */}
-      <div className="absolute top-20 md:top-24 left-1/2 -translate-x-1/2 w-full max-w-7xl px-4 md:px-6 flex flex-col md:flex-row items-center justify-between z-30 gap-3 md:gap-0 mt-4 md:mt-0">
+      <div className="relative md:absolute md:top-24 left-1/2 -translate-x-1/2 w-full max-w-7xl px-4 md:px-6 flex flex-col md:flex-row items-center justify-between z-30 gap-3 md:gap-0 mt-8 md:mt-0 mb-12 md:mb-0">
         <div className="flex items-center gap-4 text-[10px] text-primary/60 tracking-[0.3em] font-jetbrains uppercase text-center md:text-left">
           <Activity className="w-3 h-3 hidden md:block" />
           <span>SOCS_COLLECTIVE_DIRECTORY</span>
@@ -98,9 +98,9 @@ export default function TeamPage() {
 
       <div className="max-w-7xl mx-auto px-4 z-10 relative">
         {/* Header Section */}
-        <div className="mb-16 flex flex-col md:flex-row justify-between items-end gap-10">
-          <div>
-            <h1 className="text-6xl md:text-8xl font-bold font-grotesk text-white tracking-tighter mb-4">
+        <div className="mb-10 md:mb-16 flex flex-col lg:flex-row justify-between items-start lg:items-end gap-10">
+          <div className="w-full">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold font-grotesk text-white tracking-tighter mb-4 break-words leading-tight flex flex-wrap items-center">
               <GlitchText text="THE" as="span" intensity="high" />
               <span className="text-gray-600">_</span>
               <GlitchText text="COLLECTIVE" as="span" intensity="high" />
