@@ -2,7 +2,8 @@ import Link from "next/link";
 import { Project } from "../../constants/projects";
 import { Badge } from "../ui/Badge";
 import { GlowBorder } from "../ui/GlowBorder";
-import { GithubIcon, ExternalLink } from "lucide-react";
+import { GithubIcon } from "../ui/Icons";
+import { ExternalLink } from "lucide-react";
 
 export function ProjectCard({ project }: { project: Project }) {
   return (
