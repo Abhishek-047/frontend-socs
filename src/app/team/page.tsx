@@ -72,11 +72,13 @@ import { GlitchText } from "../../components/ui/GlitchText";
 import { NetworkGraph } from "../../components/ui/NetworkGraph";
 import { EncryptedText } from "../../components/ui/EncryptedText";
 import { HoneypotLink } from "../../components/ui/HoneypotLink";
+import { AddEntityModal } from "../../components/modals/AddEntityModal";
 import { LayoutGrid, Network } from "lucide-react";
 
 export default function TeamPage() {
   const [filter, setFilter] = useState("ALL_NODES");
   const [viewMode, setViewMode] = useState<"GRID_VIEW" | "NETWORK_VIEW">("GRID_VIEW");
+  const [isModalOpen, setIsModalOpen] = useState(false);
   
   const filteredMembers = teamMembers.filter(m => {
     if (filter === "ALL_NODES") return true;
@@ -87,6 +89,11 @@ export default function TeamPage() {
 
   return (
     <PageWrapper className="pt-24 pb-32">
+      <AddEntityModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        entityType="NODE" 
+      />
       <div className="absolute inset-0 dot-grid opacity-20 -z-20"></div>
       
       {/* Top Status Bar ( Cockpit element ) */}
@@ -165,6 +172,7 @@ export default function TeamPage() {
               </div>
 
               <button 
+                onClick={() => setIsModalOpen(true)}
                 className="flex items-center gap-2 bg-primary/10 border border-primary/20 px-4 py-2 text-[10px] font-bold tracking-[0.2em] text-primary hover:bg-primary hover:text-black transition-all duration-300 group"
                 style={{ clipPath: "polygon(0 8px, 8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)" }}
               >

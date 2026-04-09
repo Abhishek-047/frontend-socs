@@ -1,8 +1,9 @@
 "use client";
-import React from 'react';
+import React, { useState } from 'react';
 import { PageWrapper } from "@/components/layout/PageWrapper";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { GlitchText } from "@/components/ui/GlitchText";
+import { AddEntityModal } from "@/components/modals/AddEntityModal";
 import { Camera, Lock } from "lucide-react";
 
 const GALLERY_IMAGES = [
@@ -15,8 +16,16 @@ const GALLERY_IMAGES = [
 ];
 
 export default function GalleryPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <PageWrapper>
+      <AddEntityModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        entityType="VISUAL" 
+      />
+      
       <SectionHeader 
         title="DECRYPTED_VISUALS" 
         subtitle="A visual log of the society's physical footprint and core node members." 
@@ -28,6 +37,7 @@ export default function GalleryPage() {
           <span>LENS_STATUS: ONLINE // SCANNING...</span>
         </div>
         <button 
+          onClick={() => setIsModalOpen(true)}
           className="flex items-center gap-2 bg-primary/10 border border-primary/40 px-4 py-2 text-[10px] font-bold font-mono tracking-[0.2em] text-primary hover:bg-primary hover:text-black transition-all duration-300 group shrink-0"
           style={{ clipPath: "polygon(0 8px, 8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)" }}
         >

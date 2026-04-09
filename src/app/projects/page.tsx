@@ -4,23 +4,25 @@ import React, { useEffect, useRef, useState } from "react";
 import { PageWrapper } from "../../components/layout/PageWrapper";
 import { SectionHeader } from "../../components/ui/SectionHeader";
 import { ProjectCard } from "../../components/cards/ProjectCard";
+import { AddEntityModal } from "../../components/modals/AddEntityModal";
 import { projects, ProjectTag } from "../../constants/projects";
 import { staggerCardsOnScroll } from "../../lib/animations";
 
 export default function ProjectsPage() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [filter, setFilter] = useState<ProjectTag | "All">("All");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const tags: (ProjectTag | "All")[] = [
     "All", "Web Security", "OSINT", "Reverse Engineering", "AI Security"
   ];
-
+  
+  // existing logic...
   const filteredProjects = projects.filter(p => filter === "All" || p.tags.includes(filter as ProjectTag));
 
   useEffect(() => {
     // Re-trigger animation when filter changes
     if (containerRef.current) {
-      // Small delay to let React render the elements first
       setTimeout(() => {
         if (containerRef.current) {
           staggerCardsOnScroll(containerRef.current);
@@ -31,6 +33,12 @@ export default function ProjectsPage() {
 
   return (
     <PageWrapper>
+      <AddEntityModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        entityType="PROJECT" 
+      />
+
       <div className="pt-10 pb-20">
         <SectionHeader 
           title="Project Database" 
@@ -60,6 +68,7 @@ export default function ProjectsPage() {
           </div>
           
           <button 
+            onClick={() => setIsModalOpen(true)}
             className="flex items-center gap-2 bg-primary/10 border border-primary/40 px-4 py-2 text-[10px] font-bold font-mono tracking-[0.2em] text-primary hover:bg-primary hover:text-black transition-all duration-300 group ml-auto"
             style={{ clipPath: "polygon(0 8px, 8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)" }}
           >

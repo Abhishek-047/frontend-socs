@@ -1,19 +1,19 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { PageWrapper } from "../../components/layout/PageWrapper";
 import { SectionHeader } from "../../components/ui/SectionHeader";
 import { ResourceCard } from "../../components/cards/ResourceCard";
+import { AddEntityModal } from "../../components/modals/AddEntityModal";
 import { resources } from "../../constants/resources";
 import { staggerCardsOnScroll } from "../../lib/animations";
 
 export default function ResourcesPage() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     if (containerRef.current) {
-      // Setup animation for all sections at once or separate depending on complexity.
-      // We will do a generic stagger for all cards.
       staggerCardsOnScroll(containerRef.current);
     }
   }, []);
@@ -27,6 +27,12 @@ export default function ResourcesPage() {
 
   return (
     <PageWrapper>
+      <AddEntityModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        entityType="RESOURCE" 
+      />
+
       <div className="pt-10 pb-20">
         <SectionHeader 
           title="Data Vault" 
@@ -39,6 +45,7 @@ export default function ResourcesPage() {
             <span>ARCHIVE_STATUS: SYNCHRONIZED</span>
           </div>
           <button 
+            onClick={() => setIsModalOpen(true)}
             className="flex items-center gap-2 bg-primary/10 border border-primary/40 px-4 py-2 text-[10px] font-bold font-mono tracking-[0.2em] text-primary hover:bg-primary hover:text-black transition-all duration-300 group"
             style={{ clipPath: "polygon(0 8px, 8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)" }}
           >

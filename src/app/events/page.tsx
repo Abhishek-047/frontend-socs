@@ -1,15 +1,17 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { PageWrapper } from "../../components/layout/PageWrapper";
 import { SectionHeader } from "../../components/ui/SectionHeader";
 import { EventCard } from "../../components/cards/EventCard";
+import { AddEntityModal } from "../../components/modals/AddEntityModal";
 import { events } from "../../constants/events";
 import { staggerCardsOnScroll } from "../../lib/animations";
 
 export default function EventsPage() {
   const upcomingRef = useRef<HTMLDivElement>(null);
   const pastRef = useRef<HTMLDivElement>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const upcomingEvents = events.filter(e => e.status === "upcoming").sort((a,b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   const pastEvents = events.filter(e => e.status === "past").sort((a,b) => new Date(b.date).getTime() - new Date(a.date).getTime());
@@ -21,6 +23,12 @@ export default function EventsPage() {
 
   return (
     <PageWrapper>
+      <AddEntityModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        entityType="EVENT" 
+      />
+
       <div className="pt-10 pb-20">
         <SectionHeader 
           title="Event Calendar" 
@@ -33,6 +41,7 @@ export default function EventsPage() {
             <span>CALENDAR_STATUS: ACTIVE</span>
           </div>
           <button 
+            onClick={() => setIsModalOpen(true)}
             className="flex items-center gap-2 bg-primary/10 border border-primary/40 px-4 py-2 text-[10px] font-bold font-mono tracking-[0.2em] text-primary hover:bg-primary hover:text-black transition-all duration-300 group"
             style={{ clipPath: "polygon(0 8px, 8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)" }}
           >
