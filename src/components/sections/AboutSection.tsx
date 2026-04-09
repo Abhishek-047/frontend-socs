@@ -26,7 +26,6 @@ export function AboutSection() {
         <div className="relative z-10 flex flex-col md:flex-row gap-10 items-start">
           <div className="flex-1 space-y-6">
             <div className="flex items-center gap-3 text-[10px] text-primary/60 tracking-[0.4em] font-bold uppercase mb-4">
-              <div className="w-4 h-1 bg-primary"></div>
               <span>Operational_Directive</span>
             </div>
             

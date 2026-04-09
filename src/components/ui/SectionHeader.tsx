@@ -17,8 +17,6 @@ export function SectionHeader({ title, subtitle, className = "" }: SectionHeader
           &gt;_
         </span>
         <GlitchText text={title} className="text-white" />
-        {/* Glow underline */}
-        <span className="absolute -bottom-2 left-0 w-1/3 h-[2px] bg-primary shadow-[0_0_10px_#C8FF00]"></span>
       </h2>
       {subtitle && (
         <p className="mt-4 text-gray-400 font-jetbrains text-sm md:text-base max-w-2xl border-l-2 border-primary/30 pl-4">

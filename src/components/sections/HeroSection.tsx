@@ -59,7 +59,7 @@ export function HeroSection() {
       <div className="absolute inset-0 dot-grid opacity-20 -z-20" />
       <div className="absolute inset-0 motherboard-lines opacity-10 -z-20" />
 
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-8 xl:gap-12 items-center z-10 w-full">
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-8 xl:gap-12 items-start z-10 w-full">
 
         {/* ── LEFT: Text content ── */}
         <div className="text-left w-full min-w-0">

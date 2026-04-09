@@ -59,6 +59,7 @@ export function Navbar() {
     { name: "Projects",  href: "/projects",   code: "03" },
     { name: "Events",    href: "/events",     code: "04" },
     { name: "Resources", href: "/resources",  code: "05" },
+    { name: "Gallery",   href: "/gallery",    code: "06" },
   ];
 
   return (
