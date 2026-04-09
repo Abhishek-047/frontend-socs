@@ -369,6 +369,46 @@ export function Terminal() {
           break;
         }
 
+        case "protocol": {
+          const action = rest[0]?.toLowerCase();
+          const flag = rest[1]?.toLowerCase();
+          if (action === "enable" && (flag === "--deepweb" || flag === "deepweb")) {
+            newHistory.push({ type: "system", text: "INITIATING DEEP WEB KERNEL OVERRIDE..." });
+            newHistory.push({ type: "system", text: "WARNING: DARK NETWORK ENGAGED." });
+            window.dispatchEvent(new Event("deepweb-engage"));
+          } else if (action === "disable" && (flag === "--deepweb" || flag === "deepweb")) {
+            newHistory.push({ type: "system", text: "TERMINATING DARK NETWORK..." });
+            window.dispatchEvent(new Event("deepweb-disengage"));
+          } else {
+            newHistory.push({ type: "error", text: "Unknown protocol signature." });
+          }
+          break;
+        }
+
+        case "execute":
+        case "ransomware": {
+          const arg = rest[0]?.toLowerCase();
+          if (cmd === "ransomware" || arg === "ransomware") {
+               newHistory.push({ type: "error", text: "EXECUTING RANSOMWARE PAYLOAD..." });
+               newHistory.push({ type: "error", text: "YOUR FILES ARE NOW ENCRYPTED." });
+               window.dispatchEvent(new Event("ransomware-engage")); // Hook to trigger a red modal globally
+          } else {
+               newHistory.push({ type: "error", text: "command execution failed." });
+          }
+          break;
+        }
+        
+        case "sudo": {
+           const sub = rest.join(" ");
+           if (sub === "restore --force") {
+              newHistory.push({ type: "system", text: "SYS_RESTORE: MALWARE TERMINATED." });
+              window.dispatchEvent(new Event("ransomware-disengage"));
+           } else {
+              newHistory.push({ type: "error", text: "admin privileges revoked." });
+           }
+           break;
+        }
+
         default: {
           newHistory.push({
             type: "error",

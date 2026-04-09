@@ -70,6 +70,8 @@ function CollectiveCard({ member, delay }: { member: TeamMember, delay: number }
 
 import { GlitchText } from "../../components/ui/GlitchText";
 import { NetworkGraph } from "../../components/ui/NetworkGraph";
+import { EncryptedText } from "../../components/ui/EncryptedText";
+import { HoneypotLink } from "../../components/ui/HoneypotLink";
 import { LayoutGrid, Network } from "lucide-react";
 
 export default function TeamPage() {
@@ -110,7 +112,11 @@ export default function TeamPage() {
             </h1>
             <div className="flex items-center gap-3 text-[10px] text-primary/60 font-jetbrains tracking-[0.3em] uppercase">
               <Globe className="w-3 h-3 text-primary animate-pulse" />
-              <span>NODE_NETWORK_DIRECTORY_v3.0.4</span>
+              <span><EncryptedText>NODE_NETWORK_DIRECTORY_v3.0.4</EncryptedText></span>
+            </div>
+            
+            <div className="mt-6">
+                <HoneypotLink label="ACCESS_DATABANK_NODE" />
             </div>
           </div>
 

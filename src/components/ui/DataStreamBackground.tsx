@@ -3,11 +3,13 @@
 import React, { useRef, useEffect } from "react";
 import { useTheme } from "@/context/ThemeContext";
 import gsap from "gsap";
+import { useDeepWeb } from "@/context/DeepWebContext";
 
 export function DataStreamBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const { theme } = useTheme();
+  const { isDeepWeb } = useDeepWeb();
 
   useEffect(() => {
     if (wrapperRef.current) {
@@ -32,9 +34,15 @@ export function DataStreamBackground() {
 
     // Characters array to mimic cyber/hex stream
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$+-*/=%#&_(),.;:?!\\|{}<>[]^~アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレゲゼデベペオォコソトノホモヨョロゴゾドボポヴッン".split("");
+    const deepWebLeaks = [
+      "admin@socs.io:a3c89ff", "CC:4512-****-2311", "0x34BF12A", 
+      "sudo rm -rf /", "root:x:0:0:root", "ETH_WALLET_DUMP", 
+      "kernel_panic_0x000", "DB_LEAK_SUCCESS", "SYSLOG_WIPE_OK",
+      "ip_address=192.168.1.44", "RSA_PRIV_KEY_B64"
+    ];
     
     // Matrix configuration
-    const fontSize = 16;
+    const fontSize = isDeepWeb ? 12 : 16;
     let columns = Math.floor(width / fontSize);
     let drops: number[] = [];
     
@@ -71,16 +79,24 @@ export function DataStreamBackground() {
       ctx.textAlign = "center";
       
       for (let i = 0; i < drops.length; i++) {
-        const text = chars[Math.floor(Math.random() * chars.length)];
-        
+        const text = isDeepWeb && Math.random() > 0.9 
+             ? deepWebLeaks[Math.floor(Math.random() * deepWebLeaks.length)]
+             : chars[Math.floor(Math.random() * chars.length)];
+             
         // Occasional color glitch
         const randColor = Math.random();
-        if (randColor > 0.98) {
-             ctx.fillStyle = "#ffffff";
-        } else if (randColor > 0.95) {
-             ctx.fillStyle = theme.secondary;
+        if (isDeepWeb) {
+            if (randColor > 0.95) ctx.fillStyle = "#ff0000";
+            else if (randColor > 0.8) ctx.fillStyle = "#ff6b00";
+            else ctx.fillStyle = "rgba(255, 0, 0, 0.4)";
         } else {
-             ctx.fillStyle = theme.primary;
+            if (randColor > 0.98) {
+                 ctx.fillStyle = "#ffffff";
+            } else if (randColor > 0.95) {
+                 ctx.fillStyle = theme.secondary;
+            } else {
+                 ctx.fillStyle = theme.primary;
+            }
         }
 
         const dropX = i * fontSize + (fontSize / 2);
@@ -93,7 +109,8 @@ export function DataStreamBackground() {
           drops[i] = 0;
         }
         
-        drops[i]++;
+        // Deep web matrix moves faster
+        drops[i] += isDeepWeb ? 1.5 : 1;
       }
     };
 
@@ -120,7 +137,7 @@ export function DataStreamBackground() {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener("resize", handleResize);
     };
-  }, [theme.primary, theme.secondary, theme.background]);
+  }, [theme.primary, theme.secondary, theme.background, isDeepWeb]);
 
   return (
     <div ref={wrapperRef} className="fixed inset-0 z-[0] pointer-events-none opacity-0 overflow-hidden">

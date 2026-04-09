@@ -20,7 +20,22 @@ export function useAudio() {
   return ctx;
 }
 
+import { useDeepWeb } from "./DeepWebContext";
+
 export function AudioProvider({ children }: { children: React.ReactNode }) {
+  const [isDeepWeb, setIsDeepWeb] = useState(false); // Can't easily use useContext here due to provider order, so we'll listen to a custom event or wrap carefully. Wait, let's just create an event listener for deep web state to decouple it.
+
+  useEffect(() => {
+     const hw = () => setIsDeepWeb(true);
+     const lw = () => setIsDeepWeb(false);
+     window.addEventListener("deepweb-engage", hw);
+     window.addEventListener("deepweb-disengage", lw);
+     return () => {
+         window.removeEventListener("deepweb-engage", hw);
+         window.removeEventListener("deepweb-disengage", lw);
+     };
+  }, []);
+
   const [isMuted, setIsMuted] = useState(true); // default muted to prevent autoplay policies
   const audioCtxRef = useRef<AudioContext | null>(null);
   const humOscRef = useRef<OscillatorNode | null>(null);
@@ -41,11 +56,22 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
 
     const osc = audioCtxRef.current.createOscillator();
     osc.type = "sine";
-    osc.frequency.setValueAtTime(55, audioCtxRef.current.currentTime); // Low hum (55Hz)
+    osc.frequency.setValueAtTime(55, audioCtxRef.current.currentTime);
     osc.connect(humGain);
     osc.start();
     humOscRef.current = osc;
   };
+
+  useEffect(() => {
+      if (humOscRef.current && audioCtxRef.current) {
+          if (isDeepWeb) {
+              // Pitch drop to eerie deep web sound
+              humOscRef.current.frequency.setTargetAtTime(35, audioCtxRef.current.currentTime, 1);
+          } else {
+              humOscRef.current.frequency.setTargetAtTime(55, audioCtxRef.current.currentTime, 1);
+          }
+      }
+  }, [isDeepWeb]);
 
   useEffect(() => {
     if (isMuted) {
@@ -58,7 +84,8 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
         audioCtxRef.current.resume();
       }
       if (humGainRef.current && audioCtxRef.current) {
-        humGainRef.current.gain.setTargetAtTime(0.04, audioCtxRef.current.currentTime, 1);
+        // Very low volume: 0.005 instead of 0.04
+        humGainRef.current.gain.setTargetAtTime(0.005, audioCtxRef.current.currentTime, 1);
       }
     }
   }, [isMuted]);
@@ -78,10 +105,11 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.type = "sine";
-      osc.frequency.setValueAtTime(600, t);
-      osc.frequency.exponentialRampToValueAtTime(1200, t + 0.05);
-      gain.gain.setValueAtTime(0.03, t);
-      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.05);
+      osc.frequency.setValueAtTime(isDeepWeb ? 300 : 600, t);
+      osc.frequency.exponentialRampToValueAtTime(isDeepWeb ? 600 : 1200, t + 0.05);
+      // Extremely low hover volume
+      gain.gain.setValueAtTime(0.002, t);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.05);
       osc.connect(gain);
       gain.connect(ctx.destination);
       osc.start(t);
@@ -104,11 +132,12 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       // Bandpass filter for that clicky sound
       const filter = ctx.createBiquadFilter();
       filter.type = "bandpass";
-      filter.frequency.setValueAtTime(4000, t);
+      filter.frequency.setValueAtTime(isDeepWeb ? 2000 : 4000, t);
       
       const gain = ctx.createGain();
-      gain.gain.setValueAtTime(0.1, t);
-      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.02);
+      // Extremely quiet typing sound
+      gain.gain.setValueAtTime(0.015, t);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.02);
 
       noise.connect(filter);
       filter.connect(gain);
@@ -123,10 +152,11 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.type = "square";
-      osc.frequency.setValueAtTime(150, t);
-      osc.frequency.exponentialRampToValueAtTime(40, t + 0.1);
-      gain.gain.setValueAtTime(0.05, t);
-      gain.gain.exponentialRampToValueAtTime(0.001, t + 0.1);
+      osc.frequency.setValueAtTime(isDeepWeb ? 80 : 150, t);
+      osc.frequency.exponentialRampToValueAtTime(isDeepWeb ? 20 : 40, t + 0.1);
+      // Extremely low click volume
+      gain.gain.setValueAtTime(0.003, t);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.1);
       osc.connect(gain);
       gain.connect(ctx.destination);
       osc.start(t);
@@ -143,7 +173,8 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       osc.frequency.linearRampToValueAtTime(400, t + 0.2);
       osc.frequency.setValueAtTime(300, t + 0.2);
       osc.frequency.linearRampToValueAtTime(400, t + 0.4);
-      gain.gain.setValueAtTime(0.05, t);
+      // Alarm volume also lowered
+      gain.gain.setValueAtTime(0.01, t);
       gain.gain.linearRampToValueAtTime(0, t + 0.4);
       osc.connect(gain);
       gain.connect(ctx.destination);
