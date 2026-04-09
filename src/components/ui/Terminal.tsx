@@ -569,8 +569,6 @@ export function Terminal() {
 
   return (
     <>
-      {toggleButton}
-
       {/* Terminal window */}
       <div
         data-terminal
