@@ -11,25 +11,32 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="md:col-span-2">
-            <Link href="/" className="inline-block font-jetbrains text-xl font-bold text-white mb-4 group">
-              <span className="text-primary mr-2">&gt;</span>
-              SOCS
-              <span className="inline-block w-2 h-5 ml-1 bg-primary animate-[blink-cursor_1s_step-end_infinite]"></span>
+            <Link href="/" className="inline-flex items-center gap-4 mb-6 group">
+              <div className="relative w-12 h-12 flex items-center justify-center overflow-hidden border border-primary/20 bg-black/40 p-1 group-hover:border-primary transition-colors duration-300"
+                style={{ clipPath: "polygon(0 8px, 8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)" }}>
+                <img src="/assets/logo.png" alt="SOCS Logo" className="w-full h-full object-contain" />
+              </div>
+              <div className="flex flex-col leading-none">
+                <span className="font-jetbrains text-2xl font-black text-white tracking-[0.1em] group-hover:text-primary transition-colors duration-200">
+                  SOCS
+                </span>
+                <span className="text-[8px] text-primary/40 tracking-[0.5em] font-mono">ENCRYPTED_SOCIETY</span>
+              </div>
             </Link>
-            <p className="text-gray-400 font-jetbrains text-sm max-w-md mb-6 leading-relaxed">
+            <p className="text-gray-400 font-jetbrains text-sm max-w-md mb-8 leading-relaxed">
               Society of Cyber Security. Uniting the elite, pushing boundaries, and securing the network. Join us and upgrade your payload.
             </p>
             <div className="flex items-center space-x-4">
-              <a href="#" className="p-2 border border-gray-700 rounded hover:border-primary hover:text-primary text-gray-400 transition-colors">
+              <a href="#" className="p-2.5 border border-gray-800 bg-white/5 rounded hover:border-primary hover:text-primary text-gray-400 transition-all">
                 <GithubIcon className="w-5 h-5" />
               </a>
-              <a href="#" className="p-2 border border-gray-700 rounded hover:border-primary hover:text-primary text-gray-400 transition-colors">
+              <a href="#" className="p-2.5 border border-gray-800 bg-white/5 rounded hover:border-primary hover:text-primary text-gray-400 transition-all">
                 <MessageSquare size={20} />
               </a>
-              <a href="#" className="p-2 border border-gray-700 rounded hover:border-primary hover:text-primary text-gray-400 transition-colors">
-                <TwitterIcon className="w-5 h-5" />
+              <a href="#" className="p-2 border border-gray-800 bg-white/5 rounded hover:border-primary grayscale hover:grayscale-0 transition-all" title="Instagram">
+                <img src="/assets/logo.png" alt="IG" className="w-5 h-5 object-contain" />
               </a>
-              <a href="#" className="p-2 border border-gray-700 rounded hover:border-primary hover:text-primary text-gray-400 transition-colors">
+              <a href="#" className="p-2.5 border border-gray-800 bg-white/5 rounded hover:border-primary hover:text-primary text-gray-400 transition-all">
                 <LinkedinIcon className="w-5 h-5" />
               </a>
             </div>

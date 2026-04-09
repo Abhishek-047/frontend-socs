@@ -54,18 +54,17 @@ export function Navbar() {
         >
           {/* ── Left: Logo ── */}
           <div className="flex items-center gap-4 shrink-0">
-            <Link href="/" className="flex items-center gap-2.5 group">
-              {/* Icon */}
-              <div className="relative w-8 h-8 flex items-center justify-center">
-                <div className="absolute inset-0 border border-primary/40 rotate-45 group-hover:border-primary transition-colors duration-300"
-                  style={{ clipPath: "polygon(0 4px,4px 0,100% 0,100% calc(100% - 4px),calc(100% - 4px) 100%,0 100%)" }} />
-                <Shield className="w-4 h-4 text-primary relative z-10" />
+            <Link href="/" className="flex items-center gap-3 group">
+              {/* Logo Image */}
+              <div className="relative w-10 h-10 flex items-center justify-center overflow-hidden border border-primary/20 bg-black/40 p-1 group-hover:border-primary transition-colors duration-300"
+                style={{ clipPath: "polygon(0 8px, 8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)" }}>
+                <img src="/assets/logo.png" alt="SOCS Logo" className="w-full h-full object-contain" />
               </div>
               <div className="flex flex-col leading-none">
-                <span className="font-jetbrains text-base font-extrabold text-white tracking-[0.2em] group-hover:text-primary transition-colors duration-200">
+                <span className="font-jetbrains text-lg font-black text-white tracking-[0.1em] group-hover:text-primary transition-colors duration-200">
                   SOCS
                 </span>
-                <span className="text-[7px] text-primary/40 tracking-[0.4em] font-mono">CYBER_SEC</span>
+                <span className="text-[6px] text-primary/40 tracking-[0.5em] font-mono">EST_2024</span>
               </div>
               <span className="inline-block w-[2px] h-4 bg-primary animate-[blink-cursor_1s_step-end_infinite]" />
             </Link>
