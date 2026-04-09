@@ -85,9 +85,9 @@ export default function TeamPage() {
       <div className="absolute inset-0 dot-grid opacity-20 -z-20"></div>
       
       {/* Top Status Bar ( Cockpit element ) */}
-      <div className="absolute top-24 left-1/2 -translate-x-1/2 w-full max-w-7xl px-6 flex items-center justify-between z-30">
-        <div className="flex items-center gap-4 text-[10px] text-primary/60 tracking-[0.3em] font-jetbrains uppercase">
-          <Activity className="w-3 h-3" />
+      <div className="absolute top-20 md:top-24 left-1/2 -translate-x-1/2 w-full max-w-7xl px-4 md:px-6 flex flex-col md:flex-row items-center justify-between z-30 gap-3 md:gap-0 mt-4 md:mt-0">
+        <div className="flex items-center gap-4 text-[10px] text-primary/60 tracking-[0.3em] font-jetbrains uppercase text-center md:text-left">
+          <Activity className="w-3 h-3 hidden md:block" />
           <span>SOCS_COLLECTIVE_DIRECTORY</span>
         </div>
         <div className="flex items-center gap-3 px-3 py-1 bg-primary/5 border border-primary/20 rounded-sm">
@@ -111,8 +111,8 @@ export default function TeamPage() {
             </div>
           </div>
 
-          <div className="w-full md:w-auto flex flex-col gap-4 items-end">
-            <div className="relative w-full md:w-[400px]">
+          <div className="w-full lg:w-auto flex flex-col gap-4 items-start lg:items-end mt-8 md:mt-0">
+            <div className="relative w-full lg:w-[400px]">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
               <input 
                  type="text" 
@@ -121,12 +121,12 @@ export default function TeamPage() {
               />
             </div>
             
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2 w-full lg:w-auto">
               {["ALL_NODES", "RED_TEAM", "BLUE_TEAM"].map((btn) => (
                 <button 
                   key={btn}
                   onClick={() => setFilter(btn)}
-                  className={`px-6 py-2 text-[10px] font-bold tracking-widest uppercase border transition-all ${
+                  className={`px-4 md:px-6 py-2 text-[10px] font-bold tracking-widest uppercase border transition-all flex-1 lg:flex-none ${
                     filter === btn 
                     ? "bg-primary/10 border-primary text-primary shadow-[0_0_10px_rgba(200,255,0,0.15)]" 
                     : "bg-white/5 border-white/10 text-gray-500 hover:text-white hover:bg-white/10"
@@ -147,12 +147,12 @@ export default function TeamPage() {
         </div>
 
         {/* Floating Footer Detail */}
-        <div className="mt-20 pt-8 border-t border-white/5 flex items-center justify-between text-[8px] text-gray-700 font-mono tracking-widest uppercase">
-          <div className="flex gap-4">
+        <div className="mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4 text-[8px] text-gray-700 font-mono tracking-widest uppercase text-center md:text-left">
+          <div className="flex flex-col md:flex-row gap-2 md:gap-4">
             <span className="text-primary/40 leading-none">● {filteredMembers.length} ACTIVE OPERATORS</span>
             <span className="leading-none">SYST_LOG: DIRECTORY_LOAD_OK</span>
           </div>
-          <div className="leading-none text-right">
+          <div className="leading-none text-center md:text-right">
             © 2024 SOCS // ENCRYPTED_ACCESS_ONLY
           </div>
         </div>
