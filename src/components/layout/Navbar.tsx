@@ -65,19 +65,28 @@ export function Navbar() {
     <>
       {/* ── Floating Pill Navbar ── */}
       <nav
-        className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-out ${
+        className={`fixed z-50 transition-all duration-500 ease-out ${
           isVisible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
         }`}
+        style={{
+          top: "12px",
+          left: "50%",
+          transform: `translateX(-50%) ${isVisible ? "translateY(0)" : "translateY(-110%)"}`,
+          width: "calc(100% - 80px)",
+          maxWidth: "1400px",
+        }}
       >
         <div
-          className={`relative flex items-center justify-between px-5 md:px-10 h-[58px] transition-all duration-300 ${
+          className={`relative flex items-center justify-between px-8 h-[62px] transition-all duration-300 ${
             scrolled
-              ? "bg-black/90 border-b border-primary/30 shadow-[0_4px_30px_rgba(200,255,0,0.05)]"
-              : "bg-black/40 border-b border-primary/10"
+              ? "bg-black/85 border-primary/30 shadow-[0_0_40px_rgba(200,255,0,0.08)]"
+              : "bg-black/60 border-primary/15"
           }`}
           style={{
             backdropFilter: "blur(24px)",
             WebkitBackdropFilter: "blur(24px)",
+            border: "1px solid",
+            clipPath: "polygon(0 12px, 12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)",
           }}
         >
           {/* Scan line on top edge */}

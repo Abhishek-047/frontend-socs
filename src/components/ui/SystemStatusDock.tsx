@@ -10,19 +10,6 @@ export function SystemStatusDock() {
 
   return (
     <div className="fixed bottom-6 right-6 z-[100] flex flex-col items-end gap-3 pointer-events-none">
-      {/* Status Bar */}
-      <div className="flex items-center gap-4 bg-black/60 backdrop-blur-md border border-white/10 px-4 py-1.5 rounded-sm pointer-events-auto shadow-2xl">
-        <div className="flex items-center gap-2 text-[9px] font-mono tracking-widest text-primary/70">
-          <Activity className="w-3 h-3 animate-pulse text-primary" />
-          <span>SYSTEM_HEALTH: NOMINAL</span>
-        </div>
-        <div className="h-3 w-[1px] bg-white/10" />
-        <div className="flex items-center gap-2 text-[9px] font-mono tracking-widest text-yellow-500/70">
-          <div className="w-1.5 h-1.5 bg-yellow-500 rounded-full animate-pulse" />
-          <span>THREAT: MED</span>
-        </div>
-      </div>
-
       <div className="flex items-center gap-2 pointer-events-auto">
         {/* Deep Web toggle */}
         <button 

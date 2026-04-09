@@ -54,7 +54,7 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section className="relative pt-28 pb-16 min-h-[95vh] flex flex-col justify-center overflow-hidden">
+    <section className="relative pt-12 pb-16 min-h-[90vh] flex flex-col justify-center overflow-hidden">
       {/* Background grids */}
       <div className="absolute inset-0 dot-grid opacity-20 -z-20" />
       <div className="absolute inset-0 motherboard-lines opacity-10 -z-20" />
