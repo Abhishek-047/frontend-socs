@@ -22,10 +22,19 @@ export default function EventsPage() {
   return (
     <PageWrapper>
       <div className="pt-10 pb-20">
-        <SectionHeader 
-          title="Event Calendar" 
-          subtitle="Workshops, CTFs, and tech talks to upgrade your skills."
-        />
+        <div className="flex justify-between items-start">
+          <SectionHeader 
+            title="Event Calendar" 
+            subtitle="Workshops, CTFs, and tech talks to upgrade your skills."
+          />
+          <button 
+            className="flex items-center gap-2 bg-primary/10 border border-primary/40 px-4 py-2 text-[10px] font-bold font-mono tracking-[0.2em] text-primary hover:bg-primary hover:text-black transition-all duration-300 group mt-4"
+            style={{ clipPath: "polygon(0 8px, 8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)" }}
+          >
+            <span className="text-lg group-hover:rotate-90 transition-transform">+</span>
+            <span>INIT_EVENT</span>
+          </button>
+        </div>
         
         <div className="space-y-20 mt-16">
           {/* Upcoming Section */}

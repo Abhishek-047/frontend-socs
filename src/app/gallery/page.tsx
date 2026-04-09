@@ -17,11 +17,18 @@ const GALLERY_IMAGES = [
 export default function GalleryPage() {
   return (
     <PageWrapper>
-      <div className="mb-12">
+      <div className="mb-12 flex justify-between items-start">
         <SectionHeader 
           title="DECRYPTED_VISUALS" 
           subtitle="A visual log of the society's physical footprint and core node members." 
         />
+        <button 
+          className="flex items-center gap-2 bg-primary/10 border border-primary/40 px-4 py-2 text-[10px] font-bold font-mono tracking-[0.2em] text-primary hover:bg-primary hover:text-black transition-all duration-300 group mt-4 shrink-0"
+          style={{ clipPath: "polygon(0 8px, 8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)" }}
+        >
+          <span className="text-lg group-hover:rotate-90 transition-transform">+</span>
+          <span>ADD_VISUAL</span>
+        </button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
