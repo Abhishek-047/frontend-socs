@@ -31,14 +31,14 @@ export default function GalleryPage() {
         subtitle="A visual log of the society's physical footprint and core node members." 
       />
       
-      <div className="flex items-center justify-between border-b border-white/5 pb-4 mb-10 mt-8">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between border-b border-white/5 pb-4 mb-8 mt-6 gap-6">
         <div className="flex items-center gap-3 text-[10px] text-gray-500 font-mono tracking-widest uppercase">
-          <Camera className="w-3 h-3 text-primary/60" />
-          <span>LENS_STATUS: ONLINE // SCANNING...</span>
+          <Camera className="w-4 h-4 text-primary/60 shrink-0" />
+          <span className="leading-tight">LENS_STATUS: ONLINE // SCANNING...</span>
         </div>
         <button 
           onClick={() => setIsModalOpen(true)}
-          className="flex items-center gap-2 bg-primary/10 border border-primary/40 px-4 py-2 text-[10px] font-bold font-mono tracking-[0.2em] text-primary hover:bg-primary hover:text-black transition-all duration-300 group shrink-0"
+          className="flex items-center justify-center gap-2 bg-primary/10 border border-primary/40 px-6 py-3 text-[10px] font-bold font-mono tracking-[0.2em] text-primary hover:bg-primary hover:text-black transition-all duration-300 group w-full md:w-auto"
           style={{ clipPath: "polygon(0 8px, 8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)" }}
         >
           <span className="text-lg group-hover:rotate-90 transition-transform">+</span>
@@ -46,7 +46,7 @@ export default function GalleryPage() {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
         {GALLERY_IMAGES.map((img) => (
           <div key={img.id} className="group relative dashboard-card overflow-hidden">
             {/* Image Container */}
