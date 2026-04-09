@@ -565,22 +565,7 @@ export function Terminal() {
     );
   };
 
-  // ── Toggle button (always visible) ────────────────────────────────────
-  const toggleButton = (
-    <button
-      onClick={() => {
-        setIsOpen((p) => !p);
-        setIsMinimized(false);
-      }}
-      data-terminal
-      className="fixed bottom-5 right-5 z-[100000] border border-primary/50 bg-neutral/90 backdrop-blur-md text-primary font-mono text-sm px-3 py-2 hover:bg-primary/10 hover:border-primary hover:shadow-[0_0_12px_rgba(200,255,0,0.3)] transition-all duration-200"
-      title="Toggle Terminal (Ctrl+`)"
-    >
-      {isOpen ? "✕ TERM" : ">_ TERM"}
-    </button>
-  );
-
-  if (!isOpen) return toggleButton;
+  if (!isOpen) return null;
 
   return (
     <>

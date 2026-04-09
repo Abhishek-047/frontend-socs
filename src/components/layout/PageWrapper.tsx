@@ -14,7 +14,7 @@ export function PageWrapper({ children, className = "" }: PageWrapperProps) {
   }, []);
 
   return (
-    <div className={`relative min-h-screen pt-20 pb-12 w-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 ${className}`}>
+    <div className={`relative min-h-screen pt-20 pb-12 w-full max-w-[1600px] mx-auto px-4 sm:px-8 lg:px-16 ${className}`}>
       {/* Background layer */}
       <div className="fixed inset-0 pointer-events-none -z-20 grid-background opacity-20"></div>
       <div className="fixed inset-0 pointer-events-none -z-20 grid-background-dots opacity-10"></div>

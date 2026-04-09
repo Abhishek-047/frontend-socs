@@ -10,6 +10,7 @@ import { AudioProvider } from "@/context/AudioContext";
 import { CRTOverlay } from "@/components/ui/CRTOverlay";
 import { DeepWebProvider } from "@/context/DeepWebContext";
 import { DeepWebFeatures } from "@/components/ui/DeepWebFeatures";
+import { SystemStatusDock } from "@/components/ui/SystemStatusDock";
 
 export function ClientProviders({ children }: { children: React.ReactNode }) {
   return (
@@ -26,6 +27,7 @@ export function ClientProviders({ children }: { children: React.ReactNode }) {
         </SmoothScroll>
         <CRTOverlay />
         <DeepWebFeatures />
+        <SystemStatusDock />
       </ThemeProvider>
     </AudioProvider>
   </DeepWebProvider>

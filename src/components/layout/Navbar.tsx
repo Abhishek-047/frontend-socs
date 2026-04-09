@@ -5,31 +5,15 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NeonButton } from "../ui/NeonButton";
 import { MobileMenu } from "./MobileMenu";
-import { Menu, X, Shield, Wifi, Terminal, Volume2, VolumeX, Eye, EyeOff } from "lucide-react";
-import { useAudio } from "@/context/AudioContext";
-import { useDeepWeb } from "@/context/DeepWebContext";
+import { Menu, X, Shield } from "lucide-react";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
-  const { isMuted, toggleMute } = useAudio();
-  const { isDeepWeb, triggerDeepWeb, disableDeepWeb } = useDeepWeb();
   const [isVisible, setIsVisible] = useState(true);
   const [scrolled, setScrolled] = useState(false);
-  const [time, setTime] = useState("");
   const lastPosRef = useRef(0);
   const ticking = useRef(false);
-
-  // Live clock
-  useEffect(() => {
-    const tick = () => {
-      const now = new Date();
-      setTime(now.toTimeString().slice(0, 8));
-    };
-    tick();
-    const id = setInterval(tick, 1000);
-    return () => clearInterval(id);
-  }, []);
 
   useEffect(() => {
     setIsVisible(true);
@@ -81,28 +65,19 @@ export function Navbar() {
     <>
       {/* ── Floating Pill Navbar ── */}
       <nav
-        className={`fixed z-50 transition-all duration-500 ease-out ${
+        className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-out ${
           isVisible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
         }`}
-        style={{
-          top: "12px",
-          left: "50%",
-          transform: `translateX(-50%) ${isVisible ? "translateY(0)" : "translateY(-110%)"}`,
-          width: "calc(100% - 40px)",
-          maxWidth: "1160px",
-        }}
       >
         <div
-          className={`relative flex items-center justify-between px-5 h-[58px] transition-all duration-300 ${
+          className={`relative flex items-center justify-between px-5 md:px-10 h-[58px] transition-all duration-300 ${
             scrolled
-              ? "bg-black/85 border-primary/30 shadow-[0_0_40px_rgba(200,255,0,0.08)]"
-              : "bg-black/60 border-primary/15"
+              ? "bg-black/90 border-b border-primary/30 shadow-[0_4px_30px_rgba(200,255,0,0.05)]"
+              : "bg-black/40 border-b border-primary/10"
           }`}
           style={{
             backdropFilter: "blur(24px)",
             WebkitBackdropFilter: "blur(24px)",
-            border: "1px solid",
-            clipPath: "polygon(0 12px, 12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)",
           }}
         >
           {/* Scan line on top edge */}
@@ -125,12 +100,6 @@ export function Navbar() {
               </div>
               <span className="inline-block w-[2px] h-4 bg-primary animate-[blink-cursor_1s_step-end_infinite]" />
             </Link>
-
-            {/* Live signal indicator */}
-            <div className="hidden md:flex items-center gap-1.5 text-[8px] text-gray-500 font-mono border-l border-gray-800 pl-4">
-              <Wifi className="w-2.5 h-2.5 text-green-400 animate-pulse" />
-              <span className="text-green-400">{time}</span>
-            </div>
           </div>
 
           {/* ── Center: Nav Links ── */}
@@ -170,53 +139,9 @@ export function Navbar() {
           </div>
 
           {/* ── Right: CTA + Mobile toggle ── */}
-          <div className="flex items-center gap-2 shrink-0">
-            {/* Deep Web toggle */}
-            <button 
-              onClick={isDeepWeb ? disableDeepWeb : triggerDeepWeb}
-              title={isDeepWeb ? "Disable Deep Web" : "Enable Deep Web"}
-              className={`hidden md:flex items-center justify-center p-1.5 border transition-colors uppercase ${
-                isDeepWeb 
-                ? "bg-red-900/40 border-red-500/40 text-red-500 hover:text-white" 
-                : "bg-white/5 border-white/10 text-gray-500 hover:text-white"
-              }`}
-              style={{ clipPath: "polygon(0 3px,3px 0,100% 0,100% calc(100% - 3px),calc(100% - 3px) 100%,0 100%)" }}
-            >
-              {isDeepWeb ? <EyeOff className="w-3 h-3 animate-pulse" /> : <Eye className="w-3 h-3" />}
-            </button>
-            
-            {/* Audio toggle */}
-            <button 
-              onClick={toggleMute}
-              title={isMuted ? "Unmute Audio" : "Mute Audio"}
-              className={`hidden md:flex items-center justify-center p-1.5 border transition-colors uppercase ${
-                isMuted 
-                ? "bg-white/5 border-white/10 text-gray-500 hover:text-white" 
-                : "bg-primary/5 border-primary/40 text-primary hover:bg-primary/10"
-              }`}
-              style={{ clipPath: "polygon(0 3px,3px 0,100% 0,100% calc(100% - 3px),calc(100% - 3px) 100%,0 100%)" }}
-            >
-              {isMuted ? <VolumeX className="w-3 h-3" /> : <Volume2 className="w-3 h-3 animate-pulse" />}
-            </button>
-
-            {/* Terminal toggle button */}
-            <button
-              onClick={() => window.dispatchEvent(new CustomEvent("toggle-terminal"))}
-              className="hidden lg:flex items-center gap-1.5 text-[8px] font-mono border border-primary/30 bg-primary/5 px-2 py-1 text-primary hover:bg-primary/15 hover:border-primary/60 transition-all duration-200"
-              title="Open Terminal"
-            >
-              <Terminal className="w-2.5 h-2.5" />
-              <span>TERM</span>
-            </button>
-
-            {/* Threat level badge */}
-            <div className="hidden lg:flex items-center gap-1.5 text-[8px] font-mono border border-yellow-500/30 bg-yellow-500/5 px-2 py-1 text-yellow-400">
-              <span className="w-1.5 h-1.5 bg-yellow-400 rounded-full animate-pulse" />
-              THREAT: MED
-            </div>
-
+          <div className="flex items-center gap-4 shrink-0">
             <NeonButton href="/join" variant="outline" className="hidden md:inline-flex text-xs px-5 py-2">
-              Join
+              Join Network
             </NeonButton>
 
             {/* Mobile burger */}
