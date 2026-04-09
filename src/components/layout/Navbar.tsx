@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NeonButton } from "../ui/NeonButton";
 import { MobileMenu } from "./MobileMenu";
-import { Menu, X, Shield } from "lucide-react";
+import { Menu, X, Shield, MoreVertical } from "lucide-react";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -53,24 +53,23 @@ export function Navbar() {
           }}
         >
           {/* ── Left: Logo ── */}
-          <div className="flex items-center gap-2 md:gap-4 shrink-0">
-            <Link href="/" className="flex items-center gap-2 md:gap-3 group">
-              {/* Logo Image */}
-              <div className="relative w-8 h-8 md:w-10 md:h-10 flex items-center justify-center overflow-hidden border border-primary/20 bg-black/40 p-1 group-hover:border-primary transition-colors duration-300"
-                style={{ clipPath: "polygon(0 8px, 8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)" }}>
+          <div className="flex items-center shrink-0">
+            <Link href="/" className="flex items-center gap-2 group">
+              <div className="relative w-8 h-8 flex items-center justify-center overflow-hidden border border-primary/20 bg-black/40 p-1 group-hover:border-primary transition-colors duration-300"
+                style={{ clipPath: "polygon(0 6px, 6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%)" }}>
                 <img src="/assets/logo.png" alt="SOCS Logo" className="w-full h-full object-contain" />
               </div>
               <div className="flex flex-col leading-none">
-                <span className="font-jetbrains text-sm md:text-lg font-black text-white tracking-[0.1em] group-hover:text-primary transition-colors duration-200">
+                <span className="font-jetbrains text-base font-black text-white tracking-[0.1em] group-hover:text-primary transition-colors duration-200">
                   SOCS
                 </span>
-                <span className="text-[5px] md:text-[6px] text-primary/40 tracking-[0.5em] font-mono">EST_2024</span>
+                <span className="text-[5px] text-primary/40 tracking-[0.5em] font-mono">EST_2024</span>
               </div>
             </Link>
           </div>
 
-          {/* ── Center: Nav Links ── */}
-          <div className="hidden md:flex items-center gap-1">
+          {/* ── Center: Nav Links (Desktop) ── */}
+          <div className="hidden md:flex flex-1 justify-center items-center gap-1">
             {links.map((link) => {
               const isActive = pathname === link.href;
               return (
@@ -81,7 +80,6 @@ export function Navbar() {
                     isActive ? "text-primary" : "text-gray-500 hover:text-white"
                   }`}
                 >
-                  {/* Active indicator */}
                   {isActive && (
                     <>
                       <span className="absolute inset-0 bg-primary/10" style={{
@@ -90,12 +88,6 @@ export function Navbar() {
                       <span className="absolute bottom-0 left-0 right-0 h-px bg-primary" />
                     </>
                   )}
-
-                  {/* Hover bg */}
-                  <span className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors duration-200" style={{
-                    clipPath: "polygon(0 4px,4px 0,100% 0,100% calc(100% - 4px),calc(100% - 4px) 100%,0 100%)"
-                  }} />
-
                   <span className="relative z-10 flex items-center gap-1.5">
                     <span className="text-primary/30 text-[8px] font-mono hidden lg:inline">{link.code}</span>
                     {link.name}
@@ -105,27 +97,21 @@ export function Navbar() {
             })}
           </div>
 
-          {/* ── Right: CTA + Mobile toggle ── */}
-          <div className="flex items-center gap-2 md:gap-4 shrink-0">
-            <Link 
-              href="/join"
-              className="px-3 py-1.5 md:hidden text-[9px] font-bold text-primary font-mono tracking-widest border border-primary/20 hover:bg-primary/10 transition-colors uppercase whitespace-nowrap"
-            >
-              Join Node
-            </Link>
-
+          {/* ── Right: CTA (Desktop) + Mobile Menu Toggle ── */}
+          <div className="flex items-center justify-end shrink-0 gap-4">
             <NeonButton href="/join" variant="outline" className="hidden md:inline-flex text-xs px-5 py-2">
               Join Network
             </NeonButton>
 
-            {/* Mobile burger */}
+            {/* Mobile menu toggle (3 dots as requested) */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden text-gray-300 hover:text-primary transition-colors p-1"
+              className="md:hidden text-gray-300 hover:text-primary transition-colors p-2 -mr-2"
+              aria-label="Toggle menu"
             >
               {isOpen
                 ? <X className="h-6 w-6 text-primary" />
-                : <Menu className="h-6 w-6" />
+                : <MoreVertical className="h-6 w-6" />
               }
             </button>
           </div>
