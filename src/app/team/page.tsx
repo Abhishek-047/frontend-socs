@@ -113,7 +113,6 @@ export default function TeamPage() {
           <div className="w-full">
             <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold font-grotesk text-white tracking-tighter mb-4 break-words leading-tight flex flex-wrap items-center">
               <GlitchText text="THE" as="span" intensity="high" />
-              <span className="text-gray-600">_</span>
               <GlitchText text="Sentinels" as="span" intensity="high" />
             </h1>
             <div className="space-y-1">
