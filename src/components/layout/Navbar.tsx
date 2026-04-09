@@ -16,42 +16,13 @@ export function Navbar() {
   const ticking = useRef(false);
 
   useEffect(() => {
-    setIsVisible(true);
-    const syncScrollPos = () => {
-      lastPosRef.current = window.scrollY;
-      setIsVisible(true);
-    };
-    const reSyncTimer = setTimeout(syncScrollPos, 100);
-
-    const updateNavbar = () => {
-      const currentPos = window.scrollY;
-      setScrolled(currentPos > 20);
-      if (currentPos < 50) {
-        setIsVisible(true);
-        lastPosRef.current = currentPos;
-      } else {
-        const diff = currentPos - lastPosRef.current;
-        if (Math.abs(diff) > 15) {
-          setIsVisible(diff <= 0);
-          lastPosRef.current = currentPos;
-        }
-      }
-      ticking.current = false;
-    };
-
     const handleScroll = () => {
-      if (!ticking.current) {
-        requestAnimationFrame(updateNavbar);
-        ticking.current = true;
-      }
+      setScrolled(window.scrollY > 20);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => {
-      clearTimeout(reSyncTimer);
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [pathname]);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const links = [
     { name: "Home",      href: "/",          code: "01" },
@@ -66,16 +37,7 @@ export function Navbar() {
     <>
       {/* ── Floating Pill Navbar ── */}
       <nav
-        className={`fixed z-50 transition-all duration-500 ease-out ${
-          isVisible ? "translate-y-0 opacity-100" : "-translate-y-full opacity-0"
-        }`}
-        style={{
-          top: "12px",
-          left: "50%",
-          transform: `translateX(-50%) ${isVisible ? "translateY(0)" : "translateY(-110%)"}`,
-          width: "calc(100% - 80px)",
-          maxWidth: "1400px",
-        }}
+        className="fixed top-[12px] left-1/2 -translate-x-1/2 z-50 transition-all duration-300 w-[calc(100%-80px)] max-w-[1400px]"
       >
         <div
           className={`relative flex items-center justify-between px-8 h-[62px] transition-all duration-300 ${
@@ -90,9 +52,6 @@ export function Navbar() {
             clipPath: "polygon(0 12px, 12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)",
           }}
         >
-          {/* Scan line on top edge */}
-          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-60" />
-
           {/* ── Left: Logo ── */}
           <div className="flex items-center gap-4 shrink-0">
             <Link href="/" className="flex items-center gap-2.5 group">
@@ -166,8 +125,6 @@ export function Navbar() {
             </button>
           </div>
 
-          {/* Bottom corner decoration */}
-          <div className="absolute bottom-0 right-12 w-16 h-px bg-gradient-to-r from-transparent to-primary/30" />
         </div>
       </nav>
 
