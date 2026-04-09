@@ -21,7 +21,7 @@ export function EventsPreview() {
     <section className="py-20 border-t border-primary/10">
       <div className="flex flex-col md:flex-row md:justify-between md:items-end mb-8">
         <SectionHeader 
-          title="Upcoming Protocols" 
+          title="Upcoming Events" 
           subtitle="Join us for workshops, guest lectures, and capture the flag events."
           className="mb-0"
         />
