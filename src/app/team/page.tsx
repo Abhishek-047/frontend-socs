@@ -110,19 +110,9 @@ export default function TeamPage() {
               <span className="text-gray-600">_</span>
               <GlitchText text="COLLECTIVE" as="span" intensity="high" />
             </h1>
-            <div className="flex flex-col md:flex-row md:items-center gap-3 text-[10px] text-primary/60 font-jetbrains tracking-[0.3em] uppercase">
-              <div className="flex items-center gap-3">
-                <Globe className="w-3 h-3 text-primary animate-pulse" />
-                <span><EncryptedText>NODE_NETWORK_DIRECTORY_v3.0.4</EncryptedText></span>
-              </div>
-              <span className="hidden md:inline text-gray-800">|</span>
-              <button 
-                className="flex items-center gap-2 bg-primary/10 border border-primary/20 px-3 py-1 text-[9px] font-bold tracking-[0.2em] text-primary hover:bg-primary hover:text-black transition-all duration-300 group"
-                style={{ clipPath: "polygon(0 4px, 4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%)" }}
-              >
-                <span className="group-hover:rotate-90 transition-transform">+</span>
-                <span>ADD_NODE</span>
-              </button>
+            <div className="flex items-center gap-3 text-[10px] text-primary/60 font-jetbrains tracking-[0.3em] uppercase">
+              <Globe className="w-3 h-3 text-primary animate-pulse" />
+              <span><EncryptedText>NODE_NETWORK_DIRECTORY_v3.0.4</EncryptedText></span>
             </div>
             
             <div className="mt-6">
@@ -156,20 +146,30 @@ export default function TeamPage() {
               ))}
             </div>
 
-            <div className="flex w-full lg:w-auto mt-2 lg:mt-0 gap-1 border border-white/10 p-1 bg-black/40 rounded-sm">
-              <button
-                onClick={() => setViewMode("GRID_VIEW")}
-                title="Grid View"
-                className={`flex-1 lg:flex-none p-2 flex justify-center items-center rounded-sm transition-colors ${viewMode === "GRID_VIEW" ? "bg-primary/20 text-primary" : "text-gray-500 hover:text-white"}`}
+            <div className="flex w-full lg:w-auto mt-2 lg:mt-0 gap-3">
+              <div className="flex gap-1 border border-white/10 p-1 bg-black/40 rounded-sm">
+                <button
+                  onClick={() => setViewMode("GRID_VIEW")}
+                  title="Grid View"
+                  className={`flex-1 lg:flex-none p-2 flex justify-center items-center rounded-sm transition-colors ${viewMode === "GRID_VIEW" ? "bg-primary/20 text-primary" : "text-gray-500 hover:text-white"}`}
+                >
+                  <LayoutGrid className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => setViewMode("NETWORK_VIEW")}
+                  title="Network Relational Graph View"
+                  className={`flex-1 lg:flex-none p-2 flex justify-center items-center rounded-sm transition-colors ${viewMode === "NETWORK_VIEW" ? "bg-primary/20 text-primary" : "text-gray-500 hover:text-white"}`}
+                >
+                  <Network className="w-4 h-4" />
+                </button>
+              </div>
+
+              <button 
+                className="flex items-center gap-2 bg-primary/10 border border-primary/20 px-4 py-2 text-[10px] font-bold tracking-[0.2em] text-primary hover:bg-primary hover:text-black transition-all duration-300 group"
+                style={{ clipPath: "polygon(0 8px, 8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)" }}
               >
-                <LayoutGrid className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => setViewMode("NETWORK_VIEW")}
-                title="Network Relational Graph View"
-                className={`flex-1 lg:flex-none p-2 flex justify-center items-center rounded-sm transition-colors ${viewMode === "NETWORK_VIEW" ? "bg-primary/20 text-primary" : "text-gray-500 hover:text-white"}`}
-              >
-                <Network className="w-4 h-4" />
+                <span className="group-hover:rotate-90 transition-transform">+</span>
+                <span>ADD_NODE</span>
               </button>
             </div>
           </div>

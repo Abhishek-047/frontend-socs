@@ -32,40 +32,40 @@ export default function ProjectsPage() {
   return (
     <PageWrapper>
       <div className="pt-10 pb-20">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-12">
-          <SectionHeader 
-            title="Project Database" 
-            subtitle="Open-source intelligence, vulnerability scanners, and automated exploitation frameworks built by our members."
-            className="mb-0"
-          />
+        <SectionHeader 
+          title="Project Database" 
+          subtitle="Open-source intelligence, vulnerability scanners, and automated exploitation frameworks built by our members."
+        />
+        
+        {/* Filters */}
+        <div className="flex flex-wrap items-center justify-between gap-4 mt-12 mb-10 pb-4 border-b border-white/5">
+          <div className="flex flex-wrap items-center gap-4">
+            <span className="font-jetbrains text-gray-500 py-2">Filter_by:</span>
+            {tags.map((tag) => (
+              <button
+                key={tag}
+                onClick={() => setFilter(tag)}
+                className={`px-4 py-2 font-jetbrains text-sm transition-all duration-300 relative ${
+                  filter === tag 
+                    ? "text-primary" 
+                    : "text-gray-400 hover:text-white"
+                }`}
+              >
+                {tag}
+                {filter === tag && (
+                  <span className="absolute bottom-0 left-0 w-full h-[2px] bg-primary shadow-glow"></span>
+                )}
+              </button>
+            ))}
+          </div>
+          
           <button 
-            className="flex items-center justify-center gap-2 bg-primary/10 border border-primary/40 px-5 py-2.5 text-[11px] font-bold font-mono tracking-[0.2em] text-primary hover:bg-primary hover:text-black transition-all duration-300 group shrink-0"
-            style={{ clipPath: "polygon(0 10px, 10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%)" }}
+            className="flex items-center gap-2 bg-primary/10 border border-primary/40 px-4 py-2 text-[10px] font-bold font-mono tracking-[0.2em] text-primary hover:bg-primary hover:text-black transition-all duration-300 group ml-auto"
+            style={{ clipPath: "polygon(0 8px, 8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)" }}
           >
             <span className="text-lg group-hover:rotate-90 transition-transform">+</span>
             <span>INITIALIZE_PROJECT</span>
           </button>
-        </div>
-        
-        {/* Filters */}
-        <div className="flex flex-wrap gap-4 mt-12 mb-10 overflow-x-auto pb-4">
-          <span className="font-jetbrains text-gray-500 py-2">Filter_by:</span>
-          {tags.map((tag) => (
-            <button
-              key={tag}
-              onClick={() => setFilter(tag)}
-              className={`px-4 py-2 font-jetbrains text-sm transition-all duration-300 relative ${
-                filter === tag 
-                  ? "text-primary" 
-                  : "text-gray-400 hover:text-white"
-              }`}
-            >
-              {tag}
-              {filter === tag && (
-                <span className="absolute bottom-0 left-0 w-full h-[2px] bg-primary shadow-glow"></span>
-              )}
-            </button>
-          ))}
         </div>
         
         {/* Grid */}
