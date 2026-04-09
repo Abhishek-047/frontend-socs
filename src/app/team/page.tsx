@@ -49,7 +49,7 @@ function CollectiveCard({ member, delay }: { member: TeamMember, delay: number }
 
         <div className="flex-grow">
           <h3 className="text-white font-bold font-grotesk text-xl tracking-tight mb-1 uppercase group-hover:text-primary transition-colors">
-            {member.name.replace(" ", "_")}
+            <GlitchText text={member.name.replace(" ", "_")} />
           </h3>
           <p className="text-[10px] text-primary/60 font-jetbrains tracking-widest uppercase mb-4">
             {member.role.replace(" ", "_")}
@@ -103,9 +103,9 @@ export default function TeamPage() {
         {/* Header Section */}
         <div className="mb-10 md:mb-16 flex flex-col lg:flex-row justify-between items-start lg:items-end gap-10">
           <div className="w-full">
-            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold font-grotesk text-white tracking-tighter mb-4 break-words leading-tight flex flex-wrap items-center">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold font-grotesk text-white tracking-tighter mb-4 break-words leading-tight flex flex-wrap items-center gap-x-4">
               <GlitchText text="THE" as="span" intensity="high" />
-              <GlitchText text="Sentinels" as="span" intensity="high" />
+              <GlitchText text="SENTINELS" as="span" intensity="high" />
             </h1>
             <div className="space-y-1">
               <div className="flex items-center gap-3 text-[10px] text-primary/40 font-jetbrains tracking-[0.3em] uppercase">
@@ -183,7 +183,7 @@ export default function TeamPage() {
         {viewMode === "GRID_VIEW" ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredMembers.map((member, i) => (
-              <CollectiveCard key={member.name} member={member} delay={i} />
+              <CollectiveCard key={member.slug} member={member} delay={i} />
             ))}
           </div>
         ) : (

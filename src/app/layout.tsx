@@ -65,7 +65,6 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col font-body bg-background text-white" suppressHydrationWarning>
         <CustomCursor />
         <ClientProviders>
-          <DataStreamBackground />
           <Navbar />
           <main className="flex-grow flex flex-col items-center">
             {children}

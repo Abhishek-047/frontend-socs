@@ -58,8 +58,8 @@ export default function EventsPage() {
             </h3>
             {upcomingEvents.length > 0 ? (
               <div ref={upcomingRef} className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {upcomingEvents.map((event, i) => (
-                  <div key={i} className="opacity-0"><EventCard event={event} /></div>
+                {upcomingEvents.map((event) => (
+                  <div key={event.slug} className="opacity-0"><EventCard event={event} /></div>
                 ))}
               </div>
             ) : (
@@ -75,8 +75,8 @@ export default function EventsPage() {
               [ Archived Executions ]
             </h3>
             <div ref={pastRef} className="grid grid-cols-1 lg:grid-cols-2 gap-6 opacity-60 hover:opacity-100 transition-opacity duration-500">
-              {pastEvents.map((event, i) => (
-                <div key={i} className="opacity-0"><EventCard event={event} /></div>
+              {pastEvents.map((event) => (
+                <div key={event.slug} className="opacity-0"><EventCard event={event} /></div>
               ))}
             </div>
           </section>
