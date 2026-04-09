@@ -17,13 +17,18 @@ const GALLERY_IMAGES = [
 export default function GalleryPage() {
   return (
     <PageWrapper>
-      <div className="mb-12 flex justify-between items-start">
-        <SectionHeader 
-          title="DECRYPTED_VISUALS" 
-          subtitle="A visual log of the society's physical footprint and core node members." 
-        />
+      <SectionHeader 
+        title="DECRYPTED_VISUALS" 
+        subtitle="A visual log of the society's physical footprint and core node members." 
+      />
+      
+      <div className="flex items-center justify-between border-b border-white/5 pb-4 mb-10 mt-8">
+        <div className="flex items-center gap-3 text-[10px] text-gray-500 font-mono tracking-widest uppercase">
+          <Camera className="w-3 h-3 text-primary/60" />
+          <span>LENS_STATUS: ONLINE // SCANNING...</span>
+        </div>
         <button 
-          className="flex items-center gap-2 bg-primary/10 border border-primary/40 px-4 py-2 text-[10px] font-bold font-mono tracking-[0.2em] text-primary hover:bg-primary hover:text-black transition-all duration-300 group mt-4 shrink-0"
+          className="flex items-center gap-2 bg-primary/10 border border-primary/40 px-4 py-2 text-[10px] font-bold font-mono tracking-[0.2em] text-primary hover:bg-primary hover:text-black transition-all duration-300 group shrink-0"
           style={{ clipPath: "polygon(0 8px, 8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)" }}
         >
           <span className="text-lg group-hover:rotate-90 transition-transform">+</span>
