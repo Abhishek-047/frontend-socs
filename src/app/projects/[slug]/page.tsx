@@ -12,7 +12,8 @@ import Link from "next/link";
 export default function ProjectDetailPage() {
   const params = useParams();
   const router = useRouter();
-  const project = projects.find((p) => p.slug === params.slug);
+  const slug = params?.slug as string;
+  const project = projects.find((p) => p.slug === slug);
 
   if (!project) {
     return (
@@ -49,7 +50,7 @@ export default function ProjectDetailPage() {
               ))}
             </div>
             
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-grotesk text-white mb-8">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold font-grotesk text-white mb-8 text-glow">
               {project.title}
             </h1>
 
@@ -86,7 +87,7 @@ export default function ProjectDetailPage() {
                   "Heuristic-based exploitation attempts with 98% accuracy",
                   "Real-time logging and distributed node synchronization"
                 ].map((item, i) => (
-                  <li key={i} className="flex gap-4 items-start p-4 bg-white/5 border border-white/10 rounded-sm">
+                  <li key={i} className="flex gap-4 items-start p-4 bg-white/5 border border-white/10 rounded-sm hover:border-primary/30 transition-colors">
                     <div className="w-1.5 h-1.5 bg-primary rounded-full mt-2 shrink-0 shadow-glow" />
                     <span className="text-gray-300 font-jetbrains text-sm">{item}</span>
                   </li>
@@ -97,7 +98,7 @@ export default function ProjectDetailPage() {
 
           {/* Sidebar */}
           <div className="space-y-8">
-            <div className="dashboard-card p-6 border border-white/10">
+            <div className="dashboard-card p-6 border border-white/10 bg-black/40 backdrop-blur-md">
               <h3 className="text-[10px] text-gray-500 font-bold uppercase tracking-[0.3em] mb-6">Access_Controls</h3>
               
               <div className="space-y-4">
@@ -122,7 +123,7 @@ export default function ProjectDetailPage() {
               </div>
             </div>
 
-            <div className="dashboard-card p-6 border border-white/10">
+            <div className="dashboard-card p-6 border border-white/10 bg-black/20">
               <h3 className="text-[10px] text-gray-500 font-bold uppercase tracking-[0.3em] mb-4">Node_Context</h3>
               <div className="flex items-center gap-4 py-3 border-b border-white/5">
                 <Globe className="w-4 h-4 text-primary/60" />
