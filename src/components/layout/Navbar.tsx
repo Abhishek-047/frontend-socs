@@ -37,12 +37,12 @@ export function Navbar() {
     <>
       {/* ── Floating Pill Navbar ── */}
       <nav
-        className="fixed top-[12px] left-1/2 -translate-x-1/2 z-50 transition-all duration-300 w-[calc(100%-80px)] max-w-[1400px]"
+        className="fixed top-[12px] left-1/2 -translate-x-1/2 z-50 transition-all duration-300 w-[calc(100%-32px)] md:w-[calc(100%-80px)] max-w-[1400px]"
       >
         <div
-          className={`relative flex items-center justify-between px-8 h-[62px] transition-all duration-300 ${
+          className={`relative flex items-center justify-between px-4 md:px-8 h-[62px] transition-all duration-300 ${
             scrolled
-              ? "bg-black/85 border-primary/30 shadow-[0_0_40px_rgba(200,255,0,0.08)]"
+              ? "bg-black/90 border-primary/40 shadow-[0_0_40px_rgba(200,255,0,0.1)]"
               : "bg-black/60 border-primary/15"
           }`}
           style={{
@@ -53,20 +53,19 @@ export function Navbar() {
           }}
         >
           {/* ── Left: Logo ── */}
-          <div className="flex items-center gap-4 shrink-0">
-            <Link href="/" className="flex items-center gap-3 group">
+          <div className="flex items-center gap-2 md:gap-4 shrink-0">
+            <Link href="/" className="flex items-center gap-2 md:gap-3 group">
               {/* Logo Image */}
-              <div className="relative w-10 h-10 flex items-center justify-center overflow-hidden border border-primary/20 bg-black/40 p-1 group-hover:border-primary transition-colors duration-300"
+              <div className="relative w-8 h-8 md:w-10 md:h-10 flex items-center justify-center overflow-hidden border border-primary/20 bg-black/40 p-1 group-hover:border-primary transition-colors duration-300"
                 style={{ clipPath: "polygon(0 8px, 8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%)" }}>
                 <img src="/assets/logo.png" alt="SOCS Logo" className="w-full h-full object-contain" />
               </div>
               <div className="flex flex-col leading-none">
-                <span className="font-jetbrains text-lg font-black text-white tracking-[0.1em] group-hover:text-primary transition-colors duration-200">
+                <span className="font-jetbrains text-sm md:text-lg font-black text-white tracking-[0.1em] group-hover:text-primary transition-colors duration-200">
                   SOCS
                 </span>
-                <span className="text-[6px] text-primary/40 tracking-[0.5em] font-mono">EST_2024</span>
+                <span className="text-[5px] md:text-[6px] text-primary/40 tracking-[0.5em] font-mono">EST_2024</span>
               </div>
-              <span className="inline-block w-[2px] h-4 bg-primary animate-[blink-cursor_1s_step-end_infinite]" />
             </Link>
           </div>
 
@@ -107,7 +106,14 @@ export function Navbar() {
           </div>
 
           {/* ── Right: CTA + Mobile toggle ── */}
-          <div className="flex items-center gap-4 shrink-0">
+          <div className="flex items-center gap-2 md:gap-4 shrink-0">
+            <Link 
+              href="/join"
+              className="px-3 py-1.5 md:hidden text-[9px] font-bold text-primary font-mono tracking-widest border border-primary/20 hover:bg-primary/10 transition-colors uppercase whitespace-nowrap"
+            >
+              Join Node
+            </Link>
+
             <NeonButton href="/join" variant="outline" className="hidden md:inline-flex text-xs px-5 py-2">
               Join Network
             </NeonButton>
@@ -123,7 +129,6 @@ export function Navbar() {
               }
             </button>
           </div>
-
         </div>
       </nav>
 
