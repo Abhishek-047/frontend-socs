@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useTheme, FONT_PRESETS } from "@/context/ThemeContext";
+import { useAudio } from "@/context/AudioContext";
 
 interface HistoryEntry {
   type: "input" | "output" | "error" | "system";
@@ -35,6 +36,8 @@ export function Terminal() {
     setThemeFont,
     resetTheme,
   } = useTheme();
+  
+  const { playType } = useAudio();
 
   const [isOpen, setIsOpen] = useState(false);
   const [history, setHistory] = useState<HistoryEntry[]>(
@@ -609,7 +612,7 @@ export function Terminal() {
                   ref={inputRef}
                   type="text"
                   value={input}
-                  onChange={(e) => setInput(e.target.value)}
+                  onChange={(e) => { setInput(e.target.value); playType(); }}
                   onKeyDown={handleKeyDown}
                   className="flex-1 bg-transparent text-primary outline-none border-none caret-primary font-mono text-[13px]"
                   spellCheck={false}

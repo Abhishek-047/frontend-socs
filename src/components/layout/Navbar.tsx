@@ -5,11 +5,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NeonButton } from "../ui/NeonButton";
 import { MobileMenu } from "./MobileMenu";
-import { Menu, X, Shield, Wifi, Terminal } from "lucide-react";
+import { Menu, X, Shield, Wifi, Terminal, Volume2, VolumeX } from "lucide-react";
+import { useAudio } from "@/context/AudioContext";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const { isMuted, toggleMute } = useAudio();
   const [isVisible, setIsVisible] = useState(true);
   const [scrolled, setScrolled] = useState(false);
   const [time, setTime] = useState("");
@@ -167,6 +169,20 @@ export function Navbar() {
 
           {/* ── Right: CTA + Mobile toggle ── */}
           <div className="flex items-center gap-2 shrink-0">
+            {/* Audio toggle */}
+            <button 
+              onClick={toggleMute}
+              title={isMuted ? "Unmute Audio" : "Mute Audio"}
+              className={`hidden md:flex items-center justify-center p-1.5 border transition-colors uppercase ${
+                isMuted 
+                ? "bg-white/5 border-white/10 text-gray-500 hover:text-white" 
+                : "bg-primary/5 border-primary/40 text-primary hover:bg-primary/10"
+              }`}
+              style={{ clipPath: "polygon(0 3px,3px 0,100% 0,100% calc(100% - 3px),calc(100% - 3px) 100%,0 100%)" }}
+            >
+              {isMuted ? <VolumeX className="w-3 h-3" /> : <Volume2 className="w-3 h-3 animate-pulse" />}
+            </button>
+
             {/* Terminal toggle button */}
             <button
               onClick={() => window.dispatchEvent(new CustomEvent("toggle-terminal"))}
