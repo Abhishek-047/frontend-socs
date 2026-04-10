@@ -21,8 +21,8 @@ export default function LoginPage() {
   };
 
   return (
-    <PageWrapper className="flex items-center justify-center min-h-[90vh]">
-      <div className="w-full max-w-2xl relative">
+    <PageWrapper className="flex items-center justify-center min-h-[90vh] !max-w-none !px-0">
+      <div className="w-full flex flex-col items-center justify-center relative px-6">
         <AnimatePresence mode="wait">
           {view === "initial" ? (
             <motion.div
@@ -30,10 +30,10 @@ export default function LoginPage() {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 1.2, filter: "blur(20px)" }}
-              className="flex flex-col items-center justify-center py-20"
+              className="flex flex-col items-center justify-center py-20 w-full"
             >
               {/* Central Auth Module */}
-              <div className="relative group cursor-pointer" onClick={handleInitialClick}>
+              <div className="relative group cursor-pointer flex flex-col items-center" onClick={handleInitialClick}>
                 {/* Hexagon Frame */}
                 <div className="w-80 h-80 flex items-center justify-center relative">
                     {/* Animated rings */}
@@ -69,7 +69,7 @@ export default function LoginPage() {
                 <div className="absolute -bottom-10 -right-10 text-[10px] font-mono text-primary/30 tracking-[0.5em] uppercase [writing-mode:vertical-lr]">NODE_UPLINK</div>
               </div>
 
-              <div className="mt-20 text-center">
+              <div className="mt-20 text-center flex flex-col items-center">
                 <div className="flex items-center gap-3 justify-center mb-6">
                     <div className="h-[1px] w-20 bg-gradient-to-l from-primary/40 to-transparent" />
                     <span className="text-primary/80 font-mono text-xs tracking-[0.6em] font-black">SOCS_KERNEL</span>
@@ -85,7 +85,7 @@ export default function LoginPage() {
               key="selection"
               initial={{ opacity: 0, scale: 1.1 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="grid grid-cols-1 md:grid-cols-2 gap-8"
+              className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl"
             >
               {/* Sign In Protocol */}
               <ProtocolCard
@@ -128,7 +128,7 @@ function ProtocolCard({
     id: string; title: string; subtitle: string; description: string; ctaText: string; icon: React.ReactNode; primary?: boolean; href: string;
 }) {
   return (
-    <div className={`relative group p-[1px] ${primary ? 'bg-primary/40' : 'bg-white/10'}`}
+    <div className={`relative group p-[1px] ${primary ? 'bg-primary/40' : 'bg-white/10'} w-full`}
         style={{ clipPath: "polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%)" }}>
         
         <div className="bg-[#020508] p-8 h-full flex flex-col items-center text-center transition-all duration-300 group-hover:bg-[#03080c]"

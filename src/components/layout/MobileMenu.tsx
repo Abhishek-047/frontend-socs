@@ -41,10 +41,9 @@ export function MobileMenu({ isOpen, setIsOpen, links, pathname }: MobileMenuPro
                     href={link.href}
                     onClick={() => setIsOpen(false)}
                     className={`block font-jetbrains text-xl uppercase ${
-                      isActive ? "text-primary" : "text-gray-300"
+                      isActive ? "text-primary" : "text-gray-500"
                     }`}
                   >
-                    <span className="text-gray-600 mr-2">[{i}]</span>
                     {link.name}
                   </Link>
                 </motion.div>

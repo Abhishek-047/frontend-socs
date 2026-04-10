@@ -5,7 +5,6 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ClientProviders } from "@/app/providers";
 import { CustomCursor } from "@/components/ui/CustomCursor";
-import { DataStreamBackground } from "@/components/ui/DataStreamBackground";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
@@ -75,4 +74,3 @@ export default function RootLayout({
     </html>
   );
 }
-

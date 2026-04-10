@@ -87,17 +87,6 @@ export function HeroSection() {
             </NeonButton>
           </div>
 
-          {/* Status strip */}
-          <div className="mt-12 flex items-center gap-6 text-[10px] text-gray-500 font-mono tracking-widest">
-            <span className="flex items-center gap-2">
-              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-              SYSTEM_ONLINE
-            </span>
-            <span className="text-gray-800">|</span>
-            <span>NODE_COUNT: 42</span>
-            <span className="text-gray-800">|</span>
-            <span>ENC: AES-256</span>
-          </div>
         </div>
 
         {/* ── RIGHT: Threat Map ── */}

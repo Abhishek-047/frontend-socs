@@ -57,14 +57,14 @@ export function Navbar() {
           </div>
 
           {/* ── Center: Nav Links (Desktop) ── */}
-          <div className="hidden md:flex flex-1 justify-center items-center gap-1">
+          <div className="hidden md:flex flex-1 justify-center items-center gap-2">
             {links.map((link) => {
               const isActive = pathname === link.href;
               return (
                 <Link
                   key={link.name}
                   href={link.href}
-                  className={`relative px-3.5 py-1.5 text-[11px] font-bold font-turret tracking-[0.25em] uppercase transition-all duration-200 group ${
+                  className={`relative px-4 py-2 text-[13px] font-bold font-turret tracking-[0.25em] uppercase transition-all duration-200 group ${
                     isActive ? "text-primary" : "text-gray-500 hover:text-white"
                   }`}
                 >
@@ -77,7 +77,6 @@ export function Navbar() {
                     </>
                   )}
                   <span className="relative z-10 flex items-center gap-1.5">
-                    <span className="text-primary/30 text-[8px] font-mono hidden lg:inline">{link.code}</span>
                     {link.name}
                   </span>
                 </Link>
@@ -88,7 +87,7 @@ export function Navbar() {
           {/* ── Right: CTA (Desktop) + Mobile Menu Toggle ── */}
           <div className="flex items-center justify-end shrink-0 gap-4">
             <NeonButton href="/login" variant="outline" className="hidden md:inline-flex text-[10px] px-6 py-2.5 font-bold tracking-[0.2em]">
-              CONNECT // JOIN
+              CONNECT
             </NeonButton>
 
             {/* Mobile menu toggle (3 dots as requested) */}
