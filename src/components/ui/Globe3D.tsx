@@ -68,22 +68,25 @@ export function Globe3D() {
     }
 
     // @ts-ignore
-    if (land.geometry.type === "MultiPolygon") {
+    if (land && land.geometry) {
         // @ts-ignore
-        land.geometry.coordinates.forEach((polygon: any) => {
-            polygon.forEach((ring: any) => {
+        if ((land.geometry as any).type === "MultiPolygon") {
+            // @ts-ignore
+            land.geometry.coordinates.forEach((polygon: any) => {
+                polygon.forEach((ring: any) => {
+                    ring.forEach((coord: [number, number]) => {
+                        processCoord(coord[0], coord[1]);
+                    });
+                });
+            });
+        } else if ((land.geometry as any).type === "Polygon") {
+            // @ts-ignore
+            land.geometry.coordinates.forEach((ring: any) => {
                 ring.forEach((coord: [number, number]) => {
                     processCoord(coord[0], coord[1]);
                 });
             });
-        });
-    } else {
-        // @ts-ignore
-        land.geometry.coordinates.forEach((ring: any) => {
-            ring.forEach((coord: [number, number]) => {
-                processCoord(coord[0], coord[1]);
-            });
-        });
+        }
     }
 
     pointsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
