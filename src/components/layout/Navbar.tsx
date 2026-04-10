@@ -84,8 +84,10 @@ export function Navbar() {
                       />
                     </motion.div>
                   )}
-                  <span className="relative z-10 group-hover:text-primary group-hover:tracking-[0.2em] transition-all duration-300">
+                  <span className="relative z-10 flex items-center transition-all duration-300 group-hover:text-primary group-hover:tracking-widest">
+                    <span className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 mr-2 text-primary font-mono">[</span>
                     {link.name}
+                    <span className="opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 ml-2 text-primary font-mono">]</span>
                   </span>
                 </Link>
               );
