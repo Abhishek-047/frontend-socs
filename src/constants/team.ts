@@ -12,6 +12,16 @@ export type TeamMember = {
 
 export const teamMembers: TeamMember[] = [
   {
+    id: "abhishek",
+    slug: "abhishek",
+    name: "Abhishek",
+    role: "Full Stack Architect",
+    skills: ["React/Next.js", "Node.js", "Cyber Security", "UI/UX Design"],
+    tier: "core",
+    github: "#",
+    linkedin: "#"
+  },
+  {
     id: "alex",
     slug: "alex-vance",
     name: "Alex Vance",
