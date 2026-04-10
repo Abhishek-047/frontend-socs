@@ -11,6 +11,7 @@ export function Globe3D() {
   useEffect(() => {
     if (!containerRef.current) return;
 
+    // --- Scene Setup ---
     const width = containerRef.current.clientWidth || 600;
     const height = containerRef.current.clientHeight || 600;
 
@@ -33,74 +34,82 @@ export function Globe3D() {
     const globeRoot = new THREE.Group();
     scene.add(globeRoot);
 
-    // Responsive Radius
     const GLOBE_RADIUS = Math.min(65, width / 12);
     const colorPrimary = new THREE.Color(0xc8ff00);
 
-    // 1. Core Sphere
-    const sphereGeometry = new THREE.SphereGeometry(GLOBE_RADIUS - 1, 64, 64);
+    // 1. Core Sphere (Deep Black)
+    const sphereGeometry = new THREE.SphereGeometry(GLOBE_RADIUS - 1.5, 64, 64);
     const sphereMaterial = new THREE.MeshPhongMaterial({
-      color: 0x020304,
+      color: 0x010203,
       transparent: true,
-      opacity: 0.9,
-      shininess: 40,
+      opacity: 0.95,
+      shininess: 60,
     });
     globeRoot.add(new THREE.Mesh(sphereGeometry, sphereMaterial));
 
-    // 2. Continents logic (Image-Like fidelity using precise bounding boxes)
-    const isLand = (lat: number, lon: number) => {
-        // Americas
-        if (lon > -130 && lon < -35 && lat > -55 && lat < 72) {
-            if (lat < 15 && lon < -85) return false;
-            if (lat > 10 && lat < 25 && lon > -80) return true; // Florida/Caribbean
-            return true;
+    // 2. High-Fidelity Continents (Super Dense Dot Matrix)
+    const createContinents = () => {
+        const positions: number[] = [];
+        const colors: number[] = [];
+        const count = 35000; // Ultra High Density
+
+        const isWorldLand = (lat: number, lon: number) => {
+            // High-precision geographic masks
+            // North America
+            if (lat > 15 && lat < 75 && lon > -170 && lon < -50) return true;
+            // South America
+            if (lat > -55 && lat < 15 && lon > -90 && lon < -35) return true;
+            // Africa
+            if (lat > -35 && lat < 38 && lon > -22 && lon < 55) {
+                if (lat > 15 && lon > 40) return false; // Red Sea area gap
+                return true;
+            }
+            // Eurasia
+            if (lat > 10 && lat < 78 && lon > -10 && lon < 185) {
+                if (lat < 30 && lon > 42 && lon < 55) return false; // Arabia gap
+                return true;
+            }
+            // Australia
+            if (lat > -45 && lat < -10 && lon > 110 && lon < 155) return true;
+            // High North
+            if (lat > 70) return true;
+            
+            return false;
+        };
+
+        for (let i = 0; i < count; i++) {
+            const phi = Math.acos(-1 + (2 * i) / count);
+            const theta = Math.sqrt(count * Math.PI) * phi;
+            
+            const lat = 90 - (phi * 180) / Math.PI;
+            const lon = (((theta * 180) / Math.PI) + 180) % 360 - 180;
+
+            if (isWorldLand(lat, lon)) {
+                const x = GLOBE_RADIUS * Math.cos(theta) * Math.sin(phi);
+                const y = GLOBE_RADIUS * Math.sin(theta) * Math.sin(phi);
+                const z = GLOBE_RADIUS * Math.cos(phi);
+                positions.push(x, y, z);
+                colors.push(colorPrimary.r, colorPrimary.g, colorPrimary.b);
+            }
         }
-        // Eurasia + Africa
-        if (lon > -20 && lon < 145 && lat > -35 && lat < 78) {
-            if (lat > 15 && lat < 45 && lon > 20 && lon < 50) return Math.random() > 0.4; // Sahara/Middle East sparse
-            return true;
-        }
-        // Australia
-        if (lon > 110 && lon < 155 && lat > -45 && lat < -10) return true;
-        // High North (Greenland / Russia / Canada)
-        if (lat > 65) return true;
+
+        const geometry = new THREE.BufferGeometry();
+        geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+        geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
         
-        return false;
+        const material = new THREE.PointsMaterial({
+            size: 1.2,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.95,
+            blending: THREE.AdditiveBlending,
+            sizeAttenuation: true
+        });
+        
+        globeRoot.add(new THREE.Points(geometry, material));
     };
 
-    const pointsCount = 20000;
-    const positions = [];
-    const colors = [];
-
-    for (let i = 0; i < pointsCount; i++) {
-        const phi = Math.acos(-1 + (2 * i) / pointsCount);
-        const theta = Math.sqrt(pointsCount * Math.PI) * phi;
-        
-        const lat = 90 - (phi * 180) / Math.PI;
-        const lon = (((theta * 180) / Math.PI) + 180) % 360 - 180;
-
-        if (isLand(lat, lon)) {
-            const x = GLOBE_RADIUS * Math.cos(theta) * Math.sin(phi);
-            const y = GLOBE_RADIUS * Math.sin(theta) * Math.sin(phi);
-            const z = GLOBE_RADIUS * Math.cos(phi);
-            positions.push(x, y, z);
-            colors.push(colorPrimary.r, colorPrimary.g, colorPrimary.b);
-        }
-    }
-
-    const pointsGeometry = new THREE.BufferGeometry();
-    pointsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-    pointsGeometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-    
-    const pointsMaterial = new THREE.PointsMaterial({
-        size: 1.1,
-        vertexColors: true,
-        transparent: true,
-        opacity: 0.85,
-        blending: THREE.AdditiveBlending,
-        sizeAttenuation: true
-    });
-    globeRoot.add(new THREE.Points(pointsGeometry, pointsMaterial));
+    createContinents();
 
     // 3. Attack Arcs
     const arcGroup = new THREE.Group();
@@ -138,8 +147,8 @@ export function Globe3D() {
         arcGroup.add(line);
 
         gsap.to(material, {
-            opacity: 0.5,
-            duration: 1.5,
+            opacity: 0.6,
+            duration: 1.2,
             repeat: 1,
             yoyo: true,
             onComplete: () => {
@@ -150,9 +159,15 @@ export function Globe3D() {
         });
     };
 
-    const arcInterval = setInterval(createArc, 2000);
+    const arcInterval = setInterval(createArc, 1500);
 
-    // 4. Ambient Starfield
+    // 4. Glow Core & Starfield
+    const coreGlow = new THREE.Mesh(
+        new THREE.SphereGeometry(GLOBE_RADIUS * 0.9, 32, 32),
+        new THREE.MeshBasicMaterial({ color: 0xc8ff00, transparent: true, opacity: 0.03 })
+    );
+    globeRoot.add(coreGlow);
+
     const starsPositions = [];
     for(let i=0; i<3000; i++) {
         const phi = Math.acos(-1 + Math.random()*2);
@@ -162,12 +177,12 @@ export function Globe3D() {
     }
     const starsGeo = new THREE.BufferGeometry();
     starsGeo.setAttribute('position', new THREE.Float32BufferAttribute(starsPositions, 3));
-    globeRoot.add(new THREE.Points(starsGeo, new THREE.PointsMaterial({color: 0xc8ff00, size: 0.5, transparent: true, opacity: 0.1})));
+    globeRoot.add(new THREE.Points(starsGeo, new THREE.PointsMaterial({color: 0xc8ff00, size: 0.5, transparent: true, opacity: 0.15})));
 
     // 5. Lighting
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
     scene.add(ambientLight);
-    const topLight = new THREE.PointLight(0xc8ff00, 1.5);
+    const topLight = new THREE.PointLight(0xc8ff00, 2);
     topLight.position.set(200, 200, 200);
     scene.add(topLight);
 
