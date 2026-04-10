@@ -54,27 +54,27 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section className="relative pt-16 pb-16 min-h-[90vh] flex flex-col justify-center overflow-hidden">
+    <section className="relative pt-8 pb-12 min-h-[90vh] flex flex-col justify-center overflow-hidden">
       {/* Background grids */}
       <div className="absolute inset-0 dot-grid opacity-20 -z-20" />
       <div className="absolute inset-0 motherboard-lines opacity-10 -z-20" />
 
-      <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-8 xl:gap-16 items-center z-10 w-full">
+      <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-6 xl:gap-12 items-center z-10 w-full mt-8 lg:mt-16">
 
         {/* ── LEFT: Text content ── */}
-        <div className="text-left w-full min-w-0 pt-0 lg:pt-12 order-2 lg:order-1">
+        <div className="text-left w-full min-w-0 order-2 lg:order-1 flex flex-col justify-center">
           {/* eyebrow */}
-          <div className="mb-6 inline-flex items-center gap-3 px-3 py-1 bg-primary/10 border border-primary/20 text-[10px] md:text-[11px] text-primary tracking-[0.5em] md:tracking-[0.6em] font-jetbrains uppercase">
+          <div className="mb-5 inline-flex items-center gap-3 px-3 py-1 bg-primary/10 border border-primary/20 text-[10px] md:text-[11px] text-primary tracking-[0.4em] md:tracking-[0.55em] font-jetbrains uppercase w-fit">
             <span className="w-2 h-2 bg-primary animate-pulse" />
             <span>Society of Cyber Security</span>
           </div>
 
-          <h1 ref={headingRef} className="text-4xl sm:text-5xl md:text-7xl xl:text-[5.5rem] font-bold font-grotesk text-white mb-6 tracking-tighter leading-[1] break-words">
+          <h1 ref={headingRef} className="text-4xl sm:text-5xl md:text-6xl xl:text-[5rem] font-bold font-grotesk text-white mb-5 tracking-tighter leading-[1] break-words">
             <GlitchText text="THE CYBER" as="span" className="block text-gray-400" intensity="low" />
             <GlitchText text="ARCHITECTS" as="span" className="text-primary text-glow" intensity="low" />
           </h1>
 
-          <p ref={subtextRef} className="max-w-xl text-gray-300 font-jetbrains text-sm md:text-lg mb-10 leading-relaxed opacity-0">
+          <p ref={subtextRef} className="max-w-lg text-gray-300 font-jetbrains text-sm md:text-base mb-8 leading-relaxed opacity-0">
             <ScrambleText text="Uniting elite researchers, ethical hackers, and security engineers. Learn. Break. Secure. Repeat." delay={1000} />
           </p>
 
@@ -89,10 +89,10 @@ export function HeroSection() {
         </div>
 
         {/* ── RIGHT: 3D Globe ── */}
-        <div ref={mapRef} className="w-full h-[400px] sm:h-[500px] lg:h-[600px] xl:h-[700px] relative opacity-0 order-1 lg:order-2 flex items-center justify-center">
-            <div className="w-full h-full max-w-full max-h-full">
-              <Globe3D />
-            </div>
+        <div ref={mapRef} className="w-full h-[340px] sm:h-[460px] lg:h-[560px] xl:h-[650px] relative opacity-0 order-1 lg:order-2 flex items-center justify-center">
+          <div className="w-full h-full max-w-full max-h-full">
+            <Globe3D />
+          </div>
         </div>
       </div>
     </section>
