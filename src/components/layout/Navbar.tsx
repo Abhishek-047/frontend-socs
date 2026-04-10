@@ -49,12 +49,10 @@ export function Navbar() {
           <div className="flex items-center shrink-0">
             <Link href="/" className="flex items-center gap-4 group">
               <div className="relative">
-                <span className="font-turret text-2xl font-black text-white tracking-[0.05em] group-hover:text-primary transition-colors duration-200">
+                <span className="font-turret text-2xl font-black text-white tracking-[0.05em] group-hover:text-primary transition-all duration-300">
                   SOCS
                 </span>
-                {/* RGB Split Effect on Hover */}
-                <span className="absolute inset-0 font-turret text-2xl font-black text-[#ff00ff] tracking-[0.05em] opacity-0 group-hover:opacity-40 group-hover:translate-x-[1px] transition-all duration-75 -z-10">SOCS</span>
-                <span className="absolute inset-0 font-turret text-2xl font-black text-[#00ffff] tracking-[0.05em] opacity-0 group-hover:opacity-40 group-hover:translate-x-[-1px] transition-all duration-75 -z-10">SOCS</span>
+                <div className="absolute -bottom-1 left-0 w-0 h-[2px] bg-primary group-hover:w-full transition-all duration-300 shadow-[0_0_10px_rgba(200,255,0,0.8)]" />
               </div>
               <div className="relative flex items-center">
                 <div className="w-[3px] h-6 bg-primary shadow-[0_0_15px_rgba(200,255,0,0.6)]" />
