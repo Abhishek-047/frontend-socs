@@ -44,9 +44,9 @@ export function Navbar() {
             : "bg-transparent border-transparent py-5"
         }`}
       >
-        <div className="max-w-[1500px] mx-auto px-6 md:px-12 flex items-center justify-between">
+        <div className="max-w-[1500px] mx-auto flex items-center justify-between">
           {/* ── Left: Logo ── */}
-          <div className="flex items-center shrink-0">
+          <div className="flex items-center shrink-0 pl-6 md:pl-12">
             <Link href="/" className="flex items-center gap-4 group">
               <div className="relative">
                 <span className="font-turret text-2xl font-black text-white tracking-[0.05em] group-hover:text-primary transition-all duration-300">
@@ -101,7 +101,7 @@ export function Navbar() {
           </div>
 
           {/* ── Right: CTA (Desktop) + Mobile Menu Toggle ── */}
-          <div className="flex items-center justify-end shrink-0 gap-4">
+          <div className="flex items-center justify-end shrink-0 pr-6 md:pr-12">
             <NeonButton href="/login" variant="outline" className="hidden md:inline-flex text-[14px] px-8 py-3 font-black tracking-[0.2em] border-2">
               JOIN
             </NeonButton>
