@@ -55,10 +55,6 @@ export function Navbar() {
           {/* ── Left: Logo ── */}
           <div className="flex items-center shrink-0">
             <Link href="/" className="flex items-center gap-2 group">
-              <div className="relative w-8 h-8 flex items-center justify-center overflow-hidden border border-primary/20 bg-black/40 p-1 group-hover:border-primary transition-colors duration-300"
-                style={{ clipPath: "polygon(0 6px, 6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%)" }}>
-                <img src="/assets/logo.png" alt="SOCS Logo" className="w-full h-full object-contain" />
-              </div>
               <div className="flex flex-col leading-none">
                 <span className="font-jetbrains text-base font-black text-white tracking-[0.1em] group-hover:text-primary transition-colors duration-200">
                   SOCS
@@ -99,8 +95,8 @@ export function Navbar() {
 
           {/* ── Right: CTA (Desktop) + Mobile Menu Toggle ── */}
           <div className="flex items-center justify-end shrink-0 gap-4">
-            <NeonButton href="/join" variant="outline" className="hidden md:inline-flex text-xs px-5 py-2">
-              Join Network
+            <NeonButton href="/login" variant="outline" className="hidden md:inline-flex text-xs px-5 py-2">
+              Login / Signup
             </NeonButton>
 
             {/* Mobile menu toggle (3 dots as requested) */}

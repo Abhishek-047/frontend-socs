@@ -58,11 +58,11 @@ export function MobileMenu({ isOpen, setIsOpen, links, pathname }: MobileMenuPro
               className="pt-8"
             >
                <NeonButton 
-                 href="/join" 
+                 href="/login" 
                  className="w-full justify-start"
                  onClick={() => setIsOpen(false)}
                >
-                 &gt; EXECUTE JOIN_SOCS
+                 &gt; EXECUTE LOGIN_AUTH
                </NeonButton>
             </motion.div>
           </div>

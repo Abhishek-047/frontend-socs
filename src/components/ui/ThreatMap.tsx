@@ -77,7 +77,7 @@ export function ThreatMap() {
     const atk = ATTACK_TYPES[Math.floor(Math.random()*ATTACK_TYPES.length)];
     arcsRef.current.push({
       id: arcId++, src: NODES[si], dst: NODES[di],
-      atk, progress: 0, speed: 0.002 + Math.random()*0.003,
+      atk, progress: 0, speed: 0.005 + Math.random()*0.008,
       trail: [], done: false,
     });
     const t = new Date().toTimeString().slice(0,8);
@@ -101,8 +101,8 @@ export function ThreatMap() {
     const ro = new ResizeObserver(resize);
     ro.observe(canvas);
 
-    const spawnInt = setInterval(spawnArc, 1300);
-    for (let i = 0; i < 5; i++) setTimeout(spawnArc, i * 280);
+    const spawnInt = setInterval(spawnArc, 600);
+    for (let i = 0; i < 8; i++) setTimeout(spawnArc, i * 150);
 
     const draw = () => {
       const W = canvas.width, H = canvas.height;
@@ -268,33 +268,6 @@ export function ThreatMap() {
         <div className="absolute top-2 right-2  w-3 h-3 border-t border-r border-primary/40 pointer-events-none" />
         <div className="absolute bottom-2 left-2  w-3 h-3 border-b border-l border-primary/40 pointer-events-none" />
         <div className="absolute bottom-2 right-2 w-3 h-3 border-b border-r border-primary/40 pointer-events-none" />
-      </div>
-
-      {/* Legend */}
-      <div className="flex flex-wrap gap-x-3 gap-y-0.5 px-3 py-1 border-t border-primary/10 shrink-0">
-        {ATTACK_TYPES.map(t => (
-          <div key={t.label} className="flex items-center gap-1">
-            <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: t.color }} />
-            <span className="text-[7px] text-gray-500">{t.label}</span>
-          </div>
-        ))}
-      </div>
-
-      {/* Live feed */}
-      <div className="border-t border-primary/20 bg-black/50 px-3 py-1.5 shrink-0" style={{ maxHeight:105, overflow:"hidden" }}>
-        <div className="text-[7px] text-gray-600 tracking-[0.35em] mb-0.5">EVENT_LOG</div>
-        {feed.length === 0
-          ? <div className="text-[8px] text-gray-700 animate-pulse">Scanning nodes…</div>
-          : feed.slice(0,5).map(e => (
-              <div key={e.id} className="flex items-center gap-1.5 text-[8px] leading-[1.7]">
-                <span className="text-gray-600 tabular-nums shrink-0">{e.time}</span>
-                <span className="px-1 text-[7px] shrink-0" style={{ color:e.color, border:`1px solid ${e.color}40` }}>{e.type}</span>
-                <span className="text-gray-400 truncate">{e.src}</span>
-                <span className="text-gray-700">→</span>
-                <span className="text-gray-300 truncate">{e.dst}</span>
-              </div>
-          ))
-        }
       </div>
     </div>
   );

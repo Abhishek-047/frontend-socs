@@ -64,33 +64,33 @@ export function HeroSection() {
         {/* ── LEFT: Text content ── */}
         <div className="text-left w-full min-w-0 pt-12">
           {/* eyebrow */}
-          <div className="mb-5 inline-flex items-center gap-2 text-[10px] text-primary/40 tracking-[0.5em] font-jetbrains uppercase">
-            <span className="w-2 h-2 bg-primary/40 animate-pulse" />
+          <div className="mb-6 inline-flex items-center gap-3 px-3 py-1 bg-primary/10 border border-primary/20 text-[11px] text-primary tracking-[0.6em] font-jetbrains uppercase">
+            <span className="w-2 h-2 bg-primary animate-pulse" />
             <span>Society of Cyber Security</span>
           </div>
 
-          <h1 ref={headingRef} className="text-4xl md:text-5xl xl:text-[4rem] font-bold font-grotesk text-white mb-5 tracking-tighter leading-[1.05] break-words">
-            <GlitchText text="THE CYBER" as="span" className="block text-gray-500" intensity="low" />
+          <h1 ref={headingRef} className="text-5xl md:text-7xl xl:text-[5.5rem] font-bold font-grotesk text-white mb-6 tracking-tighter leading-[1] break-words">
+            <GlitchText text="THE CYBER" as="span" className="block text-gray-400" intensity="low" />
             <GlitchText text="ARCHITECTS" as="span" className="text-primary text-glow" intensity="low" />
           </h1>
 
-          <p ref={subtextRef} className="max-w-lg text-gray-400 font-jetbrains text-sm md:text-base mb-8 leading-relaxed opacity-0">
+          <p ref={subtextRef} className="max-w-2xl text-gray-300 font-jetbrains text-base md:text-xl mb-10 leading-relaxed opacity-0">
             <ScrambleText text="Uniting elite researchers, ethical hackers, and security engineers. Learn. Break. Secure. Repeat." delay={1000} />
           </p>
 
-          <div ref={ctaRef} className="flex flex-col sm:flex-row gap-4 opacity-0">
-            <NeonButton href="/join" variant="primary" className="px-8 py-3 font-bold text-sm">
+          <div ref={ctaRef} className="flex flex-col sm:flex-row gap-5 opacity-0">
+            <NeonButton href="/login" variant="primary" className="px-10 py-4 font-bold text-base">
               Join the Network
             </NeonButton>
-            <NeonButton href="/projects" variant="outline" className="px-8 py-3 text-sm">
+            <NeonButton href="/projects" variant="outline" className="px-10 py-4 text-base">
               View Projects
             </NeonButton>
           </div>
 
           {/* Status strip */}
-          <div className="mt-10 flex items-center gap-4 text-[9px] text-gray-600 font-mono tracking-widest">
-            <span className="flex items-center gap-1.5">
-              <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
+          <div className="mt-12 flex items-center gap-6 text-[10px] text-gray-500 font-mono tracking-widest">
+            <span className="flex items-center gap-2">
+              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
               SYSTEM_ONLINE
             </span>
             <span className="text-gray-800">|</span>
@@ -101,31 +101,20 @@ export function HeroSection() {
         </div>
 
         {/* ── RIGHT: Threat Map ── */}
-        <div ref={mapRef} className="w-full h-[520px] lg:h-[600px] relative opacity-0">
+        <div ref={mapRef} className="w-full h-[550px] lg:h-[650px] relative opacity-0 mt-8 lg:mt-0">
           {/* Outer frame */}
           <div
-            className="absolute inset-0 border border-primary/30 bg-black/60 backdrop-blur-sm"
+            className="absolute inset-0 border border-primary/30 bg-black/60 backdrop-blur-sm shadow-[0_0_50px_rgba(200,255,0,0.05)]"
             style={{ clipPath: "polygon(0 16px, 16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%)" }}
           >
             {/* Inner content */}
             <div
-              className="absolute inset-[1px] bg-[#020508]"
+              className="absolute inset-[2px] bg-[#010305]"
               style={{ clipPath: "polygon(0 15px, 15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%)" }}
             >
               <ThreatMap />
             </div>
           </div>
-
-          {/* Corner accent labels */}
-          <div className="absolute -top-4 left-0 text-[8px] text-primary/50 font-mono tracking-widest">THREAT_MAP_v3.1</div>
-          <div className="absolute -bottom-4 right-0 text-[8px] text-gray-700 font-mono">LIVE // ENCRYPTED</div>
-        </div>
-      </div>
-
-      {/* Bottom left watermark */}
-      <div className="absolute bottom-8 left-0 hidden xl:block">
-        <div className="text-[8px] text-gray-700 font-mono tracking-[0.4em] rotate-90 origin-left uppercase">
-          SOCS_Network_Protocol_v2.5
         </div>
       </div>
     </section>
