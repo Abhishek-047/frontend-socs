@@ -89,21 +89,10 @@ export function HeroSection() {
         </div>
 
         {/* ── RIGHT: 3D Globe ── */}
-        <div ref={mapRef} className="w-full h-[400px] sm:h-[500px] lg:h-[600px] xl:h-[700px] relative opacity-0 order-1 lg:order-2">
-          {/* Outer frame */}
-          <div
-            className="absolute inset-0 border border-primary/20 bg-black/40 backdrop-blur-sm"
-            style={{ clipPath: "polygon(0 16px, 16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%)" }}
-          >
-            {/* Inner content */}
-            <div
-              className="absolute inset-0 bg-transparent flex items-center justify-center p-4"
-            >
-              <div className="w-full h-full max-w-full max-h-full">
-                <Globe3D />
-              </div>
+        <div ref={mapRef} className="w-full h-[400px] sm:h-[500px] lg:h-[600px] xl:h-[700px] relative opacity-0 order-1 lg:order-2 flex items-center justify-center">
+            <div className="w-full h-full max-w-full max-h-full">
+              <Globe3D />
             </div>
-          </div>
         </div>
       </div>
     </section>
