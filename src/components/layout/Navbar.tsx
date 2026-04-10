@@ -8,19 +8,26 @@ import { NeonButton } from "../ui/NeonButton";
 import { MobileMenu } from "./MobileMenu";
 import { Menu, X, Shield, MoreVertical } from "lucide-react";
 
+const TICKER_ITEMS = [
+  "# CTF Season 2025 registrations open — join now",
+  "# Zero-day discovered in OpenSSL — patch immediately",
+  "# SOCS Workshop: Reverse Engineering 101 — this Saturday",
+  "# New malware strain targeting Indian universities detected",
+  "# Bug Bounty Program launched — report vulnerabilities, earn rewards",
+  "# Capture The Flag results: Team NullPtr wins Round 5",
+  "# Ethical hacking bootcamp — limited seats available",
+  "# Critical CVE-2025-0x1337 patched — update your systems",
+];
+
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
-  const [isVisible, setIsVisible] = useState(true);
   const [scrolled, setScrolled] = useState(false);
-  const lastPosRef = useRef(0);
-  const ticking = useRef(false);
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
-
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -34,89 +41,129 @@ export function Navbar() {
     { name: "Gallery",   href: "/gallery",    code: "06" },
   ];
 
+  // Duplicate items for seamless loop
+  const tickerContent = [...TICKER_ITEMS, ...TICKER_ITEMS];
+
   return (
     <>
       {/* ── Standard Navbar ── */}
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled
-            ? "bg-black/85 border-primary/30 py-3 backdrop-blur-xl"
-            : "bg-transparent border-transparent py-5"
+            ? "bg-black/90 backdrop-blur-xl"
+            : "bg-transparent"
         }`}
       >
-        <div className="w-full grid grid-cols-[1fr_auto_1fr] items-center px-6 md:px-12">
-          {/* ── Left: Logo ── */}
-          <div className="flex items-center">
-            <Link href="/" className="flex items-center gap-4 group">
-              <div className="relative">
-                <span className="font-turret text-2xl font-black text-white tracking-[0.05em] transition-all duration-300 group-hover:text-primary">
-                  SOCS
-                </span>
-                <div className="absolute -bottom-1 left-0 w-0 h-[2px] bg-primary group-hover:w-full transition-all duration-300 shadow-[0_0_10px_rgba(200,255,0,0.8)]" />
-              </div>
-              <div className="relative flex items-center">
-                <div className="w-[3px] h-6 bg-primary shadow-[0_0_15px_rgba(200,255,0,0.6)]" />
-                <div className="ml-2 w-1.5 h-1.5 bg-primary rounded-full animate-pulse shadow-[0_0_8px_rgba(200,255,0,0.8)]" />
-              </div>
-            </Link>
-          </div>
-
-          {/* ── Center: Nav Links (Desktop) ── */}
-          <div className="hidden md:flex items-center gap-0">
-            {links.map((link) => {
-              const isActive = pathname === link.href;
-              return (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className={`relative px-5 xl:px-7 py-2 text-[15px] xl:text-[17px] font-black font-turret tracking-[0.1em] uppercase transition-all duration-300 group ${
-                    isActive ? "text-primary" : "text-gray-500 hover:text-white"
-                  }`}
-                >
-                  {isActive && (
-                    <motion.div 
-                      layoutId="nav-glow"
-                      className="absolute inset-x-0 bottom-0 top-0 z-0 bg-primary/5 border-l border-r border-primary/30"
-                      style={{
-                        backgroundImage: "radial-gradient(circle, #c8ff0011 1px, transparent 1px)",
-                        backgroundSize: "6px 6px"
-                      }}
-                    >
-                      <motion.div 
-                        animate={{ y: ["-100%", "100%"] }}
-                        transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                        className="absolute inset-x-0 h-full bg-gradient-to-b from-transparent via-primary/10 to-transparent opacity-50"
-                      />
-                    </motion.div>
-                  )}
-                  <span className="relative z-10 flex items-center transition-all duration-300 group-hover:text-primary group-hover:scale-105">
-                    <span className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 mr-1 text-primary font-mono text-sm">[</span>
-                    {link.name}
-                    <span className="opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 ml-1 text-primary font-mono text-sm">]</span>
+        {/* ── Main Nav Bar ── */}
+        <div className={`border-b transition-all duration-300 ${scrolled ? "border-primary/20" : "border-transparent"}`}>
+          <div className="w-full grid grid-cols-[1fr_auto_1fr] items-center px-6 md:px-12 py-4">
+            {/* ── Left: Logo ── */}
+            <div className="flex items-center">
+              <Link href="/" className="flex items-center gap-4 group">
+                <div className="relative">
+                  <span className="font-turret text-2xl font-black text-white tracking-[0.05em] transition-all duration-300 group-hover:text-primary">
+                    SOCS
                   </span>
-                </Link>
-              );
-            })}
+                  <div className="absolute -bottom-1 left-0 w-0 h-[2px] bg-primary group-hover:w-full transition-all duration-300 shadow-[0_0_10px_rgba(200,255,0,0.8)]" />
+                </div>
+                <div className="relative flex items-center">
+                  <div className="w-[3px] h-6 bg-primary shadow-[0_0_15px_rgba(200,255,0,0.6)]" />
+                  <div className="ml-2 w-1.5 h-1.5 bg-primary rounded-full animate-pulse shadow-[0_0_8px_rgba(200,255,0,0.8)]" />
+                </div>
+              </Link>
+            </div>
+
+            {/* ── Center: Nav Links (Desktop) ── */}
+            <div className="hidden md:flex items-center gap-0">
+              {links.map((link) => {
+                const isActive = pathname === link.href;
+                return (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    className={`relative px-5 xl:px-7 py-2 text-[15px] xl:text-[17px] font-black font-turret tracking-[0.1em] uppercase transition-all duration-300 group ${
+                      isActive ? "text-primary" : "text-gray-500 hover:text-white"
+                    }`}
+                  >
+                    {isActive && (
+                      <motion.div
+                        layoutId="nav-glow"
+                        className="absolute inset-x-0 bottom-0 top-0 z-0 bg-primary/5 border-l border-r border-primary/30"
+                        style={{
+                          backgroundImage: "radial-gradient(circle, #c8ff0011 1px, transparent 1px)",
+                          backgroundSize: "6px 6px"
+                        }}
+                      >
+                        <motion.div
+                          animate={{ y: ["-100%", "100%"] }}
+                          transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                          className="absolute inset-x-0 h-full bg-gradient-to-b from-transparent via-primary/10 to-transparent opacity-50"
+                        />
+                      </motion.div>
+                    )}
+                    <span className="relative z-10 flex items-center transition-all duration-300 group-hover:text-primary group-hover:scale-105">
+                      <span className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 mr-1 text-primary font-mono text-sm">[</span>
+                      {link.name}
+                      <span className="opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 ml-1 text-primary font-mono text-sm">]</span>
+                    </span>
+                  </Link>
+                );
+              })}
+            </div>
+
+            {/* ── Right: JOIN + Mobile Toggle ── */}
+            <div className="flex items-center justify-end gap-4">
+              <NeonButton href="/login" variant="outline" className="hidden md:inline-flex text-[14px] px-7 py-2.5 font-black tracking-[0.2em] border-2">
+                JOIN
+              </NeonButton>
+
+              {/* Mobile menu toggle */}
+              <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="md:hidden text-gray-300 hover:text-primary transition-colors p-2"
+                aria-label="Toggle menu"
+              >
+                {isOpen
+                  ? <X className="h-6 w-6 text-primary" />
+                  : <MoreVertical className="h-6 w-6" />
+                }
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Hacker Ticker Bar ── */}
+        <div className="w-full bg-black/60 border-b border-primary/10 backdrop-blur-sm overflow-hidden flex items-center h-7">
+          {/* Label */}
+          <div className="flex items-center gap-2 px-4 shrink-0 border-r border-primary/20 h-full bg-primary/5">
+            <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse shadow-[0_0_6px_rgba(255,0,0,0.8)]" />
+            <span className="text-[9px] font-mono font-bold tracking-[0.25em] text-primary uppercase whitespace-nowrap">THREAT_FEED</span>
           </div>
 
-          {/* ── Right: JOIN + Mobile Toggle ── */}
-          <div className="flex items-center justify-end gap-4">
-            <NeonButton href="/login" variant="outline" className="hidden md:inline-flex text-[14px] px-7 py-2.5 font-black tracking-[0.2em] border-2">
-              JOIN
-            </NeonButton>
-
-            {/* Mobile menu toggle */}
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden text-gray-300 hover:text-primary transition-colors p-2"
-              aria-label="Toggle menu"
+          {/* Scrolling content */}
+          <div className="relative flex-1 overflow-hidden">
+            <motion.div
+              className="flex items-center gap-0 whitespace-nowrap"
+              animate={{ x: ["0%", "-50%"] }}
+              transition={{
+                duration: 40,
+                repeat: Infinity,
+                ease: "linear",
+              }}
             >
-              {isOpen
-                ? <X className="h-6 w-6 text-primary" />
-                : <MoreVertical className="h-6 w-6" />
-              }
-            </button>
+              {tickerContent.map((item, i) => (
+                <span key={i} className="inline-flex items-center">
+                  <span className="text-[11px] font-mono text-primary/70 px-6 tracking-wide hover:text-primary transition-colors cursor-default">
+                    {item}
+                  </span>
+                  <span className="text-primary/20 text-xs">|</span>
+                </span>
+              ))}
+            </motion.div>
           </div>
+
+          {/* Right fade */}
+          <div className="absolute right-0 top-0 h-7 w-16 bg-gradient-to-l from-black to-transparent pointer-events-none z-10" />
         </div>
       </nav>
 
