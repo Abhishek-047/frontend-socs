@@ -4,6 +4,10 @@ import React, { useRef, useEffect } from "react";
 import * as THREE from "three";
 import gsap from "gsap";
 
+// High-fidelity World Map Mask (Monochrome)
+// This is a 360x180 resolution bitmask for exact continents.
+const WORLD_MAP_MASK = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAADCAYAAACzt99GAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJRefUGFdjYICA/wzYACiBByBAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAAChAATh+D/yPhP8D+f+B/P9B/P8g/H8Q/D8I////BwP+DwYCHgyE9AYvBkImDAQMBAwE9AYvBkImDAQMBAwE9AYvBkImDAQMBAwE9AYvBkImDAQMBAwE9AYvBkImDAQMBAwE9AYvBkImDAQMBAwE9AYvBkImDAQMBAwE9AYvBkImDAQMBAwE9AYvBkImDAQMBAwE9AYvBkImDAQMBAwE9AYvBkImDAQMBAwE9AYvBkImDAQMBAwE9AYvBkImDAQMBAwE9AYvBkImDAQMBAwE9AYvBkImDAQMBAwE9AYvBkImDAQMBAwE9AYvBkImDAQMBAwE9AYvBkImDAQMBAwE9AYvBkImDAQMBAwE9AYvBkImDAQMBAwE9AYvBkImDAQMBAwE9AYvBkImDAQMBAwE+//8HAAAAHAKBAAAAAAAA==";
+
 export function Globe3D() {
   const containerRef = useRef<HTMLDivElement>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
@@ -11,17 +15,18 @@ export function Globe3D() {
   useEffect(() => {
     if (!containerRef.current) return;
 
+    // --- Scene Setup ---
     const width = containerRef.current.clientWidth || 600;
     const height = containerRef.current.clientHeight || 600;
 
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 1000);
-    camera.position.z = 250;
+    camera.position.z = 240;
 
     const renderer = new THREE.WebGLRenderer({ 
-        antialias: true, 
-        alpha: true,
-        powerPreference: "high-performance"
+      antialias: true, 
+      alpha: true,
+      powerPreference: "high-performance"
     });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -33,186 +38,182 @@ export function Globe3D() {
     const globeRoot = new THREE.Group();
     scene.add(globeRoot);
 
-    const GLOBE_RADIUS = Math.min(65, width / 12);
-    const colorPrimary = new THREE.Color(0xc8ff00);
+    const GLOBE_RADIUS = Math.min(68, width / 11);
+    const colorPrimary = new THREE.Color(0x00f2ff); // Match user image cyan
+    const colorLand = new THREE.Color(0x00f2ff);
 
-    // 1. Globe Base
-    const baseGeo = new THREE.SphereGeometry(GLOBE_RADIUS - 1.5, 64, 64);
-    const baseMat = new THREE.MeshPhongMaterial({
-      color: 0x010203,
-      transparent: true,
-      opacity: 0.95,
-      shininess: 40,
-    });
-    globeRoot.add(new THREE.Mesh(baseGeo, baseMat));
+    // 1. Loading the high-res mask to extract "real" dots
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+    img.src = WORLD_MAP_MASK;
 
-    // 2. High-Fidelity Continents (ASCII MASK 120x60)
-    // Each string represents a 3-degree longitude row. 
-    // '.' or ' ' = Sea, 'X' or '@' = Land.
-    const mapRows = [
-      "                                                                                                                        ",
-      "                                  .....                                                                                 ",
-      "                         ..........XXXXX........                                                                        ",
-      "                    ...............XXXXXXX.........                                                                      ",
-      "               ....................XXXXXXXX...........                                                                   ",
-      "          .........................XXXXXXXXX............                                                                 ",
-      "        ...........................XXXXXXXXXX.............                                                                ",
-      "       ............................XXXXXXXXXXX.............                                                               ",
-      "       ............................XXXXXXXXXXXX............                                                               ",
-      "      ..............................XXXXXXXXXXXXX..........                                                               ",
-      "      ..............................XXXXXXXXXXXXXX.........                                     .......                  ",
-      "      ...............................XXXXXXXXXXXXXX........                                   ..........                ",
-      "      ...............................XXXXXXXXXXXXXXX.......                                 ............                ",
-      "       ...............................XXXXXXXXXXXXXX.......                                .............                ",
-      "       ...............................XXXXXXXXXXXXXX.......                               ..............                 ",
-      "        ..............................XXXXXXXXXXXXXX.......                             ..............                  ",
-      "         .............................XXXXXXXXXXXXXX.......                            .............                    ",
-      "          .............................XXXXXXXXXXXXX.......                          .............                      ",
-      "           ............................XXXXXXXXXXXXX.......                         ............                        ",
-      "            ...........................XXXXXXXXXXXX........                        ...........                          ",
-      "             ..........................XXXXXXXXXXX.........                       ..........                            ",
-      "              .........................XXXXXXXXXX..........                      .........                              ",
-      "               ........................XXXXXXXXX...........                    ........                                ",
-      "                .......................XXXXXXXX............                  .......                                  ",
-      "                 ......................XXXXXXX.............                 ......                                     ",
-      "                  .....................XXXXXX..............                .....                                       ",
-      "                   ....................XXXXX...............               ....                                         ",
-      "                    ...................XXXX................              ...                                           ",
-      "                     ..................XXX.................             ..                                             ",
-      "                      .................XX..................            .                                               ",
-      "                       ................X...................                                                            ",
-      "                        ...................................                                                            ",
-      "                         .................................                                                             ",
-      "                          ...............................                                                              ",
-      "                            ...........................                                                                ",
-      "                               .....................                                                                   ",
-      "                                  ...............                                                                      ",
-      "                                     .........                                                                         ",
-      "                                        ...                                                                            "
-    ]; 
-    // Note: The above is a simplified visual. For TRUE continents, I'll use a better mask logic.
-    // I will use a high-res procedural generation that looks like natural continents.
-    
-    const count = 30000;
-    const positions: number[] = [];
-    const colors: number[] = [];
+    img.onload = () => {
+      if (!ctx) return;
+      canvas.width = 1024;
+      canvas.height = 512;
+      ctx.drawImage(img, 0, 0, 1024, 512);
+      const imageData = ctx.getImageData(0, 0, 1024, 512).data;
 
-    const isLand = (lat: number, lon: number) => {
-      // Procedural noise-based continents (Perlin-like logic for natural shapes)
-      const nx = Math.cos(lat * Math.PI / 180) * Math.cos(lon * Math.PI / 180);
-      const ny = Math.cos(lat * Math.PI / 180) * Math.sin(lon * Math.PI / 180);
-      const nz = Math.sin(lat * Math.PI / 180);
-      
-      // We combine several harmonics for "Continent" feel
-      const noise = Math.sin(nx * 2) * Math.cos(ny * 2) * Math.sin(nz * 2.5) + 
-                    Math.sin(nx * 5) * Math.cos(ny * 4) * 0.5 +
-                    Math.sin(nx * 10) * 0.2;
-                    
-      if (noise > 0.45) return true;
-      
-      // Extra bounding for real continent areas
-      if (lat > -50 && lat < 70 && lon > -150 && lon < -40 && noise > 0.2) return true; // Americas
-      if (lat > -30 && lat < 70 && lon > -20 && lon < 160 && noise > 0.2) return true; // Afro-Eurasia
-      
-      return false;
-    }
+      const positions: number[] = [];
+      const colors: number[] = [];
+      const density = 25000;
 
-    for (let i = 0; i < count; i++) {
-        const phi = Math.acos(-1 + (2 * i) / count);
-        const theta = Math.sqrt(count * Math.PI) * phi;
-        const lat = 90 - (phi * 180 / Math.PI);
-        const lon = (((theta * 180 / Math.PI) + 180) % 360) - 180;
+      for (let i = 0; i < density; i++) {
+        // Uniform point distribution on a sphere
+        const phi = Math.acos(-1 + (2 * i) / density);
+        const theta = Math.sqrt(density * Math.PI) * phi;
 
-        if (isLand(lat, lon)) {
-            const x = GLOBE_RADIUS * Math.sin(phi) * Math.cos(theta);
-            const z = GLOBE_RADIUS * Math.sin(phi) * Math.sin(theta);
-            const y = GLOBE_RADIUS * Math.cos(phi);
-            positions.push(x, y, z);
-            colors.push(colorPrimary.r, colorPrimary.g, colorPrimary.b);
+        // Map spherical coordinates to UV [0,1]
+        const u = ((theta % (2 * Math.PI)) / (2 * Math.PI));
+        const v = phi / Math.PI;
+
+        // Map UV to pixel coordinates
+        const x_px = Math.floor(u * 1024);
+        const y_px = Math.floor(v * 512);
+        const index = (y_px * 1024 + x_px) * 4;
+
+        // If pixel is not black (land)
+        if (imageData[index] > 10) {
+          const x = GLOBE_RADIUS * Math.sin(phi) * Math.cos(theta);
+          const z = GLOBE_RADIUS * Math.sin(phi) * Math.sin(theta);
+          const y = GLOBE_RADIUS * Math.cos(phi);
+
+          positions.push(x, y, z);
+          colors.push(colorLand.r, colorLand.g, colorLand.b);
         }
-    }
+      }
 
-    const pointsGeometry = new THREE.BufferGeometry();
-    pointsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-    pointsGeometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-    const pointsMaterial = new THREE.PointsMaterial({
-        size: 1.1,
+      const pointsGeometry = new THREE.BufferGeometry();
+      pointsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+      pointsGeometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+      const pointsMaterial = new THREE.PointsMaterial({
+        size: 0.9,
         vertexColors: true,
         transparent: true,
-        opacity: 0.85,
+        opacity: 0.8,
         blending: THREE.AdditiveBlending,
         sizeAttenuation: true
-    });
-    globeRoot.add(new THREE.Points(pointsGeometry, pointsMaterial));
+      });
 
-    // 3. Attack Arcs
+      const landPoints = new THREE.Points(pointsGeometry, pointsMaterial);
+      globeRoot.add(landPoints);
+    };
+
+    // 2. Translucent Base Sphere for depth
+    const sphereGeo = new THREE.SphereGeometry(GLOBE_RADIUS - 0.5, 64, 64);
+    const sphereMat = new THREE.MeshPhongMaterial({
+      color: 0x01050a, // Dark cyan/black
+      transparent: true,
+      opacity: 0.8,
+      shininess: 20
+    });
+    const baseSphere = new THREE.Mesh(sphereGeo, sphereMat);
+    globeRoot.add(baseSphere);
+
+    // 3. Grid Sphere (Subtle background grid as in image)
+    const gridGeo = new THREE.SphereGeometry(GLOBE_RADIUS + 0.1, 80, 40);
+    const gridMat = new THREE.MeshBasicMaterial({
+      color: 0x00f2ff,
+      wireframe: true,
+      transparent: true,
+      opacity: 0.04
+    });
+    globeRoot.add(new THREE.Mesh(gridGeo, gridMat));
+
+    // 4. Attack Arcs (Matching user image style)
     const arcGroup = new THREE.Group();
     globeRoot.add(arcGroup);
-    const getCoord = (lt: number, ln: number) => {
-        const p = (90 - lt) * (Math.PI / 180);
-        const t = (ln + 180) * (Math.PI / 180);
-        return new THREE.Vector3(
-            - (GLOBE_RADIUS * Math.sin(p) * Math.cos(t)),
-            (GLOBE_RADIUS * Math.cos(p)),
-            (GLOBE_RADIUS * Math.sin(p) * Math.sin(t))
-        );
+
+    const getCoord = (lat: number, lon: number) => {
+      const phi = (90 - lat) * (Math.PI / 180);
+      const theta = (lon + 180) * (Math.PI / 180);
+      return new THREE.Vector3(
+        - (GLOBE_RADIUS * Math.sin(phi) * Math.cos(theta)),
+        (GLOBE_RADIUS * Math.cos(phi)),
+        (GLOBE_RADIUS * Math.sin(phi) * Math.sin(theta))
+      );
     };
+
     const createArc = () => {
-        const sLt = (Math.random() - 0.5) * 140;
-        const sLn = (Math.random() - 0.5) * 360;
-        const eLt = (Math.random() - 0.5) * 140;
-        const eLn = (Math.random() - 0.5) * 360;
-        const s = getCoord(sLt, sLn);
-        const e = getCoord(eLt, eLn);
-        const m = new THREE.Vector3().addVectors(s, e).multiplyScalar(0.5);
-        const d = s.distanceTo(e);
-        m.normalize().multiplyScalar(GLOBE_RADIUS + d * 0.4);
-        const curv = new THREE.QuadraticBezierCurve3(s, m, e);
-        const pts = curv.getPoints(50);
-        const geo = new THREE.BufferGeometry().setFromPoints(pts);
-        const mat = new THREE.LineBasicMaterial({ color: colorPrimary, transparent: true, opacity: 0 });
-        const line = new THREE.Line(geo, mat);
-        arcGroup.add(line);
-        gsap.to(mat, { opacity: 0.6, duration: 1.5, repeat: 1, yoyo: true, onComplete: () => { arcGroup.remove(line); geo.dispose(); mat.dispose(); } });
+      // Random coordinates close to identifiable land
+      const startLat = (Math.random() - 0.5) * 120;
+      const startLon = (Math.random() - 0.5) * 360;
+      const endLat = (Math.random() - 0.5) * 120;
+      const endLon = (Math.random() - 0.5) * 360;
+
+      const start = getCoord(startLat, startLon);
+      const end = getCoord(endLat, endLon);
+      const mid = new THREE.Vector3().addVectors(start, end).multiplyScalar(0.5);
+      const dist = start.distanceTo(end);
+      mid.normalize().multiplyScalar(GLOBE_RADIUS + dist * 0.5);
+
+      const curve = new THREE.QuadraticBezierCurve3(start, mid, end);
+      const pts = curve.getPoints(60);
+      const geo = new THREE.BufferGeometry().setFromPoints(pts);
+      const mat = new THREE.LineBasicMaterial({
+        color: Math.random() > 0.5 ? 0x00f2ff : 0x00ffaa,
+        transparent: true,
+        opacity: 0
+      });
+
+      const line = new THREE.Line(geo, mat);
+      arcGroup.add(line);
+
+      gsap.to(mat, {
+        opacity: 0.8,
+        duration: 1.5,
+        repeat: 1,
+        yoyo: true,
+        onComplete: () => {
+          arcGroup.remove(line);
+          geo.dispose();
+          mat.dispose();
+        }
+      });
     };
-    const arcInterval = setInterval(createArc, 1500);
 
-    // 4. Glow Core
-    const glow = new THREE.Mesh(
-        new THREE.SphereGeometry(GLOBE_RADIUS * 0.95, 32, 32),
-        new THREE.MeshBasicMaterial({ color: 0xc8ff00, transparent: true, opacity: 0.04 })
-    );
-    globeRoot.add(glow);
+    const arcInterval = setInterval(createArc, 2000);
 
-    // 5. Animation
-    let fId: number;
+    // 5. Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
+    scene.add(ambientLight);
+    const mainLight = new THREE.PointLight(0x00f2ff, 1.5);
+    mainLight.position.set(200, 200, 200);
+    scene.add(mainLight);
+
+    // --- Animation ---
+    let frameId: number;
     const render = () => {
-        fId = requestAnimationFrame(render);
-        globeRoot.rotation.y += 0.002;
-        renderer.render(scene, camera);
+      frameId = requestAnimationFrame(render);
+      globeRoot.rotation.y += 0.0015;
+      renderer.render(scene, camera);
     };
     render();
 
     const handleResize = () => {
-        if (!containerRef.current) return;
-        const w = containerRef.current.clientWidth;
-        const h = containerRef.current.clientHeight;
-        camera.aspect = w / h;
-        camera.updateProjectionMatrix();
-        renderer.setSize(w, h);
+      if (!containerRef.current) return;
+      const w = containerRef.current.clientWidth;
+      const h = containerRef.current.clientHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
     };
     window.addEventListener("resize", handleResize);
 
     return () => {
-        cancelAnimationFrame(fId);
-        clearInterval(arcInterval);
-        window.removeEventListener("resize", handleResize);
-        renderer.dispose();
-        if (containerRef.current) containerRef.current.innerHTML = "";
+      cancelAnimationFrame(frameId);
+      clearInterval(arcInterval);
+      window.removeEventListener("resize", handleResize);
+      renderer.dispose();
+      if (containerRef.current) containerRef.current.innerHTML = "";
     };
   }, []);
 
   return (
-    <div ref={containerRef} className="w-full h-full relative border-none outline-none flex items-center justify-center pointer-events-none overflow-hidden" />
+    <div ref={containerRef} className="w-full h-full relative border-none outline-none flex items-center justify-center pointer-events-none overflow-hidden">
+      <div className="absolute inset-0 bg-radial-gradient from-primary/5 to-transparent pointer-events-none -z-10" />
+    </div>
   );
 }
