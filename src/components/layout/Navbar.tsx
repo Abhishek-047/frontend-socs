@@ -96,7 +96,7 @@ export function Navbar() {
           {/* ── Right: CTA (Desktop) + Mobile Menu Toggle ── */}
           <div className="flex items-center justify-end shrink-0 gap-4">
             <NeonButton href="/login" variant="outline" className="hidden md:inline-flex text-xs px-5 py-2">
-              Login / Signup
+              Access Core
             </NeonButton>
 
             {/* Mobile menu toggle (3 dots as requested) */}

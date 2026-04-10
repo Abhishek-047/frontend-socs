@@ -62,7 +62,7 @@ export function MobileMenu({ isOpen, setIsOpen, links, pathname }: MobileMenuPro
                  className="w-full justify-start"
                  onClick={() => setIsOpen(false)}
                >
-                 &gt; EXECUTE LOGIN_AUTH
+                 &gt; EXECUTE LOGIN_ACCESS
                </NeonButton>
             </motion.div>
           </div>
