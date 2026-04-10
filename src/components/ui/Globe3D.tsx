@@ -2,6 +2,9 @@
 
 import React, { useRef, useEffect } from "react";
 import * as THREE from "three";
+import * as topojson from "topojson-client";
+import worldData from "world-atlas/countries-110m.json";
+import gsap from "gsap";
 
 export function Globe3D() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -32,99 +35,137 @@ export function Globe3D() {
     const globeRoot = new THREE.Group();
     scene.add(globeRoot);
 
-    const GLOBE_RADIUS = 60; 
-
-    // 1. Core Sphere
-    const sphereGeometry = new THREE.SphereGeometry(GLOBE_RADIUS - 0.5, 64, 64);
-    const sphereMaterial = new THREE.MeshPhongMaterial({
-      color: 0x020406,
-      transparent: true,
-      opacity: 0.8,
-      shininess: 30,
-    });
-    const mainSphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-    globeRoot.add(mainSphere);
-
-    // 2. Subtle Grid
-    const gridGeometry = new THREE.SphereGeometry(GLOBE_RADIUS + 0.2, 32, 32);
-    const gridMaterial = new THREE.MeshBasicMaterial({
-      color: 0xc8ff00,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.03,
-    });
-    globeRoot.add(new THREE.Mesh(gridGeometry, gridMaterial));
-
-    // 3. Continent Mask (High-Fidelity)
-    const pointsCount = 30000;
-    const positions = [];
-    const colors = [];
+    const GLOBE_RADIUS = 60;
     const colorPrimary = new THREE.Color(0xc8ff00);
 
-    // High-resolution landmass check
-    const isLand = (lat: number, lon: number) => {
-        // North America
-        if (lat > 0.15 && lat < 1.25 && lon > -2.9 && lon < -0.9) {
-            if (lat > 0.8 || (lon < -1.2 && lat > 0.4) || (lon > -1.8 && lat < 0.8)) return true;
-        }
-        // South America
-        if (lat > -0.95 && lat < 0.25 && lon > -1.45 && lon < -0.6) {
-            if (lon < -0.7 || lat > -0.4) return true;
-        }
-        // Africa
-        if (lat > -0.65 && lat < 0.65 && lon > -0.3 && lon < 0.9) {
-            if (lon < 0.7 || (lat > 0.1 && lon < 0.8)) return true;
-        }
-        // Eurasia
-        if (lat > 0.15 && lat < 1.35 && lon > -0.15 && lon < 3.0) {
-            if (lat > 0.4 || lon > 0.5 || (lat > 0.2 && lon < 1.0)) return true;
-        }
-        // Australia
-        if (lat > -0.75 && lat < -0.15 && lon > 1.95 && lon < 2.75) return true;
-        // Greenland / Arctic
-        if (lat > 1.05 && lon > -0.8 && lon < -0.2) return true;
-        
-        return false;
-    };
+    // 1. Core Sphere (Dark)
+    const sphereGeometry = new THREE.SphereGeometry(GLOBE_RADIUS - 1, 64, 64);
+    const sphereMaterial = new THREE.MeshPhongMaterial({
+      color: 0x020304,
+      transparent: true,
+      opacity: 0.9,
+      shininess: 40,
+    });
+    globeRoot.add(new THREE.Mesh(sphereGeometry, sphereMaterial));
 
-    for (let i = 0; i < pointsCount; i++) {
-        const phi = Math.acos(-1 + (2 * i) / pointsCount);
-        const theta = Math.sqrt(pointsCount * Math.PI) * phi;
-        
-        const lat = Math.PI/2 - phi;
-        const lon = ((theta + Math.PI) % (Math.PI * 2)) - Math.PI;
+    // 2. High-Fidelity Continents from world-atlas
+    // @ts-ignore
+    const land = topojson.feature(worldData, worldData.objects.land);
+    const pointsGeometry = new THREE.BufferGeometry();
+    const positions: number[] = [];
+    const colors: number[] = [];
 
-        if (isLand(lat, lon)) {
-            const x = GLOBE_RADIUS * Math.cos(theta) * Math.sin(phi);
-            const y = GLOBE_RADIUS * Math.sin(theta) * Math.sin(phi);
-            const z = GLOBE_RADIUS * Math.cos(phi);
-            positions.push(x, y, z);
-            colors.push(colorPrimary.r, colorPrimary.g, colorPrimary.b);
-        }
+    function processCoord(lon: number, lat: number) {
+        const phi = (90 - lat) * (Math.PI / 180);
+        const theta = (lon + 180) * (Math.PI / 180);
+
+        const x = - (GLOBE_RADIUS * Math.sin(phi) * Math.cos(theta));
+        const z = (GLOBE_RADIUS * Math.sin(phi) * Math.sin(theta));
+        const y = (GLOBE_RADIUS * Math.cos(phi));
+
+        positions.push(x, y, z);
+        colors.push(colorPrimary.r, colorPrimary.g, colorPrimary.b);
     }
 
-    const pointsGeometry = new THREE.BufferGeometry();
+    // @ts-ignore
+    if (land.geometry.type === "MultiPolygon") {
+        // @ts-ignore
+        land.geometry.coordinates.forEach((polygon: any) => {
+            polygon.forEach((ring: any) => {
+                ring.forEach((coord: [number, number]) => {
+                    processCoord(coord[0], coord[1]);
+                });
+            });
+        });
+    } else {
+        // @ts-ignore
+        land.geometry.coordinates.forEach((ring: any) => {
+            ring.forEach((coord: [number, number]) => {
+                processCoord(coord[0], coord[1]);
+            });
+        });
+    }
+
     pointsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
     pointsGeometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
     
     const pointsMaterial = new THREE.PointsMaterial({
-        size: 0.75,
+        size: 0.8,
         vertexColors: true,
         transparent: true,
-        opacity: 0.7,
+        opacity: 0.8,
         blending: THREE.AdditiveBlending
     });
     globeRoot.add(new THREE.Points(pointsGeometry, pointsMaterial));
 
+    // 3. Attack Arcs
+    const arcGroup = new THREE.Group();
+    globeRoot.add(arcGroup);
+
+    function getCoord(lat: number, lon: number) {
+        const phi = (90 - lat) * (Math.PI / 180);
+        const theta = (lon + 180) * (Math.PI / 180);
+        return new THREE.Vector3(
+            - (GLOBE_RADIUS * Math.sin(phi) * Math.cos(theta)),
+            (GLOBE_RADIUS * Math.cos(phi)),
+            (GLOBE_RADIUS * Math.sin(phi) * Math.sin(theta))
+        );
+    }
+
+    const createArc = () => {
+        const startLat = (Math.random() - 0.5) * 160;
+        const startLon = (Math.random() - 0.5) * 360;
+        const endLat = (Math.random() - 0.5) * 160;
+        const endLon = (Math.random() - 0.5) * 360;
+
+        const start = getCoord(startLat, startLon);
+        const end = getCoord(endLat, endLon);
+
+        const mid = new THREE.Vector3().addVectors(start, end).multiplyScalar(0.5);
+        const distance = start.distanceTo(end);
+        mid.normalize().multiplyScalar(GLOBE_RADIUS + distance * 0.4);
+
+        const curve = new THREE.QuadraticBezierCurve3(start, mid, end);
+        const points = curve.getPoints(50);
+        const geometry = new THREE.BufferGeometry().setFromPoints(points);
+        
+        const material = new THREE.LineBasicMaterial({
+            color: colorPrimary,
+            transparent: true,
+            opacity: 0,
+        });
+
+        const line = new THREE.Line(geometry, material);
+        arcGroup.add(line);
+
+        gsap.to(material, {
+            opacity: 0.6,
+            duration: 1,
+            repeat: 1,
+            yoyo: true,
+            onComplete: () => {
+                arcGroup.remove(line);
+                geometry.dispose();
+                material.dispose();
+            }
+        });
+    };
+
+    const arcInterval = setInterval(createArc, 1200);
+
     // 4. Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
     scene.add(ambientLight);
+
+    const topLight = new THREE.PointLight(0xc8ff00, 2);
+    topLight.position.set(200, 200, 200);
+    scene.add(topLight);
 
     // --- Animation ---
     let frameId: number;
     const render = () => {
         frameId = requestAnimationFrame(render);
-        globeRoot.rotation.y += 0.0025;
+        globeRoot.rotation.y += 0.002;
         renderer.render(scene, camera);
     };
     render();
@@ -141,6 +182,7 @@ export function Globe3D() {
 
     return () => {
         cancelAnimationFrame(frameId);
+        clearInterval(arcInterval);
         window.removeEventListener("resize", handleResize);
         renderer.dispose();
         if (containerRef.current) containerRef.current.innerHTML = "";
@@ -148,14 +190,14 @@ export function Globe3D() {
   }, []);
 
   return (
-    <div ref={containerRef} className="w-full h-full relative flex items-center justify-center">
-        {/* Fallback during potential delay */}
-        <div className="absolute font-mono text-[8px] text-primary/20 animate-pulse">INIT_COORD_STREAM...</div>
+    <div ref={containerRef} className="w-full h-full relative flex items-center justify-center pointer-events-none">
+        {/* Glow Overlay */}
+        <div className="absolute inset-0 bg-radial-gradient from-primary/5 to-transparent pointer-events-none -z-10" />
         
-        {/* HUD Elements Overlay */}
-        <div className="absolute top-4 right-4 z-10 font-mono text-[7px] text-primary/30 uppercase text-right space-y-1 hidden md:block">
-            <div>UPLINK: ACTIVE</div>
-            <div>STATION: 39°N 77°W</div>
+        {/* HUD Elements */}
+        <div className="absolute top-8 right-8 z-30 font-mono text-[7px] text-primary/40 tracking-[0.3em] uppercase hidden xl:block text-right">
+            <div className="animate-pulse">LATENCY: 24MS</div>
+            <div className="mt-1">THREAT_LEVEL: NOMINAL</div>
         </div>
     </div>
   );
