@@ -5,7 +5,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { NeonButton } from "../ui/NeonButton";
-import { GlitchText } from "../ui/GlitchText";
 import { MobileMenu } from "./MobileMenu";
 import { Menu, X, Shield, MoreVertical } from "lucide-react";
 
@@ -85,8 +84,8 @@ export function Navbar() {
                       />
                     </motion.div>
                   )}
-                  <span className="relative z-10 group-hover:text-white transition-colors duration-300">
-                    <GlitchText text={link.name} intensity="low" />
+                  <span className="relative z-10 group-hover:text-primary group-hover:tracking-[0.2em] transition-all duration-300">
+                    {link.name}
                   </span>
                 </Link>
               );

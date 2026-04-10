@@ -70,7 +70,7 @@ export function Globe3D() {
     const globeGrid = new THREE.Mesh(gridGeometry, gridMaterial);
     globeRoot.add(globeGrid);
 
-    // 4. Continent Points (Reliable Image Scan)
+    // 4. Continent Points (Reliable Image Scan + Local Fallback)
     const pointsCount = 20000;
     const pointsGeometry = new THREE.BufferGeometry();
     const positions = new Float32Array(pointsCount * 3);
@@ -79,17 +79,7 @@ export function Globe3D() {
     const loader = new THREE.TextureLoader();
     loader.setCrossOrigin("anonymous");
     
-    // Using a more stable world map alpha texture
-    loader.load("https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_specular_2048.jpg", 
-      (texture) => {
-        const canvas = document.createElement('canvas');
-        canvas.width = 1024;
-        canvas.height = 512;
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-        ctx.drawImage(texture.image, 0, 0, 1024, 512);
-        const data = ctx.getImageData(0, 0, 1024, 512).data;
-
+    const createPointsFromData = (data: Uint8ClampedArray, w: number, h: number) => {
         let pIdx = 0;
         for (let i = 0; i < pointsCount; i++) {
           const phi = Math.acos(-1 + (2 * i) / pointsCount);
@@ -98,18 +88,16 @@ export function Globe3D() {
           const u = 1 - (theta / (Math.PI * 2) % 1);
           const v = phi / Math.PI;
           
-          const tx = Math.floor(u * 1023);
-          const ty = Math.floor(v * 511);
-          const offset = (ty * 1024 + tx) * 4;
+          const tx = Math.floor(u * (w - 1));
+          const ty = Math.floor(v * (h - 1));
+          const offset = (ty * w + tx) * 4;
           
-          // Higher threshold for more distinct continents
           if (data[offset] > 40) {
             positions[pIdx * 3] = GLOBE_RADIUS * Math.cos(theta) * Math.sin(phi);
             positions[pIdx * 3 + 1] = GLOBE_RADIUS * Math.sin(theta) * Math.sin(phi);
             positions[pIdx * 3 + 2] = GLOBE_RADIUS * Math.cos(phi);
 
             const color = new THREE.Color(0xc8ff00);
-            if (Math.random() > 0.98) color.setHex(0xffffff);
             colors[pIdx * 3] = color.r;
             colors[pIdx * 3 + 1] = color.g;
             colors[pIdx * 3 + 2] = color.b;
@@ -121,42 +109,49 @@ export function Globe3D() {
         pointsGeometry.setAttribute('color', new THREE.BufferAttribute(colors.slice(0, pIdx * 3), 3));
         
         const pointsMaterial = new THREE.PointsMaterial({
-            size: 0.85,
+            size: 0.9,
             vertexColors: true,
             transparent: true,
-            opacity: 0.7,
+            opacity: 0.75,
             blending: THREE.AdditiveBlending
         });
         const globePoints = new THREE.Points(pointsGeometry, pointsMaterial);
         globeRoot.add(globePoints);
+    };
+
+    // Load world map
+    loader.load("https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/planets/earth_specular_2048.jpg", 
+      (texture) => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 1024;
+        canvas.height = 512;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+        ctx.drawImage(texture.image, 0, 0, 1024, 512);
+        const data = ctx.getImageData(0, 0, 1024, 512).data;
+        createPointsFromData(data, 1024, 512);
       },
       undefined,
-      (err) => {
-        console.error("Failed to load map texture, using grid-fallback");
-        // Fallback: Uniform but sparse grid
-        for (let i = 0; i < 5000; i++) {
-            const phi = Math.acos(-1 + (2 * i) / 5000);
-            const theta = Math.sqrt(5000 * Math.PI) * phi;
-            positions[i * 3] = GLOBE_RADIUS * Math.cos(theta) * Math.sin(phi);
-            positions[i * 3 + 1] = GLOBE_RADIUS * Math.sin(theta) * Math.sin(phi);
-            positions[i * 3 + 2] = GLOBE_RADIUS * Math.cos(phi);
+      () => {
+        // Simple internal fallback if image fails
+        console.warn("Using fallback grid");
+        const fallbackData = new Uint8ClampedArray(64 * 32 * 4);
+        for(let i=0; i<fallbackData.length; i+=4) {
+            // Randomish "continents"
+            if (Math.random() > 0.5) fallbackData[i] = 255; 
         }
-        pointsGeometry.setAttribute('position', new THREE.BufferAttribute(positions.slice(0, 15000), 3));
-        const pointsMaterialStyle = new THREE.PointsMaterial({ color: 0xc8ff00, size: 0.8, transparent: true, opacity: 0.3 });
-        globeRoot.add(new THREE.Points(pointsGeometry, pointsMaterialStyle));
+        createPointsFromData(fallbackData, 64, 32);
       }
     );
 
     // --- Animation Loop ---
-    let animationId: number;
     const animate = () => {
-      animationId = requestAnimationFrame(animate);
       if (globeRoot) {
         globeRoot.rotation.y += 0.003;
       }
       renderer.render(scene, camera);
     };
-    animate();
+    renderer.setAnimationLoop(animate);
 
     const handleResize = () => {
       if (!containerRef.current || !rendererRef.current) return;
@@ -169,7 +164,7 @@ export function Globe3D() {
     window.addEventListener("resize", handleResize);
 
     return () => {
-      cancelAnimationFrame(animationId);
+      renderer.setAnimationLoop(null);
       window.removeEventListener("resize", handleResize);
       renderer.dispose();
       if (containerRef.current && renderer.domElement.parentElement === containerRef.current) {
