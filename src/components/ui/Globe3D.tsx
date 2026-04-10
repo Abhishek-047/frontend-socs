@@ -34,7 +34,7 @@ export function Globe3D() {
     scene.add(globeRoot);
 
     const GLOBE_RADIUS = Math.min(68, width / 11);
-    const colorPrimary = new THREE.Color(0xc8ff00); // Changed to SOCS Neon Green
+    const colorPrimary = new THREE.Color(0x00ff00); // Standard Green
 
     // 1. Precise Continental Mask Function
     // This uses high-precision geographic segments to reconstruct the world map exactly.
@@ -122,7 +122,7 @@ export function Globe3D() {
     // 2. Grid Sphere (Subtle background grid as in image)
     const gridGeo = new THREE.SphereGeometry(GLOBE_RADIUS, 64, 32);
     const gridMat = new THREE.MeshBasicMaterial({ 
-        color: 0xc8ff00, 
+        color: 0x00ff00, 
         wireframe: true, 
         transparent: true, 
         opacity: 0.04 
@@ -187,7 +187,7 @@ export function Globe3D() {
         const curve = new THREE.QuadraticBezierCurve3(s, m, e);
         const pts = curve.getPoints(60);
         const geo = new THREE.BufferGeometry().setFromPoints(pts);
-        const mat = new THREE.LineBasicMaterial({ color: 0xc8ff00, transparent: true, opacity: 0 });
+        const mat = new THREE.LineBasicMaterial({ color: 0x00ff00, transparent: true, opacity: 0 });
         const line = new THREE.Line(geo, mat);
         arcGroup.add(line);
 
@@ -208,7 +208,7 @@ export function Globe3D() {
     // 5. Lighting
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
     scene.add(ambientLight);
-    const mainLight = new THREE.PointLight(0xc8ff00, 1.5);
+    const mainLight = new THREE.PointLight(0x00ff00, 1.5);
     mainLight.position.set(200, 200, 200);
     scene.add(mainLight);
 
