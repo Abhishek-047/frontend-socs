@@ -44,7 +44,7 @@ export function Navbar() {
             : "bg-transparent border-transparent py-5"
         }`}
       >
-        <div className="max-w-[1500px] mx-auto flex items-center justify-between">
+        <div className="max-w-[1500px] mx-auto flex items-center h-full relative">
           {/* ── Left: Logo ── */}
           <div className="flex items-center shrink-0 pl-6 md:pl-12">
             <Link href="/" className="flex items-center gap-4 group">
@@ -63,7 +63,7 @@ export function Navbar() {
           </div>
 
           {/* ── Center: Nav Links (Desktop) ── */}
-          <div className="hidden md:flex flex-1 justify-center items-center gap-0">
+          <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-0">
             {links.map((link) => {
               const isActive = pathname === link.href;
               return (
@@ -79,7 +79,7 @@ export function Navbar() {
                       layoutId="nav-glow"
                       className="absolute inset-0 z-0 bg-primary/5 border-l-2 border-r-2 border-primary/50 overflow-hidden"
                       style={{
-                        backgroundImage: "radial-gradient(circle, #c8ff0022 1px, transparent 1px)",
+                        backgroundImage: "radial-gradient(circle, #00ff0022 1px, transparent 1px)",
                         backgroundSize: "8px 8px"
                       }}
                     >
@@ -101,7 +101,7 @@ export function Navbar() {
           </div>
 
           {/* ── Right: CTA (Desktop) + Mobile Menu Toggle ── */}
-          <div className="flex items-center justify-end shrink-0 pr-6 md:pr-12">
+          <div className="ml-auto flex items-center justify-end shrink-0 pr-6 md:pr-12">
             <NeonButton href="/login" variant="outline" className="hidden md:inline-flex text-[14px] px-8 py-3 font-black tracking-[0.2em] border-2">
               JOIN
             </NeonButton>
@@ -109,7 +109,7 @@ export function Navbar() {
             {/* Mobile menu toggle (3 dots as requested) */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden text-gray-300 hover:text-primary transition-colors p-2 -mr-2"
+              className="md:hidden text-gray-300 hover:text-primary transition-colors p-2"
               aria-label="Toggle menu"
             >
               {isOpen
