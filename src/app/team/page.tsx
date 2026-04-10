@@ -79,16 +79,10 @@ import { AddEntityModal } from "../../components/modals/AddEntityModal";
 import { LayoutGrid, Network } from "lucide-react";
 
 export default function TeamPage() {
-  const [filter, setFilter] = useState("ALL_NODES");
   const [viewMode, setViewMode] = useState<"GRID_VIEW" | "NETWORK_VIEW">("GRID_VIEW");
   const [isModalOpen, setIsModalOpen] = useState(false);
   
-  const filteredMembers = teamMembers.filter(m => {
-    if (filter === "ALL_NODES") return true;
-    if (filter === "RED_TEAM") return m.role.toLowerCase().includes("offen") || m.role.toLowerCase().includes("ctf") || m.tier === "core";
-    if (filter === "BLUE_TEAM") return m.role.toLowerCase().includes("cloud") || m.role.toLowerCase().includes("net") || m.role.toLowerCase().includes("ops");
-    return true;
-  });
+  const filteredMembers = teamMembers;
 
   return (
     <PageWrapper className="pt-24 pb-32">
@@ -133,21 +127,6 @@ export default function TeamPage() {
               />
             </div>
             
-            <div className="flex flex-wrap gap-2 w-full lg:w-auto">
-              {["ALL_NODES", "RED_TEAM", "BLUE_TEAM"].map((btn) => (
-                <button 
-                  key={btn}
-                  onClick={() => setFilter(btn)}
-                  className={`px-4 md:px-6 py-2 text-[10px] font-bold tracking-widest uppercase border transition-all flex-1 lg:flex-none ${
-                    filter === btn 
-                    ? "bg-primary/10 border-primary text-primary shadow-[0_0_10px_rgba(200,255,0,0.15)]" 
-                    : "bg-white/5 border-white/10 text-gray-500 hover:text-white hover:bg-white/10"
-                  }`}
-                >
-                  {btn}
-                </button>
-              ))}
-            </div>
 
             <div className="flex w-full lg:w-auto mt-2 lg:mt-0 gap-3">
               <div className="flex gap-1 border border-white/10 p-1 bg-black/40 rounded-sm">
