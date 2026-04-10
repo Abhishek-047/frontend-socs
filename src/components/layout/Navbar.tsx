@@ -70,14 +70,21 @@ export function Navbar() {
                   {isActive && (
                     <motion.div 
                       layoutId="nav-glow"
-                      className="absolute inset-0 z-0 bg-primary/5 border-l border-r border-primary/20"
+                      className="absolute inset-0 z-0 bg-primary/5 border-l border-r border-primary/20 overflow-hidden"
                       style={{
                         backgroundImage: "radial-gradient(circle, #c8ff0022 1px, transparent 1px)",
-                        backgroundSize: "4px 4px"
+                        backgroundSize: "6px 6px"
                       }}
-                    />
+                    >
+                      {/* Animated Scan Line */}
+                      <motion.div 
+                        animate={{ y: ["-100%", "100%"] }}
+                        transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                        className="absolute inset-x-0 h-[2px] bg-primary/20 blur-[1px]"
+                      />
+                    </motion.div>
                   )}
-                  <span className="relative z-10">{link.name}</span>
+                  <span className="relative z-10 group-hover:text-white transition-colors duration-300">{link.name}</span>
                 </Link>
               );
             })}
