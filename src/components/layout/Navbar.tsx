@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 import { NeonButton } from "../ui/NeonButton";
 import { MobileMenu } from "./MobileMenu";
 import { Menu, X, Shield, MoreVertical } from "lucide-react";
@@ -46,39 +47,37 @@ export function Navbar() {
         <div className="max-w-[1500px] mx-auto px-6 md:px-12 flex items-center justify-between">
           {/* ── Left: Logo ── */}
           <div className="flex items-center shrink-0">
-            <Link href="/" className="flex items-center gap-2 group">
-              <div className="flex flex-col leading-none">
-                <span className="font-jetbrains text-base font-black text-white tracking-[0.1em] group-hover:text-primary transition-colors duration-200">
-                  SOCS
-                </span>
-                <span className="text-[5px] text-primary/40 tracking-[0.5em] font-mono">EST_2024</span>
-              </div>
+            <Link href="/" className="flex items-center gap-3 group">
+              <span className="font-turret text-2xl font-black text-white tracking-[0.05em] transition-colors duration-200">
+                SOCS
+              </span>
+              <div className="w-2.5 h-6 bg-primary shadow-[0_0_15px_rgba(200,255,0,0.5)]" />
             </Link>
           </div>
 
           {/* ── Center: Nav Links (Desktop) ── */}
-          <div className="hidden md:flex flex-1 justify-center items-center gap-2">
+          <div className="hidden md:flex flex-1 justify-center items-center gap-0">
             {links.map((link) => {
               const isActive = pathname === link.href;
               return (
                 <Link
                   key={link.name}
                   href={link.href}
-                  className={`relative px-4 py-2 text-[13px] font-bold font-turret tracking-[0.25em] uppercase transition-all duration-200 group ${
+                  className={`relative px-6 py-3 text-[18px] font-black font-turret tracking-[0.15em] uppercase transition-all duration-200 group ${
                     isActive ? "text-primary" : "text-gray-500 hover:text-white"
                   }`}
                 >
                   {isActive && (
-                    <>
-                      <span className="absolute inset-0 bg-primary/10" style={{
-                        clipPath: "polygon(0 4px,4px 0,100% 0,100% calc(100% - 4px),calc(100% - 4px) 100%,0 100%)"
-                      }} />
-                      <span className="absolute bottom-0 left-0 right-0 h-px bg-primary" />
-                    </>
+                    <motion.div 
+                      layoutId="nav-glow"
+                      className="absolute inset-0 z-0 bg-primary/5 border-l border-r border-primary/20"
+                      style={{
+                        backgroundImage: "radial-gradient(circle, #c8ff0022 1px, transparent 1px)",
+                        backgroundSize: "4px 4px"
+                      }}
+                    />
                   )}
-                  <span className="relative z-10 flex items-center gap-1.5">
-                    {link.name}
-                  </span>
+                  <span className="relative z-10">{link.name}</span>
                 </Link>
               );
             })}
@@ -86,8 +85,8 @@ export function Navbar() {
 
           {/* ── Right: CTA (Desktop) + Mobile Menu Toggle ── */}
           <div className="flex items-center justify-end shrink-0 gap-4">
-            <NeonButton href="/login" variant="outline" className="hidden md:inline-flex text-[10px] px-6 py-2.5 font-bold tracking-[0.2em]">
-              CONNECT
+            <NeonButton href="/login" variant="outline" className="hidden md:inline-flex text-[14px] px-8 py-3 font-black tracking-[0.2em] border-2">
+              JOIN
             </NeonButton>
 
             {/* Mobile menu toggle (3 dots as requested) */}

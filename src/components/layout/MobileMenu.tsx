@@ -40,8 +40,8 @@ export function MobileMenu({ isOpen, setIsOpen, links, pathname }: MobileMenuPro
                   <Link
                     href={link.href}
                     onClick={() => setIsOpen(false)}
-                    className={`block font-jetbrains text-xl uppercase ${
-                      isActive ? "text-primary" : "text-gray-500"
+                    className={`block font-turret text-2xl font-black py-4 uppercase border-b border-primary/5 ${
+                      isActive ? "text-primary bg-primary/5 px-4" : "text-gray-500 hover:text-white"
                     }`}
                   >
                     {link.name}
