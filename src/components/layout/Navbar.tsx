@@ -35,23 +35,15 @@ export function Navbar() {
 
   return (
     <>
-      {/* ── Floating Pill Navbar ── */}
+      {/* ── Standard Navbar ── */}
       <nav
-        className="fixed top-[12px] left-1/2 -translate-x-1/2 z-50 transition-all duration-300 w-[calc(100%-32px)] md:w-[calc(100%-80px)] max-w-[1400px]"
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
+          scrolled
+            ? "bg-black/85 border-primary/30 py-3 backdrop-blur-xl"
+            : "bg-transparent border-transparent py-5"
+        }`}
       >
-        <div
-          className={`relative flex items-center justify-between px-4 md:px-8 h-[62px] transition-all duration-300 ${
-            scrolled
-              ? "bg-black/90 border-primary/40 shadow-[0_0_40px_rgba(200,255,0,0.1)]"
-              : "bg-black/60 border-primary/15"
-          }`}
-          style={{
-            backdropFilter: "blur(24px)",
-            WebkitBackdropFilter: "blur(24px)",
-            border: "1px solid",
-            clipPath: "polygon(0 12px, 12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%)",
-          }}
-        >
+        <div className="max-w-[1500px] mx-auto px-6 md:px-12 flex items-center justify-between">
           {/* ── Left: Logo ── */}
           <div className="flex items-center shrink-0">
             <Link href="/" className="flex items-center gap-2 group">
@@ -95,8 +87,8 @@ export function Navbar() {
 
           {/* ── Right: CTA (Desktop) + Mobile Menu Toggle ── */}
           <div className="flex items-center justify-end shrink-0 gap-4">
-            <NeonButton href="/login" variant="outline" className="hidden md:inline-flex text-xs px-5 py-2">
-              Access Core
+            <NeonButton href="/login" variant="outline" className="hidden md:inline-flex text-[10px] px-6 py-2.5 font-bold tracking-[0.2em]">
+              CONNECT // JOIN
             </NeonButton>
 
             {/* Mobile menu toggle (3 dots as requested) */}

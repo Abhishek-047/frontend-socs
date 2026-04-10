@@ -21,39 +21,43 @@ export default function LoginPage() {
   };
 
   return (
-    <PageWrapper className="flex items-center justify-center min-h-[80vh]">
-      <div className="w-full max-w-xl relative">
+    <PageWrapper className="flex items-center justify-center min-h-[90vh]">
+      <div className="w-full max-w-2xl relative">
         <AnimatePresence mode="wait">
           {view === "initial" ? (
             <motion.div
               key="initial"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
-              className="flex flex-col items-center"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.2, filter: "blur(20px)" }}
+              className="flex flex-col items-center justify-center py-20"
             >
               {/* Central Auth Module */}
               <div className="relative group cursor-pointer" onClick={handleInitialClick}>
                 {/* Hexagon Frame */}
-                <div className="w-64 h-64 flex items-center justify-center relative">
+                <div className="w-80 h-80 flex items-center justify-center relative">
                     {/* Animated rings */}
-                    <div className="absolute inset-0 border-2 border-primary/20 rounded-full animate-[spin_10s_linear_infinite]" />
-                    <div className="absolute inset-4 border border-primary/40 rounded-full animate-[spin_15s_linear_infinite_reverse] border-dashed" />
+                    <div className="absolute inset-0 border-[3px] border-primary/10 rounded-full animate-[spin_8s_linear_infinite]" />
+                    <div className="absolute inset-6 border-2 border-primary/20 rounded-full animate-[spin_12s_linear_infinite_reverse] border-dashed" />
+                    <div className="absolute inset-12 border border-primary/5 rounded-full animate-[pulse_4s_ease-in-out_infinite]" />
                     
-                    <div className="z-10 bg-black/80 backdrop-blur-md border border-primary/50 w-48 h-48 flex flex-col items-center justify-center shadow-[0_0_50px_rgba(200,255,0,0.1)] group-hover:border-primary group-hover:shadow-[0_0_70px_rgba(200,255,0,0.2)] transition-all duration-500"
+                    <div className="z-10 bg-black/90 backdrop-blur-xl border-2 border-primary/40 w-56 h-56 flex flex-col items-center justify-center shadow-[0_0_80px_rgba(200,255,0,0.15)] group-hover:border-primary group-hover:shadow-[0_0_100px_rgba(200,255,0,0.3)] transition-all duration-700"
                         style={{ clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)" }}>
                         
                         {loading ? (
-                             <div className="flex flex-col items-center gap-2">
-                                <Activity className="w-10 h-10 text-primary animate-pulse" />
-                                <span className="text-[10px] font-mono text-primary tracking-[0.2em]">DECRYPTING...</span>
+                             <div className="flex flex-col items-center gap-4">
+                                <Activity className="w-12 h-12 text-primary animate-pulse" />
+                                <div className="flex flex-col items-center">
+                                    <span className="text-[12px] font-mono text-primary tracking-[0.3em] font-black">SECURITY_SCAN</span>
+                                    <span className="text-[8px] font-mono text-primary/50 mt-1">MATCHING_BIO_SIGNATURE...</span>
+                                </div>
                              </div>
                         ) : (
                             <>
-                                <Fingerprint className="w-16 h-16 text-primary/60 group-hover:text-primary transition-colors duration-300" />
-                                <div className="mt-4 text-center">
-                                    <div className="text-[10px] font-mono text-primary tracking-[0.3em] font-bold">SYSTEM_ACCESS</div>
-                                    <div className="text-[8px] font-mono text-gray-500 mt-1">PROTOCOL v4.0.2</div>
+                                <Fingerprint className="w-20 h-20 text-primary/40 group-hover:text-primary transition-all duration-500 transform group-hover:scale-110" />
+                                <div className="mt-6 text-center">
+                                    <div className="text-[11px] font-mono text-primary tracking-[0.4em] font-black group-hover:scale-110 transition-transform">SYSTEM_ACCESS</div>
+                                    <div className="text-[7px] font-mono text-gray-600 mt-2 tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-opacity">Click to Decrypt</div>
                                 </div>
                             </>
                         )}
@@ -61,15 +65,19 @@ export default function LoginPage() {
                 </div>
 
                 {/* Corner tags */}
-                <div className="absolute -top-4 -left-4 text-[8px] font-mono text-primary/40 tracking-widest uppercase">AUTH_REQUIRED</div>
-                <div className="absolute -bottom-4 -right-4 text-[8px] font-mono text-primary/40 tracking-widest uppercase">ENCRYPTED_LINK</div>
+                <div className="absolute -top-10 -left-10 text-[10px] font-mono text-primary/30 tracking-[0.5em] uppercase [writing-mode:vertical-lr] rotate-180">AUTH_REQUIRED</div>
+                <div className="absolute -bottom-10 -right-10 text-[10px] font-mono text-primary/30 tracking-[0.5em] uppercase [writing-mode:vertical-lr]">NODE_UPLINK</div>
               </div>
 
-              <div className="mt-12 text-center">
-                <p className="text-gray-500 font-mono text-[10px] tracking-[0.4em] uppercase mb-4 animate-pulse">
-                  {loading ? "AUTHENTICATING NODE..." : "Biometric identity required for secure uplink"}
+              <div className="mt-20 text-center">
+                <div className="flex items-center gap-3 justify-center mb-6">
+                    <div className="h-[1px] w-20 bg-gradient-to-l from-primary/40 to-transparent" />
+                    <span className="text-primary/80 font-mono text-xs tracking-[0.6em] font-black">SOCS_KERNEL</span>
+                    <div className="h-[1px] w-20 bg-gradient-to-r from-primary/40 to-transparent" />
+                </div>
+                <p className="text-gray-500 font-mono text-[10px] tracking-[0.4em] uppercase opacity-60">
+                  {loading ? "INITIALIZING SECURITY OVERRIDE..." : "IDENTIFY YOURSELF TO THE NETWORK"}
                 </p>
-                <div className="h-px w-32 bg-gradient-to-r from-transparent via-primary/30 to-transparent mx-auto" />
               </div>
             </motion.div>
           ) : (
