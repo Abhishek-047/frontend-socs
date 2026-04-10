@@ -10,11 +10,9 @@ export function Globe3D() {
   useEffect(() => {
     if (!containerRef.current) return;
 
-    // Dimensions
     const width = containerRef.current.clientWidth || 600;
     const height = containerRef.current.clientHeight || 600;
 
-    // --- Scene Setup ---
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 1000);
     camera.position.z = 250;
@@ -27,76 +25,62 @@ export function Globe3D() {
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     
-    // Clear naming for the renderer element
-    renderer.domElement.id = "globe-canvas";
-    containerRef.current.innerHTML = ""; // Clear any previous content
+    containerRef.current.innerHTML = "";
     containerRef.current.appendChild(renderer.domElement);
     rendererRef.current = renderer;
 
     const globeRoot = new THREE.Group();
     scene.add(globeRoot);
 
-    const GLOBE_RADIUS = 75;
+    const GLOBE_RADIUS = 60; 
 
     // 1. Core Sphere
     const sphereGeometry = new THREE.SphereGeometry(GLOBE_RADIUS - 0.5, 64, 64);
     const sphereMaterial = new THREE.MeshPhongMaterial({
       color: 0x020406,
       transparent: true,
-      opacity: 0.9,
+      opacity: 0.8,
       shininess: 30,
     });
     const mainSphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
     globeRoot.add(mainSphere);
 
-    // 2. Grid lines
-    const gridGeometry = new THREE.SphereGeometry(GLOBE_RADIUS + 0.2, 40, 40);
+    // 2. Subtle Grid
+    const gridGeometry = new THREE.SphereGeometry(GLOBE_RADIUS + 0.2, 32, 32);
     const gridMaterial = new THREE.MeshBasicMaterial({
       color: 0xc8ff00,
       wireframe: true,
       transparent: true,
-      opacity: 0.04,
+      opacity: 0.03,
     });
     globeRoot.add(new THREE.Mesh(gridGeometry, gridMaterial));
 
-    // 3. Continent Dots (Hardcoded simplified continent logic)
-    // We use a mathematical approximation for basic continents if images fail
-    const pointsCount = 15000;
+    // 3. Continent Mask 
+    const pointsCount = 12000;
     const positions = [];
     const colors = [];
     const colorPrimary = new THREE.Color(0xc8ff00);
 
-    // Basic continent detection logic based on spherical coordinates
-    // Approximate land masses
-    const isLand = (lat: number, lon: number) => {
-        // Simple bounding boxes for continents
-        // North America
-        if (lat > 0.1 && lat < 1.3 && lon > -3.0 && lon < -1.0) return true;
-        // South America
-        if (lat > -1.0 && lat < 0.1 && lon > -1.5 && lon < -0.5) return true;
-        // Africa
-        if (lat > -0.8 && lat < 0.8 && lon > -0.4 && lon < 0.9) return true;
-        // Eurasia
-        if (lat > 0.2 && lat < 1.4 && lon > 0.1 && lon < 3.0) return true;
-        // Australia
-        if (lat > -0.9 && lat < -0.2 && lon > 1.8 && lon < 2.8) return true;
-        // Antarctica (center)
-        if (lat < -1.2) return true;
-        
-        // Random Noise for "islands"
-        const noise = Math.sin(lat * 10) * Math.cos(lon * 10);
-        return noise > 0.7;
+    const isContinent = (lat: number, lon: number) => {
+      // Improved Geographic Bounding Boxes
+      // Americas
+      if (lat > -0.9 && lat < 1.3 && lon > -2.8 && lon < -0.6) return true;
+      // Eurasia + Africa
+      if (lat > -0.7 && lat < 1.4 && lon > -0.3 && lon < 3.0) return true;
+      // Australia
+      if (lat > -0.8 && lat < -0.2 && lon > 2.0 && lon < 2.9) return true;
+      
+      return false;
     };
 
     for (let i = 0; i < pointsCount; i++) {
         const phi = Math.acos(-1 + (2 * i) / pointsCount);
         const theta = Math.sqrt(pointsCount * Math.PI) * phi;
         
-        // Calculate lat/lon
         const lat = Math.PI/2 - phi;
         const lon = ((theta + Math.PI) % (Math.PI * 2)) - Math.PI;
 
-        if (isLand(lat, lon)) {
+        if (isContinent(lat, lon)) {
             const x = GLOBE_RADIUS * Math.cos(theta) * Math.sin(phi);
             const y = GLOBE_RADIUS * Math.sin(theta) * Math.sin(phi);
             const z = GLOBE_RADIUS * Math.cos(phi);
@@ -119,27 +103,20 @@ export function Globe3D() {
     globeRoot.add(new THREE.Points(pointsGeometry, pointsMaterial));
 
     // 4. Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
     scene.add(ambientLight);
 
-    const pointLight = new THREE.PointLight(0xc8ff00, 1.5);
-    pointLight.position.set(200, 100, 150);
-    scene.add(pointLight);
-
-    // --- Animation Loop ---
+    // --- Animation ---
     let frameId: number;
     const render = () => {
         frameId = requestAnimationFrame(render);
-        if (globeRoot) {
-            globeRoot.rotation.y += 0.003;
-        }
+        globeRoot.rotation.y += 0.0025;
         renderer.render(scene, camera);
     };
     render();
 
-    // --- Resize handler ---
     const handleResize = () => {
-        if (!containerRef.current || !rendererRef.current) return;
+        if (!containerRef.current) return;
         const w = containerRef.current.clientWidth;
         const h = containerRef.current.clientHeight;
         camera.aspect = w / h;
