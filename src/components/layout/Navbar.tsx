@@ -44,9 +44,9 @@ export function Navbar() {
             : "bg-transparent border-transparent py-5"
         }`}
       >
-        <div className="max-w-[1700px] mx-auto flex items-center h-full px-6 md:px-12">
-          {/* ── Left: Logo (Fixed Width for Centering) ── */}
-          <div className="flex items-center w-[300px] shrink-0">
+        <div className="w-full grid grid-cols-[1fr_auto_1fr] items-center px-6 md:px-12">
+          {/* ── Left: Logo ── */}
+          <div className="flex items-center">
             <Link href="/" className="flex items-center gap-4 group">
               <div className="relative">
                 <span className="font-turret text-2xl font-black text-white tracking-[0.05em] transition-all duration-300 group-hover:text-primary">
@@ -63,14 +63,14 @@ export function Navbar() {
           </div>
 
           {/* ── Center: Nav Links (Desktop) ── */}
-          <div className="hidden md:flex flex-1 justify-center items-center gap-1">
+          <div className="hidden md:flex items-center gap-0">
             {links.map((link) => {
               const isActive = pathname === link.href;
               return (
                 <Link
                   key={link.name}
                   href={link.href}
-                  className={`relative px-5 xl:px-8 py-2 text-[16px] xl:text-[18px] font-black font-turret tracking-[0.1em] uppercase transition-all duration-300 group ${
+                  className={`relative px-5 xl:px-7 py-2 text-[15px] xl:text-[17px] font-black font-turret tracking-[0.1em] uppercase transition-all duration-300 group ${
                     isActive ? "text-primary" : "text-gray-500 hover:text-white"
                   }`}
                 >
@@ -86,7 +86,7 @@ export function Navbar() {
                       <motion.div 
                         animate={{ y: ["-100%", "100%"] }}
                         transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                        className="absolute inset-x-0 h-[100%] bg-gradient-to-b from-transparent via-primary/10 to-transparent opacity-50"
+                        className="absolute inset-x-0 h-full bg-gradient-to-b from-transparent via-primary/10 to-transparent opacity-50"
                       />
                     </motion.div>
                   )}
@@ -100,9 +100,9 @@ export function Navbar() {
             })}
           </div>
 
-          {/* ── Right: CTA (Desktop) (Fixed Width for Centering) ── */}
-          <div className="flex items-center justify-end w-[300px] shrink-0 gap-4">
-            <NeonButton href="/login" variant="outline" className="hidden md:inline-flex text-[14px] px-8 py-2.5 font-black tracking-[0.2em] border-2">
+          {/* ── Right: JOIN + Mobile Toggle ── */}
+          <div className="flex items-center justify-end gap-4">
+            <NeonButton href="/login" variant="outline" className="hidden md:inline-flex text-[14px] px-7 py-2.5 font-black tracking-[0.2em] border-2">
               JOIN
             </NeonButton>
 
