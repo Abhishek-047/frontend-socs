@@ -55,22 +55,36 @@ export function Globe3D() {
     });
     globeRoot.add(new THREE.Mesh(gridGeometry, gridMaterial));
 
-    // 3. Continent Mask 
-    const pointsCount = 12000;
+    // 3. Continent Mask (High-Fidelity)
+    const pointsCount = 30000;
     const positions = [];
     const colors = [];
     const colorPrimary = new THREE.Color(0xc8ff00);
 
-    const isContinent = (lat: number, lon: number) => {
-      // Improved Geographic Bounding Boxes
-      // Americas
-      if (lat > -0.9 && lat < 1.3 && lon > -2.8 && lon < -0.6) return true;
-      // Eurasia + Africa
-      if (lat > -0.7 && lat < 1.4 && lon > -0.3 && lon < 3.0) return true;
-      // Australia
-      if (lat > -0.8 && lat < -0.2 && lon > 2.0 && lon < 2.9) return true;
-      
-      return false;
+    // High-resolution landmass check
+    const isLand = (lat: number, lon: number) => {
+        // North America
+        if (lat > 0.15 && lat < 1.25 && lon > -2.9 && lon < -0.9) {
+            if (lat > 0.8 || (lon < -1.2 && lat > 0.4) || (lon > -1.8 && lat < 0.8)) return true;
+        }
+        // South America
+        if (lat > -0.95 && lat < 0.25 && lon > -1.45 && lon < -0.6) {
+            if (lon < -0.7 || lat > -0.4) return true;
+        }
+        // Africa
+        if (lat > -0.65 && lat < 0.65 && lon > -0.3 && lon < 0.9) {
+            if (lon < 0.7 || (lat > 0.1 && lon < 0.8)) return true;
+        }
+        // Eurasia
+        if (lat > 0.15 && lat < 1.35 && lon > -0.15 && lon < 3.0) {
+            if (lat > 0.4 || lon > 0.5 || (lat > 0.2 && lon < 1.0)) return true;
+        }
+        // Australia
+        if (lat > -0.75 && lat < -0.15 && lon > 1.95 && lon < 2.75) return true;
+        // Greenland / Arctic
+        if (lat > 1.05 && lon > -0.8 && lon < -0.2) return true;
+        
+        return false;
     };
 
     for (let i = 0; i < pointsCount; i++) {
@@ -80,7 +94,7 @@ export function Globe3D() {
         const lat = Math.PI/2 - phi;
         const lon = ((theta + Math.PI) % (Math.PI * 2)) - Math.PI;
 
-        if (isContinent(lat, lon)) {
+        if (isLand(lat, lon)) {
             const x = GLOBE_RADIUS * Math.cos(theta) * Math.sin(phi);
             const y = GLOBE_RADIUS * Math.sin(theta) * Math.sin(phi);
             const z = GLOBE_RADIUS * Math.cos(phi);
@@ -94,7 +108,7 @@ export function Globe3D() {
     pointsGeometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
     
     const pointsMaterial = new THREE.PointsMaterial({
-        size: 0.9,
+        size: 0.75,
         vertexColors: true,
         transparent: true,
         opacity: 0.7,

@@ -47,14 +47,19 @@ export function Navbar() {
         <div className="max-w-[1500px] mx-auto px-6 md:px-12 flex items-center justify-between">
           {/* ── Left: Logo ── */}
           <div className="flex items-center shrink-0">
-            <Link href="/" className="flex items-center gap-3 group">
-              <span className="font-turret text-2xl font-black text-white tracking-[0.05em] transition-colors duration-200">
-                SOCS
-              </span>
-              <div className="relative flex">
-                <div className="w-2.5 h-6 bg-primary shadow-[0_0_15px_rgba(200,255,0,0.5)]" />
-                <div className="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full animate-ping opacity-75" />
-                <div className="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full" />
+            <Link href="/" className="flex items-center gap-4 group">
+              <div className="relative">
+                <span className="font-turret text-2xl font-black text-white tracking-[0.05em] group-hover:text-primary transition-colors duration-200">
+                  SOCS
+                </span>
+                {/* RGB Split Effect on Hover */}
+                <span className="absolute inset-0 font-turret text-2xl font-black text-[#ff00ff] tracking-[0.05em] opacity-0 group-hover:opacity-40 group-hover:translate-x-[1px] transition-all duration-75 -z-10">SOCS</span>
+                <span className="absolute inset-0 font-turret text-2xl font-black text-[#00ffff] tracking-[0.05em] opacity-0 group-hover:opacity-40 group-hover:translate-x-[-1px] transition-all duration-75 -z-10">SOCS</span>
+              </div>
+              <div className="relative flex items-center">
+                <div className="w-[3px] h-6 bg-primary shadow-[0_0_15px_rgba(200,255,0,0.6)]" />
+                <div className="ml-2 w-1.5 h-1.5 bg-primary rounded-full animate-pulse shadow-[0_0_8px_rgba(200,255,0,0.8)]" />
+                <span className="ml-2 text-[8px] font-mono text-primary/40 tracking-[0.2em] hidden sm:block">SYS_ACTIVE</span>
               </div>
             </Link>
           </div>
@@ -67,30 +72,30 @@ export function Navbar() {
                 <Link
                   key={link.name}
                   href={link.href}
-                  className={`relative px-6 py-3 text-[18px] font-black font-turret tracking-[0.1em] uppercase transition-all duration-300 group ${
+                  className={`relative px-8 py-3 text-[17px] font-black font-turret tracking-[0.1em] uppercase transition-all duration-300 group ${
                     isActive ? "text-primary" : "text-gray-500 hover:text-white"
                   }`}
                 >
                   {isActive && (
                     <motion.div 
                       layoutId="nav-glow"
-                      className="absolute inset-0 z-0 bg-primary/5 border-l-2 border-r-2 border-primary/40 overflow-hidden"
+                      className="absolute inset-0 z-0 bg-primary/5 border-l-2 border-r-2 border-primary/50 overflow-hidden"
                       style={{
                         backgroundImage: "radial-gradient(circle, #c8ff0022 1px, transparent 1px)",
-                        backgroundSize: "6px 6px"
+                        backgroundSize: "8px 8px"
                       }}
                     >
                       <motion.div 
                         animate={{ y: ["-100%", "100%"] }}
-                        transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                        className="absolute inset-x-0 h-[3px] bg-primary/30 blur-[2px]"
+                        transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                        className="absolute inset-x-0 h-[2px] bg-primary/40 blur-[2px]"
                       />
                     </motion.div>
                   )}
-                  <span className="relative z-10 flex items-center transition-all duration-300 group-hover:text-primary group-hover:tracking-[0.15em]">
-                    <span className="opacity-0 -translate-x-3 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 mr-2 text-primary font-mono text-xl">[</span>
+                  <span className="relative z-10 flex items-center transition-all duration-300 group-hover:text-primary group-hover:scale-105">
+                    <span className="opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 mr-2 text-primary font-mono text-lg">[</span>
                     {link.name}
-                    <span className="opacity-0 translate-x-3 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 ml-2 text-primary font-mono text-xl">]</span>
+                    <span className="opacity-0 translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 ml-2 text-primary font-mono text-lg">]</span>
                   </span>
                 </Link>
               );
