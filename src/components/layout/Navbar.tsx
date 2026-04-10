@@ -57,7 +57,6 @@ export function Navbar() {
               <div className="relative flex items-center">
                 <div className="w-[3px] h-6 bg-primary shadow-[0_0_15px_rgba(200,255,0,0.6)]" />
                 <div className="ml-2 w-1.5 h-1.5 bg-primary rounded-full animate-pulse shadow-[0_0_8px_rgba(200,255,0,0.8)]" />
-                <span className="ml-2 text-[8px] font-mono text-primary tracking-[0.2em] hidden lg:block uppercase font-bold opacity-60">SYS_ACTIVE</span>
               </div>
             </Link>
           </div>
