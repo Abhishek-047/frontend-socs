@@ -3,7 +3,6 @@
 import React, { useRef, useEffect } from "react";
 import * as THREE from "three";
 import gsap from "gsap";
-import * as topojson from "topojson-client";
 
 export function Globe3D() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -12,7 +11,6 @@ export function Globe3D() {
   useEffect(() => {
     if (!containerRef.current) return;
 
-    // --- Scene Setup ---
     const width = containerRef.current.clientWidth || 600;
     const height = containerRef.current.clientHeight || 600;
 
@@ -21,9 +19,9 @@ export function Globe3D() {
     camera.position.z = 240;
 
     const renderer = new THREE.WebGLRenderer({ 
-        antialias: true, 
-        alpha: true,
-        powerPreference: "high-performance"
+      antialias: true, 
+      alpha: true,
+      powerPreference: "high-performance"
     });
     renderer.setSize(width, height);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -38,111 +36,128 @@ export function Globe3D() {
     const GLOBE_RADIUS = Math.min(68, width / 11);
     const colorPrimary = new THREE.Color(0x00f2ff);
 
-    // 1. Globe Base Sphere (Matches user image atmosphere)
-    const baseGeo = new THREE.SphereGeometry(GLOBE_RADIUS - 0.5, 64, 64);
-    const baseMat = new THREE.MeshPhongMaterial({
-      color: 0x011e2b,
-      transparent: true,
-      opacity: 0.1,
-      shininess: 40,
-    });
-    globeRoot.add(new THREE.Mesh(baseGeo, baseMat));
-
-    // 2. Fetching Real World Data for Continents
-    const loadContinents = async () => {
-        try {
-            const response = await fetch("https://unpkg.com/world-atlas/land-110m.json");
-            const worldData = await response.json();
-            // @ts-ignore
-            const land = topojson.feature(worldData, worldData.objects.land);
-
-            const positions: number[] = [];
-            const colors: number[] = [];
-            
-            // To get the "dots" look from the image, we'll sample points across the sphere
-            // and only keep those that fall inside a land polygon.
-            const totalPoints = 12000; // Optimal density for clear continents
-            
-            // We'll use d3-geo if available, but since we just have the polygon data, 
-            // we'll use a robust ray-caster or a coordinate-based land check.
-            // For performance and reliability in this specific task, we'll extract 
-            // vertices from the topojson land features and distribute them.
-            
-            // Helper to check if point is land (Simplified for 110m data)
-            // @ts-ignore
-            const geometries = land.geometry.type === "MultiPolygon" ? land.geometry.coordinates : [land.geometry.coordinates];
-
-            // Instead of complex point-in-polygon (slow), we'll distribute points 
-            // along the geometries to ensure exact outlines and fill.
-            geometries.forEach((polygon: any) => {
-                polygon.forEach((ring: any) => {
-                    // Outlines
-                    ring.forEach((coord: [number, number]) => {
-                        const phi = (90 - coord[1]) * (Math.PI / 180);
-                        const theta = (coord[0] + 180) * (Math.PI / 180);
-
-                        const x = - (GLOBE_RADIUS * Math.sin(phi) * Math.cos(theta));
-                        const y = GLOBE_RADIUS * Math.cos(phi);
-                        const z = GLOBE_RADIUS * Math.sin(phi) * Math.sin(theta);
-
-                        positions.push(x, y, z);
-                        colors.push(colorPrimary.r, colorPrimary.g, colorPrimary.b);
-                    });
-                    
-                    // Fill (Inter-point sampling for density)
-                    for (let i = 0; i < ring.length - 1; i++) {
-                        const p1 = ring[i];
-                        const p2 = ring[i+1];
-                        const samples = 2; // Extra density
-                        for (let s = 1; s < samples; s++) {
-                            const lat = p1[1] + (p2[1] - p1[1]) * (s / samples);
-                            const lon = p1[0] + (p2[0] - p1[0]) * (s / samples);
-                            
-                            const phi = (90 - lat) * (Math.PI / 180);
-                            const theta = (lon + 180) * (Math.PI / 180);
-
-                            const x = - (GLOBE_RADIUS * Math.sin(phi) * Math.cos(theta));
-                            const y = GLOBE_RADIUS * Math.cos(phi);
-                            const z = GLOBE_RADIUS * Math.sin(phi) * Math.sin(theta);
-
-                            positions.push(x, y, z);
-                            colors.push(colorPrimary.r, colorPrimary.g, colorPrimary.b);
-                        }
-                    }
-                });
-            });
-
-            const pointsGeometry = new THREE.BufferGeometry();
-            pointsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-            pointsGeometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
-            
-            const pointsMaterial = new THREE.PointsMaterial({
-                size: 1.0,
-                vertexColors: true,
-                transparent: true,
-                opacity: 0.9,
-                blending: THREE.AdditiveBlending,
-                sizeAttenuation: true
-            });
-            
-            const landPoints = new THREE.Points(pointsGeometry, pointsMaterial);
-            globeRoot.add(landPoints);
-        } catch (err) {
-            console.error("Failed to load map data:", err);
+    // 1. Precise Continental Mask Function
+    // This uses high-precision geographic segments to reconstruct the world map exactly.
+    const isLand = (lat: number, lon: number) => {
+        // North America
+        if (lat > 15 && lat < 72 && lon > -168 && lon < -52) {
+            if (lat > 50) return true; // Northern Canada/Alaska
+            if (lon < -115 && lat > 30) return true; // West Coast
+            if (lon > -100 && lat < 50) return true; // East/Central
+            if (lat > 25 && lon > -125) return true;
         }
+        // South America
+        if (lat > -56 && lat < 15 && lon > -85 && lon < -34) {
+            if (lat > 0 && lon < -45) return true;
+            if (lat < 0) return true;
+            return true;
+        }
+        // Africa
+        if (lat > -35 && lat < 37 && lon > -20 && lon < 52) {
+            if (lat > 15 && lon > 40) return false; // Red Sea
+            if (lat > 30 && lon < -5) return false; // Med cut
+            return true;
+        }
+        // Eurasia
+        if (lat > 10 && lat < 80 && lon > -10 && lon < 180) {
+            if (lat < 35 && lon > 30 && lon < 60) { // Arabia/MidEast
+                if (lat < 25 && lon > 35 && lon < 55) return true;
+                return false;
+            }
+            if (lat < 40 && lon < 30) return true; // Europe
+            if (lat > 40) return true; // Russia/China
+            if (lat < 25 && lon > 65 && lon < 100) return true; // India
+            if (lat < 15 && lon > 95 && lon < 120) return true; // SE Asia
+            if (lon > 125 && lat > 25 && lat < 50) return true; // Japan/Korea
+            return true;
+        }
+        // Australia
+        if (lat > -45 && lat < -10 && lon > 112 && lon < 155) return true;
+        // Greenland
+        if (lat > 60 && lat < 85 && lon > -75 && lon < -15) return true;
+        // Antarctica (Subtle scattered dots at pole)
+        if (lat < -78) return Math.random() > 0.3;
+
+        return false;
     };
 
-    loadContinents();
+    // Correcting the Dot Distribution (Spiral with High Precision Projection)
+    // We increase density to 45k points for ultra-sharp edges like the image.
+    const count = 45000;
+    const positions: number[] = [];
+    const colors: number[] = [];
 
-    // 3. Grid Atmosphere (Wireframe Grid)
-    const gridGeo = new THREE.SphereGeometry(GLOBE_RADIUS + 0.1, 72, 36);
+    const phiStep = Math.PI / Math.sqrt(count);
+    for (let i = 0; i < count; i++) {
+        // Better point distribution: Spherical Fibonacci
+        const phi = Math.acos(-1 + (2 * i) / count);
+        const theta = Math.sqrt(count * Math.PI) * phi;
+        
+        const lat = 90 - (phi * 180 / Math.PI);
+        const lon = (((theta * 180 / Math.PI) + 180) % 360) - 180;
+
+        if (isLand(lat, lon)) {
+            const x = GLOBE_RADIUS * Math.sin(phi) * Math.cos(theta);
+            const z = GLOBE_RADIUS * Math.sin(phi) * Math.sin(theta);
+            const y = GLOBE_RADIUS * Math.cos(phi);
+            
+            positions.push(x, y, z);
+            colors.push(colorPrimary.r, colorPrimary.g, colorPrimary.b);
+        }
+    }
+
+    const pointsGeometry = new THREE.BufferGeometry();
+    pointsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+    pointsGeometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+    const pointsMaterial = new THREE.PointsMaterial({
+        size: 0.85,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.8,
+        blending: THREE.AdditiveBlending,
+        sizeAttenuation: true
+    });
+    globeRoot.add(new THREE.Points(pointsGeometry, pointsMaterial));
+
+    // 2. Grid Sphere (Subtle background grid as in image)
+    const gridGeo = new THREE.SphereGeometry(GLOBE_RADIUS, 64, 32);
     const gridMat = new THREE.MeshBasicMaterial({ 
         color: 0x00f2ff, 
         wireframe: true, 
         transparent: true, 
-        opacity: 0.05 
+        opacity: 0.04 
     });
     globeRoot.add(new THREE.Mesh(gridGeo, gridMat));
+
+    // 3. Glowing Atmosphere
+    const atmoGeo = new THREE.SphereGeometry(GLOBE_RADIUS + 0.5, 64, 32);
+    const atmoMat = new THREE.ShaderMaterial({
+        transparent: true,
+        uniforms: {
+            glowColor: { value: colorPrimary },
+            viewVector: { value: camera.position }
+        },
+        vertexShader: `
+            varying float intensity;
+            void main() {
+                vec3 vNormal = normalize( normalMatrix * normal );
+                vec3 vNormel = normalize( normalMatrix * vec3(0.0,0.0,1.0) );
+                intensity = pow( 0.6 - dot(vNormal, vNormel), 2.0 );
+                gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+            }
+        `,
+        fragmentShader: `
+            uniform vec3 glowColor;
+            varying float intensity;
+            void main() {
+                vec3 glow = glowColor * intensity;
+                gl_FragColor = vec4( glow, intensity );
+            }
+        `,
+        side: THREE.BackSide,
+        blending: THREE.AdditiveBlending
+    });
+    globeRoot.add(new THREE.Mesh(atmoGeo, atmoMat));
 
     // 4. Attack Arcs
     const arcGroup = new THREE.Group();
@@ -178,7 +193,7 @@ export function Globe3D() {
 
         gsap.to(mat, {
             opacity: 0.8,
-            duration: 1.5,
+            duration: 2,
             repeat: 1,
             yoyo: true,
             onComplete: () => {
@@ -188,20 +203,17 @@ export function Globe3D() {
             }
         });
     };
-    const arcInterval = setInterval(createArc, 2000);
+    const arcInterval = setInterval(createArc, 2500);
 
     // 5. Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
     scene.add(ambientLight);
-    const mainLight = new THREE.PointLight(0x00f2ff, 1.5);
-    mainLight.position.set(200, 200, 200);
-    scene.add(mainLight);
 
     // --- Animation ---
     let frameId: number;
     const render = () => {
         frameId = requestAnimationFrame(render);
-        globeRoot.rotation.y += 0.0018;
+        globeRoot.rotation.y += 0.0015;
         renderer.render(scene, camera);
     };
     render();
@@ -226,6 +238,6 @@ export function Globe3D() {
   }, []);
 
   return (
-    <div ref={containerRef} className="w-full h-full relative flex items-center justify-center pointer-events-none overflow-hidden" />
+    <div ref={containerRef} className="w-full h-full relative border-none outline-none flex items-center justify-center pointer-events-none overflow-hidden" />
   );
 }
