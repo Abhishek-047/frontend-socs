@@ -29,7 +29,16 @@ export default function SignInPage() {
                 </h2>
             </div>
 
-            <form className="space-y-6">
+            <form 
+              className="space-y-6"
+              onSubmit={(e) => {
+                e.preventDefault();
+                // Simulate delay then redirect
+                const btn = e.currentTarget.querySelector('button');
+                if (btn) btn.innerHTML = "AUTHENTICATING...";
+                setTimeout(() => window.location.href = "/", 1000);
+              }}
+            >
                 <div>
                     <label className="block text-[9px] font-mono text-gray-500 tracking-[0.3em] uppercase mb-2">IDENTIFIER_TOKEN</label>
                     <div className="relative group">

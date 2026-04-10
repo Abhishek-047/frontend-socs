@@ -131,18 +131,18 @@ function ProtocolCard({
     <div className={`relative group p-[1px] ${primary ? 'bg-primary/40' : 'bg-white/10'}`}
         style={{ clipPath: "polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%)" }}>
         
-        <div className="bg-[#020508] p-8 h-full flex flex-col items-start transition-all duration-300 group-hover:bg-[#03080c]"
+        <div className="bg-[#020508] p-8 h-full flex flex-col items-center text-center transition-all duration-300 group-hover:bg-[#03080c]"
             style={{ clipPath: "polygon(0 0, 100% 0, 100% calc(100% - 19px), calc(100% - 19px) 100%, 0 100%)" }}>
             
-            <div className="flex items-center justify-between w-full mb-8">
-                <div className={`p-4 border ${primary ? 'border-primary/30 bg-primary/5 text-primary' : 'border-white/10 bg-white/5 text-gray-400'} group-hover:scale-110 transition-transform duration-500`}>
+            <div className="flex flex-col items-center w-full mb-8">
+                <div className={`p-4 border ${primary ? 'border-primary/30 bg-primary/5 text-primary' : 'border-white/10 bg-white/5 text-gray-400'} group-hover:scale-110 transition-transform duration-500 mb-4`}>
                     {icon}
                 </div>
-                <span className="text-[10px] font-mono text-gray-700 tracking-widest">PROTOCOL::{id}</span>
+                <span className="text-[10px] font-mono text-gray-700 tracking-widest uppercase">PROTOCOL::{id}</span>
             </div>
 
             <div className="mb-2 text-[10px] font-mono text-primary/60 tracking-[0.4em] uppercase">{subtitle}</div>
-            <h3 className="text-xl font-black text-white mb-4 tracking-tighter">
+            <h3 className="text-xl font-black text-white mb-4 tracking-tighter uppercase">
                 <GlitchText text={title} />
             </h3>
             

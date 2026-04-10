@@ -28,7 +28,16 @@ export default function SignUpPage() {
                 </h2>
             </div>
 
-            <form className="space-y-6">
+            <form 
+              className="space-y-6"
+              onSubmit={(e) => {
+                e.preventDefault();
+                // Simulate delay then redirect
+                const btn = e.currentTarget.querySelector('button');
+                if (btn) btn.innerHTML = "PROVISIONING_CORE...";
+                setTimeout(() => window.location.href = "/", 1500);
+              }}
+            >
                 <div>
                     <label className="block text-[9px] font-mono text-gray-500 tracking-[0.3em] uppercase mb-2">OPERATOR_ALIAS</label>
                     <div className="relative group">
