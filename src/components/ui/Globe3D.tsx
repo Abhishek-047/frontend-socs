@@ -36,35 +36,33 @@ export function Globe3D() {
     const GLOBE_RADIUS = Math.min(65, width / 12);
     const colorPrimary = new THREE.Color(0xc8ff00);
 
-    // 1. Globe Base
-    const baseGeo = new THREE.SphereGeometry(GLOBE_RADIUS - 1, 64, 64);
+    // 1. Core Sphere
+    const baseGeo = new THREE.SphereGeometry(GLOBE_RADIUS - 1.5, 64, 64);
     const baseMat = new THREE.MeshPhongMaterial({
       color: 0x010203,
       transparent: true,
-      opacity: 0.9,
-      shininess: 40,
+      opacity: 0.95,
+      shininess: 60,
     });
     globeRoot.add(new THREE.Mesh(baseGeo, baseMat));
 
-    // 2. High-Accuracy Continents (Pixel sampling via data-mask)
-    // We use a detailed bitmask approach
+    // 2. High-Fidelity Continents (Correct Spherical Projection)
     const isLand = (lat: number, lon: number) => {
-        // High fidelity geographic bounding polygons for recognizable continents
-        // North America
-        if (lat > 12 && lat < 72 && lon > -168 && lon < -52) {
-            if (lat < 30 && lon > -80) return false; // Caribbean gap
+        // High-precision geographic masks
+        // Americas
+        if (lat > -55 && lat < 72 && lon > -168 && lon < -34) {
+            if (lat < 12 && lon < -82) return false;
+            if (lat > 15 && lat < 30 && lon > -80) return false; // Gulf
             return true;
         }
-        // South America
-        if (lat > -56 && lat < 12 && lon > -82 && lon < -34) return true;
         // Africa
         if (lat > -35 && lat < 37 && lon > -18 && lon < 51) {
-            if (lat > 15 && lon > 40) return false; 
+            if (lat > 15 && lon > 35) return false; // Red Sea
             return true;
         }
         // Eurasia
         if (lat > 10 && lat < 78 && lon > -10 && lon < 190) {
-            if (lat < 32 && lon > 35 && lon < 60) return false; // Arabia/Med gap
+            if (lat < 32 && lon > 32 && lon < 60) return false; // Arabia/Med gap
             return true;
         }
         // Australia
@@ -75,21 +73,25 @@ export function Globe3D() {
         return false;
     };
 
-    const count = 25000;
-    const positions = [];
-    const colors = [];
+    const count = 30000;
+    const positions: number[] = [];
+    const colors: number[] = [];
 
     for (let i = 0; i < count; i++) {
-        const phi = Math.acos(-1 + (2 * i) / count);
-        const theta = Math.sqrt(count * Math.PI) * phi;
-        
-        const lat = 90 - (phi * 180) / Math.PI;
-        const lon = (((theta * 180) / Math.PI) + 180) % 360 - 180;
+        // Correct Spherical Fibonacci Distribution
+        const phi = Math.acos(-1 + (2 * i) / count); // 0 to PI
+        const theta = Math.sqrt(count * Math.PI) * phi; // Angle around Y
+
+        // Lat/Lon mapping (Correct Projection)
+        const lat = 90 - (phi * 180 / Math.PI);
+        const lon = (((theta * 180 / Math.PI) + 180) % 360) - 180;
 
         if (isLand(lat, lon)) {
-            const x = GLOBE_RADIUS * Math.cos(theta) * Math.sin(phi);
-            const y = GLOBE_RADIUS * Math.sin(theta) * Math.sin(phi);
-            const z = GLOBE_RADIUS * Math.cos(phi);
+            // Correct Three.js Cartesian conversion (Y is UP)
+            const x = GLOBE_RADIUS * Math.sin(phi) * Math.cos(theta);
+            const z = GLOBE_RADIUS * Math.sin(phi) * Math.sin(theta);
+            const y = GLOBE_RADIUS * Math.cos(phi);
+            
             positions.push(x, y, z);
             colors.push(colorPrimary.r, colorPrimary.g, colorPrimary.b);
         }
@@ -102,7 +104,7 @@ export function Globe3D() {
         size: 1.1,
         vertexColors: true,
         transparent: true,
-        opacity: 0.8,
+        opacity: 0.9,
         blending: THREE.AdditiveBlending,
         sizeAttenuation: true
     });
@@ -112,7 +114,7 @@ export function Globe3D() {
     const arcGroup = new THREE.Group();
     globeRoot.add(arcGroup);
 
-    function getCoord(lat: number, lon: number) {
+    const getCoord = (lat: number, lon: number) => {
         const phi = (90 - lat) * (Math.PI / 180);
         const theta = (lon + 180) * (Math.PI / 180);
         return new THREE.Vector3(
@@ -120,7 +122,7 @@ export function Globe3D() {
             (GLOBE_RADIUS * Math.cos(phi)),
             (GLOBE_RADIUS * Math.sin(phi) * Math.sin(theta))
         );
-    }
+    };
 
     const createArc = () => {
         const startLat = (Math.random() - 0.5) * 140;
@@ -131,26 +133,26 @@ export function Globe3D() {
         const start = getCoord(startLat, startLon);
         const end = getCoord(endLat, endLon);
         const mid = new THREE.Vector3().addVectors(start, end).multiplyScalar(0.5);
-        const distance = start.distanceTo(end);
-        mid.normalize().multiplyScalar(GLOBE_RADIUS + distance * 0.4);
+        const dist = start.distanceTo(end);
+        mid.normalize().multiplyScalar(GLOBE_RADIUS + dist * 0.4);
 
         const curve = new THREE.QuadraticBezierCurve3(start, mid, end);
-        const points = curve.getPoints(50);
-        const geometry = new THREE.BufferGeometry().setFromPoints(points);
-        const material = new THREE.LineBasicMaterial({ color: colorPrimary, transparent: true, opacity: 0 });
+        const pts = curve.getPoints(50);
+        const geo = new THREE.BufferGeometry().setFromPoints(pts);
+        const mat = new THREE.LineBasicMaterial({ color: colorPrimary, transparent: true, opacity: 0 });
 
-        const line = new THREE.Line(geometry, material);
+        const line = new THREE.Line(geo, mat);
         arcGroup.add(line);
 
-        gsap.to(material, {
+        gsap.to(mat, {
             opacity: 0.6,
             duration: 1.5,
             repeat: 1,
             yoyo: true,
             onComplete: () => {
                 arcGroup.remove(line);
-                geometry.dispose();
-                material.dispose();
+                geo.dispose();
+                mat.dispose();
             }
         });
     };
@@ -199,7 +201,7 @@ export function Globe3D() {
 
   return (
     <div ref={containerRef} className="w-full h-full relative border-none outline-none flex items-center justify-center pointer-events-none overflow-hidden">
-      <div className="absolute inset-x-0 h-[100px] w-[100px] bg-primary/5 blur-[80px] rounded-full pointer-events-none" />
+      <div className="absolute inset-0 bg-radial-gradient from-primary/5 to-transparent pointer-events-none -z-10" />
     </div>
   );
 }
