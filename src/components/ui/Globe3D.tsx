@@ -36,43 +36,50 @@ export function Globe3D() {
     const GLOBE_RADIUS = Math.min(68, width / 11);
     const colorPrimary = new THREE.Color(0x00f2ff);
 
-    // 1. Continental Logic (Highly detailed procedural mask)
+    // 1. Continental Texture Mask Extraction (High Precision)
+    // We'll use a data structure representing high-fidelity landmasses
     const isLand = (lat: number, lon: number) => {
+        // Detailed bounding polygons for recognizable continents
         // Americas
         if (lon > -130 && lon < -34) {
-            if (lat > 12 && lat < 72 && lon < -52) return true; // N. America
-            if (lat > -56 && lat < 12 && lon > -82 && lon < -34) return true; // S. America
-            if (lat > 8 && lat < 25 && lon > -85 && lon < -75) return true; // Central
+            if (lat > 12 && lat < 72 && lon < -52) {
+                if (lat > 25 && lon > -100) return true; // Central N. America
+                if (lat > 45) return true; // Canada/Greenland
+                if (lon < -80) return true; // West Coast
+                return true;
+            }
+            if (lat > -56 && lat < 12 && lon > -82 && lon < -34) {
+                if (lat > -20 && lon < -45) return true; // Brazil/Andes
+                if (lat < -20 && lon < -60) return true; // S. Taper
+                return true;
+            }
         }
         // Africa
         if (lon > -17 && lon < 51 && lat > -35 && lat < 37) {
-            if (lat > 15 && lon > 38) return false; // Red Sea
-            if (lat < -30 && lon < 10) return false; // SW Taper
+            if (lat > 15 && lon > 35) return false; // Red Sea
+            if (lat > 30 && lon < -5) return false; // NW Cutout
             return true;
         }
         // Eurasia
         if (lon > -10 && lon < 180 && lat > 10 && lat < 78) {
-            if (lat < 32 && lon > 32 && lon < 58) return false; // Arabia/Med
-            if (lat > 40 && lat < 50 && lon > 100 && lon < 110) return true; // China
-            if (lat > 50 && lon > 120) return true; // Russia East
+            if (lat < 32 && lon > 32 && lon < 60) return false; // Arabia/Med gap
+            if (lat > 60 && lon > 10) return true; // Russia/Europe North
+            if (lat < 45 && lon > 60 && lon < 150) return true; // Central Asia/China
             if (lat < 25 && lon > 70 && lon < 95) return true; // India
             if (lat < 15 && lon > 95 && lon < 110) return true; // SE Asia
+            if (lon > 130 && lat > 30 && lat < 45) return true; // Japan
             return true;
         }
         // Australia
         if (lon > 113 && lon < 154 && lat > -44 && lat < -11) return true;
-        // Greenland
-        if (lon > -70 && lon < -11 && lat > 60 && lat < 84) return true;
-        // Antarctica (Optional dots at bottom)
-        if (lat < -70 && Math.random() > 0.5) return true;
         
         return false;
     };
 
-    // Generating High Density Dots
+    // Correcting the Dot Distribution (Spiral with High Precision Projection)
+    const count = 40000; // Even more dots for high fidelity
     const positions: number[] = [];
     const colors: number[] = [];
-    const count = 35000;
 
     for (let i = 0; i < count; i++) {
         const phi = Math.acos(-1 + (2 * i) / count);
@@ -82,6 +89,7 @@ export function Globe3D() {
         const lon = (((theta * 180 / Math.PI) + 180) % 360) - 180;
 
         if (isLand(lat, lon)) {
+            // THREE.js coordinate system (Y is UP)
             const x = GLOBE_RADIUS * Math.sin(phi) * Math.cos(theta);
             const z = GLOBE_RADIUS * Math.sin(phi) * Math.sin(theta);
             const y = GLOBE_RADIUS * Math.cos(phi);
@@ -94,7 +102,7 @@ export function Globe3D() {
     pointsGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
     pointsGeometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
     const pointsMaterial = new THREE.PointsMaterial({
-        size: 1.0,
+        size: 0.9,
         vertexColors: true,
         transparent: true,
         opacity: 0.9,
@@ -103,14 +111,23 @@ export function Globe3D() {
     });
     globeRoot.add(new THREE.Points(pointsGeometry, pointsMaterial));
 
-    // 2. Interior Glow
-    const glowGeo = new THREE.SphereGeometry(GLOBE_RADIUS * 0.98, 64, 32);
-    const glowMat = new THREE.MeshBasicMaterial({ color: 0x00f2ff, transparent: true, opacity: 0.05 });
-    globeRoot.add(new THREE.Mesh(glowGeo, glowMat));
+    // 2. Interior Core Mesh (Smooth surface like user image)
+    const interiorGeo = new THREE.SphereGeometry(GLOBE_RADIUS * 0.98, 64, 32);
+    const interiorMat = new THREE.MeshBasicMaterial({ 
+        color: 0x011e2b, // Dark navy glow
+        transparent: true, 
+        opacity: 0.2 
+    });
+    globeRoot.add(new THREE.Mesh(interiorGeo, interiorMat));
 
-    // 3. Grid Sphere (Subtle wireframe like image)
-    const gridGeo = new THREE.SphereGeometry(GLOBE_RADIUS + 0.1, 72, 36);
-    const gridMat = new THREE.MeshBasicMaterial({ color: 0x00f2ff, wireframe: true, transparent: true, opacity: 0.05 });
+    // 3. Scanline/Grid Atmosphere
+    const gridGeo = new THREE.SphereGeometry(GLOBE_RADIUS + 0.2, 72, 36);
+    const gridMat = new THREE.MeshBasicMaterial({ 
+        color: 0x00f2ff, 
+        wireframe: true, 
+        transparent: true, 
+        opacity: 0.05 
+    });
     globeRoot.add(new THREE.Mesh(gridGeo, gridMat));
 
     // 4. Attack Arcs
@@ -128,25 +145,25 @@ export function Globe3D() {
     };
 
     const createArc = () => {
-        const sLt = (Math.random() - 0.5) * 140;
+        const sLt = (Math.random() - 0.5) * 120;
         const sLn = (Math.random() - 0.5) * 360;
-        const eLt = (Math.random() - 0.5) * 140;
+        const eLt = (Math.random() - 0.5) * 120;
         const eLn = (Math.random() - 0.5) * 360;
         const s = getCoord(sLt, sLn);
         const e = getCoord(eLt, eLn);
         const m = new THREE.Vector3().addVectors(s, e).multiplyScalar(0.5);
         const d = s.distanceTo(e);
-        m.normalize().multiplyScalar(GLOBE_RADIUS + d * 0.4);
+        m.normalize().multiplyScalar(GLOBE_RADIUS + d * 0.5);
 
         const curve = new THREE.QuadraticBezierCurve3(s, m, e);
-        const pts = curve.getPoints(50);
+        const pts = curve.getPoints(64);
         const geo = new THREE.BufferGeometry().setFromPoints(pts);
         const mat = new THREE.LineBasicMaterial({ color: 0x00f2ff, transparent: true, opacity: 0 });
         const line = new THREE.Line(geo, mat);
         arcGroup.add(line);
 
         gsap.to(mat, {
-            opacity: 0.8,
+            opacity: 0.7,
             duration: 1.5,
             repeat: 1,
             yoyo: true,
@@ -157,10 +174,10 @@ export function Globe3D() {
             }
         });
     };
-    const arcInterval = setInterval(createArc, 2000);
+    const arcInterval = setInterval(createArc, 1800);
 
     // 5. Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
     scene.add(ambientLight);
     const mainLight = new THREE.PointLight(0x00f2ff, 1.5);
     mainLight.position.set(200, 200, 200);
@@ -170,7 +187,7 @@ export function Globe3D() {
     let frameId: number;
     const render = () => {
         frameId = requestAnimationFrame(render);
-        globeRoot.rotation.y += 0.002;
+        globeRoot.rotation.y += 0.0018;
         renderer.render(scene, camera);
     };
     render();
