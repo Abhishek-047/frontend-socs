@@ -141,6 +141,13 @@ export function Globe3D() {
           return { lt, ln };
         };
 
+        const threats = [
+          { name: 'MALWARE', color: 0xff3333 }, // Neon Red
+          { name: 'PHISHING', color: 0xaa00ff }, // Neon Purple
+          { name: 'EXPLOIT', color: 0xffcc00 }  // Neon Yellow
+        ];
+        const threat = threats[Math.floor(Math.random() * threats.length)];
+
         const startPt = getRandomLandPoint();
         const endPt = getRandomLandPoint();
         
@@ -153,13 +160,13 @@ export function Globe3D() {
         const curve = new THREE.QuadraticBezierCurve3(s, m, e);
         const pts = curve.getPoints(40);
         const geo = new THREE.BufferGeometry().setFromPoints(pts);
-        const mat = new THREE.LineBasicMaterial({ color: 0xc8ff00, transparent: true, opacity: 0 });
+        const mat = new THREE.LineBasicMaterial({ color: threat.color, transparent: true, opacity: 0 });
         const line = new THREE.Line(geo, mat);
         arcGroup.add(line);
 
         gsap.to(mat, {
-          opacity: 0.6,
-          duration: 1.5,
+          opacity: 0.8,
+          duration: 1.2,
           repeat: 1,
           yoyo: true,
           onComplete: () => {
