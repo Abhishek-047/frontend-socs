@@ -158,23 +158,67 @@ export function Globe3D() {
         m.normalize().multiplyScalar(GLOBE_RADIUS + d * 0.4);
 
         const curve = new THREE.QuadraticBezierCurve3(s, m, e);
-        const pts = curve.getPoints(40);
-        const geo = new THREE.BufferGeometry().setFromPoints(pts);
-        const mat = new THREE.LineBasicMaterial({ color: threat.color, transparent: true, opacity: 0 });
-        const line = new THREE.Line(geo, mat);
-        arcGroup.add(line);
+        
+        // --- Thick Arc (Tube) ---
+        const tubeGeo = new THREE.TubeGeometry(curve, 32, 0.2, 3, false);
+        const tubeMat = new THREE.MeshBasicMaterial({ 
+          color: threat.color, 
+          transparent: true, 
+          opacity: 0,
+          blending: THREE.AdditiveBlending 
+        });
+        const tube = new THREE.Mesh(tubeGeo, tubeMat);
+        arcGroup.add(tube);
 
-        gsap.to(mat, {
-          opacity: 0.8,
-          duration: 1.2,
-          repeat: 1,
-          yoyo: true,
+        // --- Impact Marker (Circles) ---
+        const impactGroup = new THREE.Group();
+        // Align impact group to the sphere surface at 'e'
+        impactGroup.position.copy(e);
+        impactGroup.lookAt(0, 0, 0); // Face the center
+        
+        const dotGeo = new THREE.CircleGeometry(0.6, 16);
+        const ringGeo = new THREE.RingGeometry(0.8, 1.2, 16);
+        const markerMat = new THREE.MeshBasicMaterial({ 
+          color: threat.color, 
+          transparent: true, 
+          opacity: 0,
+          side: THREE.DoubleSide 
+        });
+        
+        const dot = new THREE.Mesh(dotGeo, markerMat);
+        const ring = new THREE.Mesh(ringGeo, markerMat);
+        impactGroup.add(dot, ring);
+        arcGroup.add(impactGroup);
+
+        // --- Animation ---
+        const tl = gsap.timeline({
           onComplete: () => {
-            arcGroup.remove(line);
-            geo.dispose();
-            mat.dispose();
+            arcGroup.remove(tube);
+            arcGroup.remove(impactGroup);
+            tubeGeo.dispose();
+            tubeMat.dispose();
+            dotGeo.dispose();
+            ringGeo.dispose();
+            markerMat.dispose();
           }
         });
+
+        tl.to([tubeMat, markerMat], {
+          opacity: 0.8,
+          duration: 0.8,
+          ease: "power2.out"
+        })
+        .to(ring.scale, {
+          x: 1.5,
+          y: 1.5,
+          duration: 1.5,
+          ease: "power1.inOut"
+        }, 0)
+        .to([tubeMat, markerMat], {
+          opacity: 0,
+          duration: 1,
+          ease: "power2.in"
+        }, "+=0.5");
       };
       
       arcInterval = setInterval(createArc, 1800);
