@@ -155,7 +155,7 @@ export function Navbar() {
                 <Link 
                   key={i} 
                   href={item.href} 
-                  className="inline-flex items-center shrink-0 whitespace-nowrap"
+                  className="inline-flex items-center shrink-0 whitespace-nowrap cursor-none"
                 >
                   <span className="text-[11px] font-mono text-primary/70 px-6 tracking-wide hover:text-white transition-colors duration-200">
                     {item.text}
