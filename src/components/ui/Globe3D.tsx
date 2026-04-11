@@ -129,13 +129,23 @@ export function Globe3D() {
       };
 
       const createArc = () => {
-        const sLat = (Math.random() - 0.5) * 120;
-        const sLon = (Math.random() - 0.5) * 360;
-        const eLat = (Math.random() - 0.5) * 120;
-        const eLon = (Math.random() - 0.5) * 360;
+        const getRandomLandPoint = () => {
+          let lt = (Math.random() - 0.5) * 160;
+          let ln = (Math.random() - 0.5) * 360;
+          let attempts = 0;
+          while (!isLandPixel(lt, ln) && attempts < 100) {
+            lt = (Math.random() - 0.5) * 160;
+            ln = (Math.random() - 0.5) * 360;
+            attempts++;
+          }
+          return { lt, ln };
+        };
+
+        const startPt = getRandomLandPoint();
+        const endPt = getRandomLandPoint();
         
-        const s = getCoord(sLat, sLon);
-        const e = getCoord(eLat, eLon);
+        const s = getCoord(startPt.lt, startPt.ln);
+        const e = getCoord(endPt.lt, endPt.ln);
         const m = new THREE.Vector3().addVectors(s, e).multiplyScalar(0.5);
         const d = s.distanceTo(e);
         m.normalize().multiplyScalar(GLOBE_RADIUS + d * 0.4);
