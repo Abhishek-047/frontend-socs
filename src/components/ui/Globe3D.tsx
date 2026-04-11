@@ -62,8 +62,8 @@ export function Globe3D() {
         const x = Math.floor(((lon + 180) / 360) * 1024);
         const y = Math.floor(((90 - lat) / 180) * 512);
         const index = (y * 1024 + x) * 4;
-        // In this specular map, land is white (>128)
-        return imageData.data[index] > 50; 
+        // In this specular map, land is dark (<100) and water is bright (>128)
+        return imageData.data[index] < 80; 
       };
 
       // --- Generate Dots on a Grid for "Perfect" Look ---
