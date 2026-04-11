@@ -56,33 +56,33 @@ export function Navbar() {
         }`}
       >
         {/* ── Main Nav Bar ── */}
-        <div className={`border-b transition-all duration-300 ${scrolled ? "border-primary/20" : "border-transparent"}`}>
-          <div className="w-full grid grid-cols-[1fr_auto_1fr] items-center px-6 md:px-12 py-4">
+        <div className={`transition-all duration-300 ${scrolled ? "border-b border-primary/20" : "border-b border-transparent"}`}>
+          <div className="w-full flex items-center justify-between px-4 md:px-12 py-3.5 md:py-4">
             {/* ── Left: Logo ── */}
-            <div className="flex items-center">
-              <Link href="/" className="flex items-center gap-4 group">
+            <div className="flex items-center shrink-0">
+              <Link href="/" className="flex items-center gap-3 md:gap-4 group scale-90 md:scale-100 origin-left">
                 <div className="relative">
-                  <span className="font-turret text-2xl font-black text-white tracking-[0.05em] transition-all duration-300 group-hover:text-primary">
+                  <span className="font-turret text-xl md:text-2xl font-black text-white tracking-[0.05em] transition-all duration-300 group-hover:text-primary">
                     SOCS
                   </span>
                   <div className="absolute -bottom-1 left-0 w-0 h-[2px] bg-primary group-hover:w-full transition-all duration-300 shadow-[0_0_10px_rgba(200,255,0,0.8)]" />
                 </div>
                 <div className="relative flex items-center">
-                  <div className="w-[3px] h-6 bg-primary shadow-[0_0_15px_rgba(200,255,0,0.6)]" />
-                  <div className="ml-2 w-1.5 h-1.5 bg-primary rounded-full animate-pulse shadow-[0_0_8px_rgba(200,255,0,0.8)]" />
+                  <div className="w-[2px] md:w-[3px] h-5 md:h-6 bg-primary shadow-[0_0_15px_rgba(200,255,0,0.6)]" />
+                  <div className="ml-1.5 md:ml-2 w-1 md:w-1.5 h-1 md:h-1.5 bg-primary rounded-full animate-pulse shadow-[0_0_8px_rgba(200,255,0,0.8)]" />
                 </div>
               </Link>
             </div>
 
             {/* ── Center: Nav Links (Desktop) ── */}
-            <div className="hidden md:flex items-center gap-0">
+            <div className="hidden md:flex items-center gap-0 flex-1 justify-center">
               {links.map((link) => {
                 const isActive = pathname === link.href;
                 return (
                   <Link
                     key={link.name}
                     href={link.href}
-                    className={`relative px-5 xl:px-7 py-2 text-[15px] xl:text-[17px] font-black font-turret tracking-[0.1em] uppercase transition-all duration-300 group ${
+                    className={`relative px-4 xl:px-6 py-2 text-[15px] xl:text-[16px] font-black font-turret tracking-[0.1em] uppercase transition-all duration-300 group ${
                       isActive ? "text-primary" : "text-gray-500 hover:text-white"
                     }`}
                   >
@@ -102,32 +102,31 @@ export function Navbar() {
                         />
                       </motion.div>
                     )}
-                    <span className="relative z-10 flex items-center transition-all duration-300 group-hover:text-primary group-hover:scale-105">
-                      <span className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 mr-1 text-primary font-mono text-sm">[</span>
+                    <span className="relative z-10 flex items-center transition-all duration-300 group-hover:text-primary">
+                      <span className="opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 mr-1 text-primary font-mono text-xs">[</span>
                       {link.name}
-                      <span className="opacity-0 translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 ml-1 text-primary font-mono text-sm">]</span>
+                      <span className="opacity-0 translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300 ml-1 text-primary font-mono text-xs">]</span>
                     </span>
                   </Link>
                 );
               })}
             </div>
 
-            {/* ── Right: JOIN + Mobile Toggle ── */}
-            <div className="flex items-center justify-end gap-4">
-              <NeonButton href="/login" variant="outline" className="hidden md:inline-flex text-[14px] px-7 py-2.5 font-black tracking-[0.2em] border-2">
-                JOIN
-              </NeonButton>
+            {/* ── Right: Actions ── */}
+            <div className="flex items-center justify-end gap-2 md:gap-4 shrink-0">
+              <div className="hidden md:block">
+                <NeonButton href="/login" variant="outline" className="text-[13px] px-6 py-2 font-black tracking-[0.2em] border-2">
+                  JOIN
+                </NeonButton>
+              </div>
 
               {/* Mobile menu toggle */}
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="md:hidden text-gray-300 hover:text-primary transition-colors p-2"
+                className="text-gray-400 hover:text-primary transition-colors p-2 md:hidden flex items-center justify-center border border-white/5 rounded-sm bg-white/5"
                 aria-label="Toggle menu"
               >
-                {isOpen
-                  ? <X className="h-6 w-6 text-primary" />
-                  : <MoreVertical className="h-6 w-6" />
-                }
+                {isOpen ? <X className="h-5 w-5" /> : <MoreVertical className="h-5 w-5" />}
               </button>
             </div>
           </div>
