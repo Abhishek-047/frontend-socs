@@ -79,8 +79,8 @@ export function HeroSection() {
           </p>
 
           <div ref={ctaRef} className="flex flex-col sm:flex-row gap-4 opacity-0">
-            <NeonButton href="/login" variant="primary" className="px-8 py-3.5 font-bold text-sm md:text-base">
-              Join the Network
+            <NeonButton href="/contact" variant="primary" className="px-8 py-3.5 font-bold text-sm md:text-base">
+              Contact Us
             </NeonButton>
             <NeonButton href="/projects" variant="outline" className="px-8 py-3.5 text-sm md:text-base">
               View Projects
