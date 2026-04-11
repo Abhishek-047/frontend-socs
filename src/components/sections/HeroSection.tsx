@@ -11,11 +11,13 @@ import dynamic from "next/dynamic";
 // Disable SSR for Globe3D to prevent Three.js window/document issues
 const Globe3D = dynamic(
   () => import("../ui/Globe3D").then(m => ({ default: m.Globe3D })),
-  { ssr: false, loading: () => (
-    <div className="w-full h-full flex items-center justify-center bg-[#030608] border border-primary/20">
-      <span className="text-[10px] text-primary/40 font-mono tracking-widest animate-pulse">BOOTING GLOBAL_INTERFACE...</span>
-    </div>
-  )}
+  {
+    ssr: false, loading: () => (
+      <div className="w-full h-full flex items-center justify-center bg-[#030608] border border-primary/20">
+        <span className="text-[10px] text-primary/40 font-mono tracking-widest animate-pulse">BOOTING GLOBAL_INTERFACE...</span>
+      </div>
+    )
+  }
 );
 
 export function HeroSection() {
@@ -54,12 +56,12 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section className="relative pt-8 pb-12 min-h-[90vh] flex flex-col justify-center overflow-hidden">
+    <section className="relative pt-4 pb-12 min-h-[85vh] flex flex-col justify-start overflow-hidden">
       {/* Background grids */}
       <div className="absolute inset-0 dot-grid opacity-20 -z-20" />
       <div className="absolute inset-0 motherboard-lines opacity-10 -z-20" />
 
-      <div className="grid grid-cols-1 xl:grid-cols-[1.2fr_1fr] gap-6 xl:gap-16 items-center z-10 w-full mt-4 lg:mt-16">
+      <div className="grid grid-cols-1 xl:grid-cols-[1.2fr_1fr] gap-6 xl:gap-16 items-center z-10 w-full mt-4 lg:mt-10">
 
         {/* ── LEFT: Text content ── */}
         <div className="text-left w-full min-w-0 order-2 xl:order-1 flex flex-col justify-center">

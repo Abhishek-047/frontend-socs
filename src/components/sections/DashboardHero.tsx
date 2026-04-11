@@ -56,7 +56,7 @@ export function DashboardHero() {
         {/* Hero Content Area */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 min-h-[600px]">
           {/* Left Hero Text Section */}
-          <div className="lg:col-span-7 p-10 flex flex-col justify-center border-r border-[#6200EA]/10">
+          <div className="lg:col-span-7 p-10 flex flex-col justify-start pt-20 border-r border-[#6200EA]/10">
             <div className="hero-text-animate mb-6 inline-flex items-center gap-2 text-[10px] text-primary/60 tracking-[0.3em]">
               <div className="w-2 h-2 bg-primary"></div>
               <span>CORE_INITIATIVE_V2.5</span>
