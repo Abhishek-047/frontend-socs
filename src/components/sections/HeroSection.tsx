@@ -88,9 +88,11 @@ export function HeroSection() {
           </div>
         </div>
 
-        {/* ── RIGHT: Globe ── */}
-        <div ref={mapRef} className="order-1 lg:order-2 flex justify-center items-center w-full aspect-square md:aspect-auto h-[280px] sm:h-[400px] md:h-auto overflow-visible mb-4 lg:mb-0 opacity-0">
-          <Globe3D />
+        {/* ── RIGHT: 3D Globe ── */}
+        <div ref={mapRef} className="order-1 lg:order-2 w-full h-[300px] sm:h-[420px] lg:h-[500px] xl:h-[600px] relative flex items-center justify-center opacity-0 mb-8 lg:mb-0">
+          <div className="w-full h-full">
+            <Globe3D />
+          </div>
         </div>
       </div>
     </section>
