@@ -9,14 +9,14 @@ import { MobileMenu } from "./MobileMenu";
 import { Menu, X, Shield, MoreVertical } from "lucide-react";
 
 const TICKER_ITEMS = [
-  "# CTF Season 2025 registrations open — join now",
-  "# Zero-day discovered in OpenSSL — patch immediately",
-  "# SOCS Workshop: Reverse Engineering 101 — this Saturday",
-  "# New malware strain targeting Indian universities detected",
-  "# Bug Bounty Program launched — report vulnerabilities, earn rewards",
-  "# Capture The Flag results: Team NullPtr wins Round 5",
-  "# Ethical hacking bootcamp — limited seats available",
-  "# Critical CVE-2025-0x1337 patched — update your systems",
+  { text: "# CTF Season 2025 registrations open — join now", href: "/events" },
+  { text: "# Zero-day discovered in OpenSSL — patch immediately", href: "/resources" },
+  { text: "# SOCS Workshop: Reverse Engineering 101 — this Saturday", href: "/events" },
+  { text: "# New malware strain targeting Indian universities detected", href: "/resources" },
+  { text: "# Bug Bounty Program launched — report vulnerabilities, earn rewards", href: "/projects" },
+  { text: "# Capture The Flag results: Team NullPtr wins Round 5", href: "/events" },
+  { text: "# Ethical hacking bootcamp — limited seats available", href: "/events" },
+  { text: "# Critical CVE-2025-0x1337 patched — update your systems", href: "/resources" },
 ];
 
 export function Navbar() {
@@ -152,12 +152,16 @@ export function Navbar() {
               }}
             >
               {tickerContent.map((item, i) => (
-                <span key={i} className="inline-flex items-center">
-                  <span className="text-[11px] font-mono text-primary/70 px-6 tracking-wide hover:text-primary transition-colors cursor-default">
-                    {item}
+                <Link 
+                  key={i} 
+                  href={item.href} 
+                  className="inline-flex items-center shrink-0 whitespace-nowrap"
+                >
+                  <span className="text-[11px] font-mono text-primary/70 px-6 tracking-wide hover:text-white transition-colors duration-200">
+                    {item.text}
                   </span>
-                  <span className="text-primary/20 text-xs">|</span>
-                </span>
+                  <span className="text-primary/20 text-xs select-none">|</span>
+                </Link>
               ))}
             </motion.div>
           </div>
