@@ -39,6 +39,7 @@ export function Navbar() {
     { name: "Events",    href: "/events",     code: "04" },
     { name: "Resources", href: "/resources",  code: "05" },
     { name: "Gallery",   href: "/gallery",    code: "06" },
+    { name: "Contact",   href: "/contact",    code: "07" },
   ];
 
   // Duplicate items for seamless loop

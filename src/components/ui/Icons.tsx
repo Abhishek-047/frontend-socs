@@ -19,3 +19,11 @@ export const TwitterIcon = ({ className = "w-5 h-5", ...props }) => (
     <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
   </svg>
 );
+export const DiscordIcon = ({ className = "w-5 h-5", ...props }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className} {...props}>
+    <circle cx="9" cy="12" r="1"></circle>
+    <circle cx="15" cy="12" r="1"></circle>
+    <path d="M15 8l-1-1h-4l-1 1-1 4v5l1 1h8l1-1v-5l-1-4z"></path>
+    <path d="M9 18l-1 1v2h8v-2l-1-1"></path>
+  </svg>
+);
