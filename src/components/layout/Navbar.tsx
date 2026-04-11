@@ -75,14 +75,14 @@ export function Navbar() {
             </div>
 
             {/* ── Center: Nav Links (Desktop) ── */}
-            <div className="hidden md:flex items-center gap-0 flex-1 justify-center">
+            <div className="hidden lg:flex items-center gap-0 flex-1 justify-center">
               {links.map((link) => {
                 const isActive = pathname === link.href;
                 return (
                   <Link
                     key={link.name}
                     href={link.href}
-                    className={`relative px-4 xl:px-6 py-2 text-[15px] xl:text-[16px] font-black font-turret tracking-[0.1em] uppercase transition-all duration-300 group ${
+                    className={`relative px-3 xl:px-6 py-2 text-[14px] xl:text-[16px] font-black font-turret tracking-[0.1em] uppercase transition-all duration-300 group ${
                       isActive ? "text-primary" : "text-gray-500 hover:text-white"
                     }`}
                   >
@@ -112,6 +112,7 @@ export function Navbar() {
               })}
             </div>
 
+            {/* ── Right: Actions ── */}
             <div className="flex items-center justify-end gap-3 md:gap-4 shrink-0">
               <div className="flex items-center">
                 <NeonButton href="/login" variant="outline" className="text-[10px] md:text-[13px] px-3 md:px-6 py-1.5 md:py-2 font-black tracking-[0.15em] md:tracking-[0.2em] border-2">
@@ -122,7 +123,7 @@ export function Navbar() {
               {/* Mobile menu toggle */}
               <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="text-gray-400 hover:text-primary transition-colors p-1.5 md:p-2 md:hidden flex items-center justify-center border border-white/5 rounded-sm bg-white/5"
+                className="text-gray-400 hover:text-primary transition-colors p-1.5 md:p-2 lg:hidden flex items-center justify-center border border-white/5 rounded-sm bg-white/5"
                 aria-label="Toggle menu"
               >
                 {isOpen ? <X className="h-4 w-4 md:h-5 md:w-5" /> : <MoreVertical className="h-4 w-4 md:h-5 md:w-5" />}
