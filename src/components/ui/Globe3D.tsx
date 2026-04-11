@@ -34,7 +34,7 @@ export function Globe3D() {
     const globeRoot = new THREE.Group();
     scene.add(globeRoot);
 
-    const GLOBE_RADIUS = width < 768 ? Math.min(55, width / 6.5) : Math.min(45, width / 25);
+    const GLOBE_RADIUS = width < 768 ? Math.min(50, width / 7) : width < 1280 ? Math.min(45, width / 18) : Math.min(42, width / 28);
     const colorPrimary = new THREE.Color(0xc8ff00); // Neon Green
 
     // --- 1. Load World Map for Sampling ---
