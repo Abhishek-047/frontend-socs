@@ -59,7 +59,7 @@ export function HeroSection() {
       <div className="absolute inset-0 dot-grid opacity-20 -z-20" />
       <div className="absolute inset-0 motherboard-lines opacity-10 -z-20" />
 
-      <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-6 xl:gap-12 items-center z-10 w-full mt-8 lg:mt-16">
+      <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-0 lg:gap-12 items-center z-10 w-full mt-4 lg:mt-16">
 
         {/* ── LEFT: Text content ── */}
         <div className="text-left w-full min-w-0 order-2 lg:order-1 flex flex-col justify-center">
@@ -88,11 +88,9 @@ export function HeroSection() {
           </div>
         </div>
 
-        {/* ── RIGHT: 3D Globe ── */}
-        <div ref={mapRef} className="w-full h-[340px] sm:h-[460px] lg:h-[560px] xl:h-[650px] relative opacity-0 order-1 lg:order-2 flex items-center justify-center">
-          <div className="w-full h-full max-w-full max-h-full">
-            <Globe3D />
-          </div>
+        {/* ── RIGHT: Globe ── */}
+        <div ref={mapRef} className="order-1 lg:order-2 flex justify-center items-center w-full aspect-square md:aspect-auto h-[280px] sm:h-[400px] md:h-auto overflow-visible mb-4 lg:mb-0 opacity-0">
+          <Globe3D />
         </div>
       </div>
     </section>
